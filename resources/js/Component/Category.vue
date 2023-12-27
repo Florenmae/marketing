@@ -1,6 +1,6 @@
 <template>
     <Layout>
-        
+
         <button
             v-if="modalStatus"
             data-modal-target="crud-modal"

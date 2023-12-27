@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     public function createUser(Request $request){
-        $newUser = new user();
+        $newUser = new User();
 
         $newUser->id = $request->id;
         $newUser->role = $request->role;
@@ -24,9 +24,6 @@ class UserController extends Controller
     }
 
     public function getUsers(){
-        dd($request->id);
-        return user::select()->where('id', Auth::id())->get();
+        return User::find('id', Auth::id());
     }
-
-
 }

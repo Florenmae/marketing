@@ -1,6 +1,6 @@
 <template>
     <Layout :authenticated="this.authenticated">
-        <User :users="users" @success="getter" />
+        <User :users="users" @success="getUsers" :key="index" />
         <Category :category="category" />
         <Product :products="products" />
     </Layout>
@@ -41,7 +41,7 @@ export default {
             });
         },
         //get User
-        getter() {
+        getUsers() {
             axios.get("/get-users").then(({ data }) => {
                 console.log(data);
                 this.users = data;
@@ -56,11 +56,11 @@ export default {
         // },
 
         editSuccess() {
-            this.getter();
+            this.getUsers();
         },
     },
     mounted() {
-        this.getter();
+        this.getUsers();
         this.checkAuth();
     },
 

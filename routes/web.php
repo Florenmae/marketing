@@ -28,6 +28,7 @@ Route::post("/submit-user", [UserController::class, 'createUser'])->name("create
 Route::get("/get-users", [UserController::class, "getUsers"]);
 
 
+
 //category
 Route::post("/submit-category", [CategoryController::class, 'createCategory'])->name("createCategory");
 
