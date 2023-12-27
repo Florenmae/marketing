@@ -79,19 +79,6 @@
                         >
                             Sign in
                         </button>
-
-                        <p
-                            class="text-sm font-light text-gray-500 dark:text-gray-400 flex flex-col text-center"
-                        >
-                            <RouterLink to="/signup">
-                                Don’t have an account yet?
-                                <a
-                                    href="#"
-                                    class="font-medium text-green-600 hover:underline dark:text-green-500"
-                                    >Sign up</a
-                                >
-                            </RouterLink>
-                        </p>
                     </form>
                 </div>
             </div>

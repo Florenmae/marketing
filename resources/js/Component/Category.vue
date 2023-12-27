@@ -1,5 +1,6 @@
 <template>
     <Layout>
+        
         <button
             v-if="modalStatus"
             data-modal-target="crud-modal"
@@ -8,9 +9,8 @@
             type="button"
             @click="changeModalStatus"
         >
-            Add User
+            Add Category
         </button>
-
         <!-- Main modal -->
         <div
             v-else
@@ -31,7 +31,7 @@
                         <h3
                             class="text-lg font-semibold text-gray-900 dark:text-white"
                         >
-                            Create New User
+                            Create Category
                         </h3>
                         <button
                             type="button"
@@ -58,82 +58,37 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <form @submit.prevent="submitUser" class="p-4 md:p-5">
+                    <form @submit.prevent="submitCategory" class="p-4 md:p-5">
                         <div class="grid gap-4 mb-4 grid-cols-2">
                             <div class="col-span-2 border-red-500">
                                 <label
-                                    for="name"
+                                    for="cat_code"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >Name</label
+                                    >Category Code</label
                                 >
                                 <input
-                                    v-model="name"
+                                    v-model="cat_code"
                                     type="text"
-                                    name="name"
-                                    id="name"
+                                    name="cat_code"
+                                    id="cat_code"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Name"
+                                    placeholder="cat_code"
                                     required=""
                                 />
                             </div>
                             <div class="col-span-2 border-red-500">
                                 <label
-                                    for="email"
+                                    for="categoryName"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >Email</label
+                                    >Category Name</label
                                 >
                                 <input
-                                    v-model="email"
+                                    v-model="categoryName"
                                     type="text"
-                                    name="email"
-                                    id="email"
+                                    name="categoryName"
+                                    id="categoryName"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Email"
-                                    required=""
-                                />
-                            </div>
-                            <div class="col-span-2">
-                                <label
-                                    for="role"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >Select a Role</label
-                                >
-                                <!-- <input
-                                    v-model="role"
-                                    type="text"
-                                    name="role"
-                                    id="role"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Type your role"
-                                    required=""
-                                /> -->
-                                <select
-                                    v-model="role"
-                                    name="role"
-                                    id="countries"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Select a role"
-                                >
-                                    <option selected>Choose a role</option>
-                                    <option value="admin">admin</option>
-                                    <option value="IGP">IGP</option>
-                                    <option value="Project">Project</option>
-                                    <option value="Empployee">Employee</option>
-                                </select>
-                            </div>
-                            <div class="col-span-2">
-                                <label
-                                    for="password"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >Temporary Password</label
-                                >
-                                <input
-                                    v-model="password"
-                                    type="text"
-                                    name="password"
-                                    id="password"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Type Temporary Password"
+                                    placeholder="categoryName"
                                     required=""
                                 />
                             </div>
@@ -154,66 +109,40 @@
                                     clip-rule="evenodd"
                                 ></path>
                             </svg>
-                            Add new user
+                            Add Category
                         </button>
                     </form>
                 </div>
             </div>
         </div>
 
-        <div>
-            <table class="table-auto">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>Email</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(user, index) in users" :key="index">
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.role }}</td>
-                        <td>{{ user.email }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+
     </Layout>
 </template>
 
 <script>
-import LayoutUser from "../Layout/LayoutUser.vue";
-
 export default {
-    props: ["users"],
     data() {
         return {
-            name: "",
-            email: "",
-            role: "",
-            password: "",
+            cat_code: "",
+            categoryName: "",
             modalStatus: true,
         };
     },
     methods: {
-        submitUser() {
-            const { name, email, role, password } = this;
+        submitCategory() {
+            const { cat_code, categoryName } = this;
             axios
-                .post("/submit-user", { name, email, role, password })
+                .post("/submit-category", { cat_code, categoryName })
                 .then(({ data }) => {
-                    this.name = "";
-                    this.email = "";
-                    this.role = "";
-                    this.password = "";
-                    this.$emit("success");
+                    (this.cat_code = ""),
+                        (this.categoryName = ""),
+                        this.$emit("success");
                 });
         },
         changeModalStatus() {
             this.modalStatus = !this.modalStatus;
         },
     },
-    components: { LayoutUser },
 };
 </script>

@@ -1,28 +1,31 @@
 <template>
     <Layout :authenticated="this.authenticated">
-        <AdminDashboard />
         <User :users="users" @success="getter" />
-        <Products :products="products" @success="getter" />
+        <Category :category="category" />
+        <Product :products="products" />
     </Layout>
 </template>
 
 <script>
 import Layout from "../Layout/Layout.vue";
 import User from "./User.vue";
+import Category from "../Component/Category.vue";
 import Product from "../Component/Product.vue";
 
 export default {
+    props: ["products"],
     components: {
         Layout,
         User,
+        Category,
         Product,
     },
     data() {
         return {
             authenticated: 0,
-            // is_admin: 1,
-            user: [],
-            product: [],
+            users: [],
+            category: [],
+            products: [],
         };
     },
     methods: {
@@ -41,16 +44,16 @@ export default {
         getter() {
             axios.get("/get-users").then(({ data }) => {
                 console.log(data);
-                this.user = data;
+                this.users = data;
             });
         },
 
-        getter() {
-            axios.get("/get-products").then(({ data }) => {
-                console.log(data);
-                this.product = data;
-            });
-        },
+        // getter() {
+        //     axios.get("/get-products").then(({ data }) => {
+        //         console.log(data);
+        //         this.products = data;
+        //     });
+        // },
 
         editSuccess() {
             this.getter();

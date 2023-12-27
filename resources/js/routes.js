@@ -1,6 +1,7 @@
 import App from "@/Component/App.vue";
 import User from "@/Component/User.vue";
 import Product from "@/Component/Product.vue";
+import Category from "@/Component/Category.vue";
 
 import Login from "@/Pages/Login.vue";
 import Signup from "@/Pages/Signup.vue";
@@ -20,6 +21,11 @@ export const routes = [
         path: "/user",
         name: "user",
         component: User,
+    },
+    {
+        path: "/category",
+        name: "category",
+        component: Category,
     },
     {
         path: "/product",

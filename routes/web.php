@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,10 +26,14 @@ Route::post("/logout", [LoginController::class, "logout"]);
 //User
 Route::post("/submit-user", [UserController::class, 'createUser'])->name("createUser");
 Route::get("/get-users", [UserController::class, "getUsers"]);
-Route::post("/get-user", [UserController::class, "getUser"]);
+
+
+//category
+Route::post("/submit-category", [CategoryController::class, 'createCategory'])->name("createCategory");
 
 //Products
 Route::post("/submit-product", [ProductController::class, 'createProduct'])->name("createProduct");
+
 
 
 

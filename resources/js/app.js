@@ -2,6 +2,7 @@ import "./bootstrap";
 import { createApp } from "vue/dist/vue.esm-bundler";
 import App from "@/Component/App.vue";
 import User from "@/Component/User.vue";
+import Category from "@/Component/Category.vue";
 import Product from "@/Component/Product.vue";
 
 import { createRouter, createWebHistory } from "vue-router";
@@ -23,6 +24,7 @@ app.use(router);
 app.component("app", App);
 app.component("user", User);
 app.component("product", Product);
+app.component("category", Category);
 app.component("Layout", Layout);
 app.component("LayoutUser", LayoutUser);
 // app.component("LayoutAdmin", LayoutAdmin);

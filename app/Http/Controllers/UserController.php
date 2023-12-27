@@ -24,7 +24,7 @@ class UserController extends Controller
     }
 
     public function getUsers(){
-
+        dd($request->id);
         return user::select()->where('id', Auth::id())->get();
     }
 
