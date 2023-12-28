@@ -13,9 +13,9 @@ return new class extends Migration
     {
         schema::create('category', function(Blueprint $table){
             $table->id();
-            $table->string('cat_code'); //category
+            $table->string('categoryCode'); //category
             $table->string('categoryName');
-            // $table->integer('products');
+            //$table->integer('Availproducts');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });

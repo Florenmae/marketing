@@ -27,4 +27,12 @@ class ProductController extends Controller
         return Product::all();
         // return  Product::select()->where('id')->get();
     }
+
+    public function deleteProduct(Request $request){
+        // dd($request->id);
+        $deleteProduct = Product::find($request->id);
+
+        $res = $deleteProduct->delete();
+        return $res;
+    }
 }

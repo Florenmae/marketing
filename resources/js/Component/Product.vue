@@ -213,11 +213,17 @@
                         <td class="px-6 py-4">{{ product.qty }}</td>
                         <td class="px-6 py-4">{{ product.description }}</td>
                         <td class="px-6 py-4">
-                            <!-- <a
+                            <a
                                 href="#"
                                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                 >Edit</a
-                            > -->
+                            >
+                            <button
+                                class="bg-red-500 py-2 px-4 rounded text-white"
+                                @click="deleteProduct(product.id)"
+                            >
+                                Delete
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -238,6 +244,7 @@ export default {
             description: "",
             modalStatus: true,
             products: [],
+            id: "",
         };
     },
     methods: {
@@ -272,9 +279,15 @@ export default {
                 this.products = data;
             });
         },
+        deleteProduct(id) {
+            axios.post("/delete-product", { id }).then(({ data }) => {
+                this.$emit("success");
+            });
+        },
     },
     mounted() {
         this.getProducts();
+        this.deleteProduct();
     },
 };
 </script>

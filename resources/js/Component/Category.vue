@@ -61,17 +61,17 @@
                         <div class="grid gap-4 mb-4 grid-cols-2">
                             <div class="col-span-2 border-red-500">
                                 <label
-                                    for="cat_code"
+                                    for="categoryCode"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >Category Code</label
                                 >
                                 <input
-                                    v-model="cat_code"
+                                    v-model="categoryCode"
                                     type="text"
-                                    name="cat_code"
-                                    id="cat_code"
+                                    name="categoryCode"
+                                    id="categoryCode"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="cat_code"
+                                    placeholder="categoryCode"
                                     required=""
                                 />
                             </div>
@@ -132,16 +132,16 @@
                 </thead>
                 <tbody>
                     <tr
-                        v-for="cat in cats"
+                        v-for="category in category"
                         class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                     >
                         <th
                             scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                            {{ cat.categoryName }}
+                            {{ category.categoryName }}
                         </th>
-                        <td class="px-6 py-4">{{ cat.cat_code }}</td>
+                        <td class="px-6 py-4">{{ category.categoryCode }}</td>
                         <td class="px-6 py-4">
                             <a
                                 href="#"
@@ -160,19 +160,19 @@
 export default {
     data() {
         return {
-            cat_code: "",
+            categoryCode: "",
             categoryName: "",
             modalStatus: true,
-            cats: [],
+            category: [],
         };
     },
     methods: {
         submitCategory() {
-            const { cat_code, categoryName } = this;
+            const { categoryCode, categoryName } = this;
             axios
-                .post("/submit-category", { cat_code, categoryName })
+                .post("/submit-category", { categoryCode, categoryName })
                 .then(({ data }) => {
-                    (this.cat_code = ""),
+                    (this.categoryCode = ""),
                         (this.categoryName = ""),
                         this.$emit("success");
                 });
@@ -181,8 +181,8 @@ export default {
             this.modalStatus = !this.modalStatus;
         },
         getCats() {
-            axios.get("/get-cats").then(({ data }) => {
-                this.cats = data;
+            axios.get("/get-category").then(({ data }) => {
+                this.category = data;
             });
         },
     },

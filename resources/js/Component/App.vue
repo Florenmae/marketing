@@ -1,15 +1,16 @@
 <template>
     <Layout :authenticated="this.authenticated">
         <User></User>
+        <Category></Category>
         <Product></Product>
     </Layout>
 </template>
 
 <script>
 import Layout from "../Layout/Layout.vue";
-// import User from "./User.vue";
-// import Category from "../Component/Category.vue";
-// import Product from "../Component/Product.vue";
+import User from "./User.vue";
+import Category from "../Component/Category.vue";
+import Product from "../Component/Product.vue";
 
 export default {
     components: {
