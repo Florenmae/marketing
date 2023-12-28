@@ -242,7 +242,7 @@ export default {
     },
     methods: {
         submitProduct() {
-            const { name, product_code, item_code, price, qty, description } =
+            const { product_code, item_code, name, price, qty, description } =
                 this;
             axios
                 .post("/submit-product", {
@@ -268,6 +268,7 @@ export default {
         },
         getProducts() {
             axios.get("/get-products").then(({ data }) => {
+                console.log(data);
                 this.products = data;
             });
         },

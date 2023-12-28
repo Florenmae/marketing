@@ -25,5 +25,6 @@ class ProductController extends Controller
 }
     public function getProducts(){
         return Product::all();
+        // return  Product::select()->where('id')->get();
     }
 }

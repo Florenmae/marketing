@@ -26,4 +26,12 @@ class UserController extends Controller
     public function getUsers(){
         return User::all();
     }
+
+    public function deleteUser(Request $request){
+        // dd($request->id);
+        $deleteUser = User::find($request->id);
+
+        $res = $deleteUser->delete();
+        return $res;
+    }
 }

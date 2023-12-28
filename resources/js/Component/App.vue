@@ -1,6 +1,7 @@
 <template>
     <Layout :authenticated="this.authenticated">
         <User></User>
+        <Product></Product>
     </Layout>
 </template>
 

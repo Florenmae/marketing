@@ -159,27 +159,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- <div>
-            <table class="table-auto">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>Email</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="user in users">
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.role }}</td>
-                        <td>{{ user.email }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> -->
-
+        <!-- Table -->
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table
                 class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
@@ -213,6 +193,12 @@
                                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                 >Edit</a
                             >
+                            <button
+                                class="bg-red-500 py-2 px-4 rounded text-white"
+                                @click="deleteUser(user.id)"
+                            >
+                                Delete
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -231,6 +217,7 @@ export default {
             password: "",
             modalStatus: true,
             users: [],
+            id: "",
         };
     },
     methods: {
@@ -254,9 +241,15 @@ export default {
                 this.users = data;
             });
         },
+        deleteUser(id) {
+            axios.post("/delete-user", { id }).then(({ data }) => {
+                this.$emit("success");
+            });
+        },
     },
     mounted() {
         this.getUsers();
+        this.deleteUser();
     },
 };
 </script>
