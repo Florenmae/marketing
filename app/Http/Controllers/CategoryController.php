@@ -20,12 +20,7 @@ class CategoryController extends Controller
         return $res;
     }
 
-    // public function productsIndex(){
-    //     $category = DB::table('category')
-    //         ->join('products', 'category.products', '=', 'products.product_code.category.number')
-    //         ->select('category.*', 'products.*' )
-    //         ->get();
-
-    //     return view('category.products');
-    // }
+    public function getCats(){
+        return Category::all();
+    }
 }

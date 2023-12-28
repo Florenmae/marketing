@@ -24,6 +24,6 @@ class UserController extends Controller
     }
 
     public function getUsers(){
-        return User::find('id', Auth::id());
+        return User::all();
     }
 }

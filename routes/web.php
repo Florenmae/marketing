@@ -31,10 +31,11 @@ Route::get("/get-users", [UserController::class, "getUsers"]);
 
 //category
 Route::post("/submit-category", [CategoryController::class, 'createCategory'])->name("createCategory");
+Route::get("/get-cats", [CategoryController::class, "getCats"]);
 
 //Products
 Route::post("/submit-product", [ProductController::class, 'createProduct'])->name("createProduct");
-
+Route::get("/get-products", [ProductController::class, "getProducts"]);
 
 
 
