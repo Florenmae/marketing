@@ -267,6 +267,7 @@ export default {
                     this.price = " ";
                     this.qty = " ";
                     this.description = "";
+                    this.getProducts();
                     this.$emit("success");
                 });
         },
@@ -281,13 +282,12 @@ export default {
         },
         deleteProduct(id) {
             axios.post("/delete-product", { id }).then(({ data }) => {
-                this.$emit("success");
+                this.getProducts();
             });
         },
     },
     mounted() {
         this.getProducts();
-        this.deleteProduct();
     },
 };
 </script>

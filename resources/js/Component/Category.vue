@@ -8,7 +8,7 @@
             type="button"
             @click="changeModalStatus"
         >
-            Add Category
+            Add User
         </button>
         <!-- Main modal -->
         <div
@@ -63,7 +63,7 @@
                                 <label
                                     for="categoryCode"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >Category Code</label
+                                    >categoryCode</label
                                 >
                                 <input
                                     v-model="categoryCode"
@@ -79,7 +79,7 @@
                                 <label
                                     for="categoryName"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >Category Name</label
+                                    >categoryName</label
                                 >
                                 <input
                                     v-model="categoryName"
@@ -114,7 +114,7 @@
                 </div>
             </div>
         </div>
-
+        <!-- Table -->
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table
                 class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
@@ -123,10 +123,8 @@
                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                 >
                     <tr>
-                        <th scope="col" class="px-6 py-3">Product Category</th>
-                        <th scope="col" class="px-6 py-3">
-                            Category <Code></Code>
-                        </th>
+                        <th scope="col" class="px-6 py-3">Category Code</th>
+                        <th scope="col" class="px-6 py-3">Category Name</th>
                         <th scope="col" class="px-6 py-3">Action</th>
                     </tr>
                 </thead>
@@ -139,15 +137,21 @@
                             scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                            {{ category.categoryName }}
+                            {{ category.categoryCode }}
                         </th>
-                        <td class="px-6 py-4">{{ category.categoryCode }}</td>
+                        <td class="px-6 py-4">{{ category.categoryName }}</td>
                         <td class="px-6 py-4">
                             <a
                                 href="#"
                                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                 >Edit</a
                             >
+                            <button
+                                class="bg-red-500 py-2 px-4 rounded text-white"
+                                @click="deleteCategory(category.id)"
+                            >
+                                Delete
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -164,6 +168,7 @@ export default {
             categoryName: "",
             modalStatus: true,
             category: [],
+            id: "",
         };
     },
     methods: {
@@ -172,22 +177,27 @@ export default {
             axios
                 .post("/submit-category", { categoryCode, categoryName })
                 .then(({ data }) => {
-                    (this.categoryCode = ""),
-                        (this.categoryName = ""),
-                        this.$emit("success");
+                    this.categoryCode = "";
+                    this.categoryName = "";
+                    this.$emit("success");
                 });
         },
         changeModalStatus() {
             this.modalStatus = !this.modalStatus;
         },
-        getCats() {
+        getCategory() {
             axios.get("/get-category").then(({ data }) => {
                 this.category = data;
             });
         },
+        deleteCategory(id) {
+            axios.post("/delete-category", { id }).then(({ data }) => {
+                this.getCategory();
+            });
+        },
     },
     mounted() {
-        this.getCats;
+        this.getCategory();
     },
 };
 </script>

@@ -243,6 +243,7 @@ export default {
         },
         deleteUser(id) {
             axios.post("/delete-user", { id }).then(({ data }) => {
+                this.getUsers();
                 this.$emit("success");
             });
         },

@@ -12,7 +12,7 @@ class CategoryController extends Controller
         $newCategory = new Category();
 
         $newCategory->id = $request->id;
-        $newCategory->cat_code = $request->cat_code;
+        $newCategory->categoryCode = $request->categoryCode;
         $newCategory->categoryName = $request->categoryName;
 
         $res = $newCategory->save();
@@ -20,7 +20,7 @@ class CategoryController extends Controller
         return $res;
     }
 
-    public function getCats(){
+    public function getCategory(){
         return Category::all();
     }
 }
