@@ -33,6 +33,7 @@ Route::post("/delete-user", [UserController::class, "deleteUser"]);
 //category
 Route::post("/submit-category", [CategoryController::class, 'createCategory'])->name("createCategory");
 Route::get("/get-category", [CategoryController::class, "getCategory"]);
+Route::post("/delete-category", [CategoryController::class, "deleteCategory"]);
 
 //Products
 Route::post("/submit-product", [ProductController::class, 'createProduct'])->name("createProduct");

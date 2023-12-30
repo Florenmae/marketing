@@ -23,4 +23,12 @@ class CategoryController extends Controller
     public function getCategory(){
         return Categories::all();
     }
+
+    public function deleteCategory(Request $request){
+        // dd($request->id);
+        $deleteCategory = Categories::find($request->id);
+
+        $res = $deleteCategory->delete();
+        return $res;
+    }
 }
