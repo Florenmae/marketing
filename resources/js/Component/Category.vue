@@ -130,7 +130,7 @@
                 </thead>
                 <tbody>
                     <tr
-                        v-for="category in category"
+                        v-for="category in categories"
                         class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                     >
                         <th
@@ -167,7 +167,7 @@ export default {
             categoryCode: "",
             categoryName: "",
             modalStatus: true,
-            category: [],
+            categories: [],
             id: "",
         };
     },
@@ -179,7 +179,7 @@ export default {
                 .then(({ data }) => {
                     this.categoryCode = "";
                     this.categoryName = "";
-                    this.$emit("success");
+                    this.getCategory();
                 });
         },
         changeModalStatus() {
@@ -187,7 +187,7 @@ export default {
         },
         getCategory() {
             axios.get("/get-category").then(({ data }) => {
-                this.category = data;
+                this.categories = data;
             });
         },
         deleteCategory(id) {

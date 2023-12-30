@@ -27,6 +27,31 @@ class UserController extends Controller
         return User::all();
     }
 
+    public function getUser(Request $request){
+        if(User::where('id', $request->edit_id)->exist()){
+            return User::find($request->edit_id);
+        }else{
+            return $data = (object)[
+                "id" => 0,
+                "name"=> "",
+                "email"=>"",
+                "role"=>"",
+            ];
+        }
+    }
+
+    public function updateUser(Request $request){
+        $data = $request->data;
+        $updateUser = User::find($data['id']);
+
+        $updateUser->name = $data['name'];
+        $updateUser->email = $data['email'];
+        $updateUser->role = $data['role'];
+
+        $res = $updateUser->save();
+        return $res;
+    }
+
     public function deleteUser(Request $request){
         // dd($request->id);
         $deleteUser = User::find($request->id);

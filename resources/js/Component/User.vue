@@ -97,19 +97,10 @@
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >Select a Role</label
                                 >
-                                <!-- <input
-                                    v-model="role"
-                                    type="text"
-                                    name="role"
-                                    id="role"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Type your role"
-                                    required=""
-                                /> -->
                                 <select
                                     v-model="role"
                                     name="role"
-                                    id="countries"
+                                    id="role"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Select a role"
                                 >
@@ -187,12 +178,22 @@
                         </th>
                         <td class="px-6 py-4">{{ user.role }}</td>
                         <td class="px-6 py-4">{{ user.email }}</td>
-                        <td class="px-6 py-4">
-                            <a
-                                href="#"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        <td>
+                            <!-- <a
+                                href="/userEdit"
+                                class="bg-green-700 py-2 px-4 rounded text-white"
                                 >Edit</a
-                            >
+                            > -->
+                            <router-link to="/userEdit">
+                                <button
+                                    class="bg-green-700 py-2 px-5 rounded text-white"
+                                    @click="$emit('editUser', user.id)"
+                                >
+                                    Edit
+                                </button>
+                            </router-link>
+                        </td>
+                        <td class="py-4">
                             <button
                                 class="bg-red-500 py-2 px-4 rounded text-white"
                                 @click="deleteUser(user.id)"
@@ -203,12 +204,23 @@
                     </tr>
                 </tbody>
             </table>
+            <user-edit
+                v-if="editingUserId"
+                :user-id="editingUserId"
+                @close="closeEditForm"
+            />
         </div>
     </Layout>
 </template>
 
 <script>
+import axios from "axios";
+import UserEdit from "../Component/UserEdit.vue";
+
 export default {
+    components: {
+        UserEdit,
+    },
     data() {
         return {
             name: "",
@@ -218,6 +230,7 @@ export default {
             modalStatus: true,
             users: [],
             id: "",
+            editingUserId: "",
         };
     },
     methods: {
@@ -230,7 +243,7 @@ export default {
                     this.email = "";
                     this.role = "";
                     this.password = "";
-                    this.$emit("success");
+                    this.getUsers();
                 });
         },
         changeModalStatus() {
@@ -241,16 +254,26 @@ export default {
                 this.users = data;
             });
         },
+        // editUser(id) {
+        //     axios.post("/edit-user", { id }).then(({ data }) => {
+        //         this.getUser();
+        //     });
+        // },
+        editUser(userId) {
+            this.editingUserId = userId;
+        },
+        closeEditForm() {
+            this.editingUserId = data;
+            this.getUsers(); // Refresh the user list after editing
+        },
         deleteUser(id) {
             axios.post("/delete-user", { id }).then(({ data }) => {
                 this.getUsers();
-                this.$emit("success");
             });
         },
     },
     mounted() {
         this.getUsers();
-        this.deleteUser();
     },
 };
 </script>
