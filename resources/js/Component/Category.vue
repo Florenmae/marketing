@@ -8,7 +8,7 @@
             type="button"
             @click="changeModalStatus"
         >
-            Add User
+            Add Category
         </button>
         <!-- Main modal -->
         <div
