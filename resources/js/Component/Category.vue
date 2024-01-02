@@ -30,7 +30,11 @@
                         <h3
                             class="text-lg font-semibold text-gray-900 dark:text-white"
                         >
-                            Create Category
+                            {{
+                                editingCategoryId
+                                    ? "Edit Category"
+                                    : "Create Category"
+                            }}
                         </h3>
                         <button
                             type="button"
@@ -63,7 +67,7 @@
                                 <label
                                     for="categoryCode"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >categoryCode</label
+                                    >Category Code</label
                                 >
                                 <input
                                     v-model="categoryCode"
@@ -71,7 +75,7 @@
                                     name="categoryCode"
                                     id="categoryCode"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="categoryCode"
+                                    placeholder="Category Code"
                                     required=""
                                 />
                             </div>
@@ -79,7 +83,7 @@
                                 <label
                                     for="categoryName"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >categoryName</label
+                                    >Category Name</label
                                 >
                                 <input
                                     v-model="categoryName"
@@ -87,7 +91,7 @@
                                     name="categoryName"
                                     id="categoryName"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="categoryName"
+                                    placeholder="Category Name"
                                     required=""
                                 />
                             </div>
@@ -108,7 +112,11 @@
                                     clip-rule="evenodd"
                                 ></path>
                             </svg>
-                            Add Category
+                            {{
+                                editingCategoryId
+                                    ? "Update Category"
+                                    : "Add Category"
+                            }}
                         </button>
                     </form>
                 </div>
@@ -131,6 +139,7 @@
                 <tbody>
                     <tr
                         v-for="category in categories"
+                        :key="category.id"
                         class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                     >
                         <th
@@ -140,12 +149,14 @@
                             {{ category.categoryCode }}
                         </th>
                         <td class="px-6 py-4">{{ category.categoryName }}</td>
-                        <td class="px-6 py-4">
+                        <td>
                             <a
-                                href="#"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                @click="editCategory(category)"
+                                class="bg-green-700 py-2 px-4 rounded text-white"
                                 >Edit</a
                             >
+                        </td>
+                        <td class="py-4">
                             <button
                                 class="bg-red-500 py-2 px-4 rounded text-white"
                                 @click="deleteCategory(category.id)"
@@ -168,36 +179,61 @@ export default {
             categoryName: "",
             modalStatus: true,
             categories: [],
-            id: "",
+            editingCategoryId: null,
         };
     },
     methods: {
         submitCategory() {
-            const { categoryCode, categoryName } = this;
-            axios
-                .post("/submit-category", { categoryCode, categoryName })
-                .then(({ data }) => {
-                    this.categoryCode = "";
-                    this.categoryName = "";
-                    this.getCategory();
+            const { categoryCode, categoryName, editingCategoryId } = this;
+            const categoryPayload = { categoryCode, categoryName };
+            if (editingCategoryId) {
+                // Update existing category
+                axios
+                    .post(
+                        `/update-category/${editingCategoryId}`,
+                        categoryPayload
+                    )
+                    .then(() => {
+                        this.clearForm();
+                        this.changeModalStatus();
+                        this.getCategories();
+                    });
+            } else {
+                // Add new category
+                axios.post("/submit-category", categoryPayload).then(() => {
+                    this.clearForm();
+                    this.changeModalStatus();
+                    this.getCategories();
                 });
+            }
         },
         changeModalStatus() {
             this.modalStatus = !this.modalStatus;
         },
-        getCategory() {
-            axios.get("/get-category").then(({ data }) => {
+        getCategories() {
+            axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;
             });
         },
+        editCategory(category) {
+            this.categoryCode = category.categoryCode;
+            this.categoryName = category.categoryName;
+            this.editingCategoryId = category.id;
+            this.changeModalStatus();
+        },
         deleteCategory(id) {
-            axios.post("/delete-category", { id }).then(({ data }) => {
-                this.getCategory();
+            axios.post("/delete-category", { id }).then(() => {
+                this.getCategories();
             });
+        },
+        clearForm() {
+            this.categoryCode = "";
+            this.categoryName = "";
+            this.editingCategoryId = null;
         },
     },
     mounted() {
-        this.getCategory();
+        this.getCategories();
     },
 };
 </script>

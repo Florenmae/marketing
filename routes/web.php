@@ -31,7 +31,8 @@ Route::post("/delete-user", [UserController::class, "deleteUser"]);
 
 //category
 Route::post("/submit-category", [CategoryController::class, 'createCategory'])->name("createCategory");
-Route::get("/get-category", [CategoryController::class, "getCategory"]);
+Route::get("/get-categories", [CategoryController::class, "getCategory"]);
+Route::post("/update-category/{id}", [CategoryController::class, "updateCategory"])->name('update-category');;
 Route::post("/delete-category", [CategoryController::class, "deleteCategory"]);
 
 //Products

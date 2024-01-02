@@ -24,6 +24,22 @@ class CategoryController extends Controller
         return Categories::all();
     }
 
+    public function updateCategory(Request $request, $id)
+    {
+        $request->validate([
+            'categoryCode' => 'required|string|max:255',
+            'categoryName' => 'required|string|max:255',
+        ]);
+
+        $category = Categories::findOrFail($id);
+        $category->update([
+            'categoryCode' => $request->input('categoryCode'),
+            'categoryName' => $request->input('categoryName'),
+        ]);
+
+        return $category->with('success', 'Category updated successfully');
+    }
+
     public function deleteCategory(Request $request){
         // dd($request->id);
         $deleteCategory = Categories::find($request->id);
