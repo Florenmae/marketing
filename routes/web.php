@@ -26,8 +26,7 @@ Route::post("/logout", [LoginController::class, "logout"]);
 //User
 Route::post("/submit-user", [UserController::class, 'createUser'])->name("createUser");
 Route::get("/get-users", [UserController::class, "getUsers"]);
-Route::get("/get-user", [UserController::class, "getUser"]);
-Route::post("/update-user", [UserController::class, "updateUser"]);
+Route::post('/update-user/{id}', [UserController::class, 'updateUser'])->name('update-user');
 Route::post("/delete-user", [UserController::class, "deleteUser"]);
 
 //category
