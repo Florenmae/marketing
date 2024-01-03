@@ -32,12 +32,13 @@ Route::post("/delete-user", [UserController::class, "deleteUser"]);
 //category
 Route::post("/submit-category", [CategoryController::class, 'createCategory'])->name("createCategory");
 Route::get("/get-categories", [CategoryController::class, "getCategory"]);
-Route::post("/update-category/{id}", [CategoryController::class, "updateCategory"])->name('update-category');;
+Route::post("/update-category/{id}", [CategoryController::class, "updateCategory"])->name('update-category');
 Route::post("/delete-category", [CategoryController::class, "deleteCategory"]);
 
 //Products
 Route::post("/submit-product", [ProductController::class, 'createProduct'])->name("createProduct");
 Route::get("/get-products", [ProductController::class, "getProducts"]);
+Route::post("/update-product/{id}", [ProductController::class, "updateProduct"])->name('update-product');
 Route::post("/delete-product", [ProductController::class, "deleteProduct"]);
 
 

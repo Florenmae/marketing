@@ -25,20 +25,22 @@ class CategoryController extends Controller
     }
 
     public function updateCategory(Request $request, $id)
-    {
-        $request->validate([
-            'categoryCode' => 'required|string|max:255',
-            'categoryName' => 'required|string|max:255',
-        ]);
+{
+    $request->validate([
+        'categoryCode' => 'required|string|max:255',
+        'categoryName' => 'required|string|max:255',
+    ]);
 
-        $category = Categories::findOrFail($id);
-        $category->update([
-            'categoryCode' => $request->input('categoryCode'),
-            'categoryName' => $request->input('categoryName'),
-        ]);
+    $category = $id ? Categories::findOrFail($id) : new Categories;
 
-        return $category->with('success', 'Category updated successfully');
-    }
+    $category->categoryCode = $request->input('categoryCode');
+    $category->categoryName = $request->input('categoryName');
+
+    $category->save();
+
+    return $category->fresh(); // Optionally return the fresh instance of the updated category
+}
+
 
     public function deleteCategory(Request $request){
         // dd($request->id);

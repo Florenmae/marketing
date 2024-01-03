@@ -197,6 +197,7 @@ export default {
                         this.clearForm();
                         this.changeModalStatus();
                         this.getCategories();
+                        this.$emit("data-updated");
                     });
             } else {
                 // Add new category
