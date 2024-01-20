@@ -1,8 +1,8 @@
 <template>
     <Layout :authenticated="this.authenticated">
-        <User></User>
-        <Category></Category>
-        <Product></Product>
+        <!-- <User :userData="userData"></User>
+        <Category :categoryData="categoryData"></Category>
+        <Product :productData="productData"></Product> -->
     </Layout>
 </template>
 
@@ -15,10 +15,16 @@ import Product from "../Component/Product.vue";
 export default {
     components: {
         Layout,
+        User,
+        Category,
+        Product,
     },
     data() {
         return {
             authenticated: 0,
+            userData: [],
+            categoryData: [],
+            productData: [],
         };
     },
     methods: {
@@ -33,9 +39,23 @@ export default {
                 }
             });
         },
+        fetchData() {
+            axios.get("/get-users").then(({ data }) => {
+                this.userData = data;
+            });
+
+            axios.get("/get-categories").then(({ data }) => {
+                this.categoryData = data;
+            });
+
+            axios.get("/get-products").then(({ data }) => {
+                this.productData = data;
+            });
+        },
     },
     mounted() {
         this.checkAuth();
+        this.fetchData();
     },
 
     watch: {

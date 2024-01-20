@@ -624,6 +624,7 @@ export default {
     },
     mounted() {
         this.getProducts();
+        // this.$emit("userData", data)
     },
 };
 </script>

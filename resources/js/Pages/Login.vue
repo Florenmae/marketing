@@ -102,8 +102,13 @@ export default {
             axios
                 .post("/login", { email, password })
                 .then((res) => {
-                    if (res.status == 200) {
-                        this.$router.push("/home");
+                    if (res.status === 200) {
+                        console.log("User Role:", res.data.role);
+                        if (res.data.role === "admin") {
+                            this.$router.push("/home");
+                        } else {
+                            this.$router.push("/user-dashboard");
+                        }
                     }
                 })
                 .catch((err) => {
@@ -116,4 +121,3 @@ export default {
     },
 };
 </script>
-<style lang=""></style>

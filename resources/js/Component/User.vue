@@ -222,6 +222,7 @@ export default {
             password: "",
             modalStatus: true,
             users: [],
+            userData: [],
             editingUserId: null,
             editedUser: {
                 id: null,
@@ -300,6 +301,8 @@ export default {
     },
     mounted() {
         this.getUsers();
+        // const userData = {  };
+        // this.$emit("userData", userData);
     },
 };
 </script>

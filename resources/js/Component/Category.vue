@@ -235,6 +235,7 @@ export default {
     },
     mounted() {
         this.getCategories();
+        // this.$emit("userData", data)
     },
 };
 </script>
