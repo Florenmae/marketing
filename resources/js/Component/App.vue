@@ -1,48 +1,60 @@
 <template>
     <Layout>
-        <div class="fixed top-12 grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-            <div
-                class="bg-blue-500 text-white overflow-hidden shadow-md sm:rounded-lg"
-            >
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="ml-4 text-lg leading-7 font-semibold">
-                            <label>Total Users</label>
-                            <h1>{{ userCounts }}</h1>
+        <div class="page-wrapper">
+            <div class="lg:content">
+                <div
+                    class="fixed top-12 grid grid-cols-1 md:grid-cols-3 gap-4 mt-4"
+                >
+                    <div
+                        class="bg-blue-500 text-white overflow-hidden shadow-md sm:rounded-lg"
+                    >
+                        <div class="p-6">
+                            <div class="flex items-center">
+                                <div
+                                    class="ml-4 text-lg leading-7 font-semibold"
+                                >
+                                    <label>Total Users</label>
+                                    <h1>{{ userCounts }}</h1>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div
-                class="bg-green-500 text-white overflow-hidden shadow-md sm:rounded-lg"
-            >
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="ml-4 text-lg leading-7 font-semibold">
-                            Products
+                    <div
+                        class="bg-green-500 text-white overflow-hidden shadow-md sm:rounded-lg"
+                    >
+                        <div class="p-6">
+                            <div class="flex items-center">
+                                <div
+                                    class="ml-4 text-lg leading-7 font-semibold"
+                                >
+                                    Products
+                                </div>
+                            </div>
+                            <div class="ml-12">
+                                <div class="mt-2 text-sm">
+                                    Total Products: {{ productCount }}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="ml-12">
-                        <div class="mt-2 text-sm">
-                            Total Products: {{ productCount }}
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div
-                class="bg-red-500 text-white overflow-hidden shadow-md sm:rounded-lg"
-            >
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="ml-4 text-lg leading-7 font-semibold">
-                            Categories
-                        </div>
-                    </div>
-                    <div class="ml-12">
-                        <div class="mt-2 text-sm">
-                            Total Categories: {{ categoryCount }}
+                    <div
+                        class="bg-red-500 text-white overflow-hidden shadow-md sm:rounded-lg"
+                    >
+                        <div class="p-6">
+                            <div class="flex items-center">
+                                <div
+                                    class="ml-4 text-lg leading-7 font-semibold"
+                                >
+                                    Categories
+                                </div>
+                            </div>
+                            <div class="ml-12">
+                                <div class="mt-2 text-sm">
+                                    Total Categories: {{ categoryCount }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
