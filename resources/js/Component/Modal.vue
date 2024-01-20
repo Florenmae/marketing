@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <div class="flex justify-center">
+        <div class="flex items-center justify-center   ">
             <button
                 @click="isOpen = true"
                 class="bg-green-500 px-4 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
@@ -12,26 +12,11 @@
 
             <div
                 v-if="isOpen"
-                class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50 min-h-screen"
+                class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50 min-h-screen"
             >
                 <div class="p-6 bg-white rounded-md shadow-xl min-w-[400px]">
                     <div class="flex items-center justify-between">
                         <h3 class="text-2xl">{{ modalContent.title }}</h3>
-                        <svg
-                            @click="isOpen = false"
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="w-8 h-8 text-red-900 cursor-pointer"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                        </svg>
                     </div>
                     <div class="mt-4">
                         <p class="mb-4 text-sm">
@@ -75,6 +60,9 @@ export default {
             type: String,
             default: "Save",
         },
+        saveOption: {
+            type: Boolean,
+        },
     },
     data() {
         return {
@@ -85,7 +73,9 @@ export default {
         saveData() {
             this.$emit("save");
 
-            this.isOpen = false;
+            if (this.saveOption) {
+                this.isOpen = false;
+            }
         },
     },
 };

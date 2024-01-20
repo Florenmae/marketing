@@ -15,7 +15,8 @@ class LoginController extends Controller
             $user = User::where("email",$request->email)->first();
             if(Hash::check($request->password, $user->password)){
                 Auth::login($user);
-                return response()->json(['message' => 'Login Successful'], 200);
+                $role = Auth::User()->role;
+                return response()->json(['message' => 'Login Successful', 'role' => $role], 200);
             }else{
                 return response()->json(['message' => 'Invalid'], 401);
             }

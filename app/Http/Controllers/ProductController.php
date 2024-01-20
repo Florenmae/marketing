@@ -7,51 +7,61 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-
     public function createProduct(Request $request){
-    $newProduct = new Product();
+        $newProduct =  new Product();
 
-    $newProduct->id = $request->id;
-    $newProduct->name = $request->name;
-    $newProduct->product_code = $request->product_code;
-    $newProduct->item_code = $request->item_code;
-    $newProduct->price = $request->price;
-    $newProduct->qty = $request-> qty;
-    $newProduct->description = $request->description;
+        $newProduct->id = $request->id;
+        $newProduct->name = $request->name;
+        $newProduct->supplier = $request->supplier;
+        $newProduct->cat_code = $request->cat_code;
+        $newProduct->item_code = $request->item_code;
+        $newProduct->price = $request->price;
+        $newProduct->qty = $request-> qty;
+        $newProduct->description = $request->description;
 
-    $res = $newProduct->save();
+        $res = $newProduct->save();
 
-    return $res;
-}
-    public function getProducts(){
-        return Product::all();
-        // return  Product::select()->where('id')->get();
+        return $res;
     }
 
-    public function updateProduct(Request $request, $id)
-{
-    $request->validate([
-        'product_code' => 'required|string|max:255',
-        'item_code' => 'required|string|max:255',
-        'name' => 'required|string|max:255',
-        'price' => 'required|string|max:255',
-        'qty' => 'required|string|max:255',
-        'description' => 'required|string|max:255',
-    ]);
+    public function getProducts(){
+        return Product::all();
+    }
 
-    $product = $id ? Product::findOrFail($id) : new Product;
+    public function updateProduct(Request $request){
+        $product = Product :: findOrFail($request->editingProductId);
 
-    $product->product_code = $request->input('product_code');
-    $product->item_code = $request->input('item_code');
-    $product->name = $request->input('name');
-    $product->price = $request->input('price');
-    $product->qty = $request->input('qty');
-    $product->description = $request->input('description');
+        $product->name = $request->prodPayload["name"];
+        $product->supplier = $request->prodPayload["supplier"];
+        $product->cat_code = $request->prodPayload["cat_code"];
+        $product->item_code = $request->prodPayload["item_code"];
+        $product->price = $request->prodPayload["price"];
+        $product->qty = $request->prodPayload["qty"];
+        $product->description = $request->prodPayload["description"];
+        $product->status = $request->prodPayload["status"];
 
-    $product->save();
+        $product->save();
 
-    return $product->fresh(); // Optionally return the fresh instance of the updated category
-}
+        return $product;
+
+    }
+
+    // public function approveStatus($productId) {
+    //     $product = Product::find($productId);
+    //     $product->status = 'approved';
+    //     $product->save();
+
+    //     return response()->json(['message' => 'Product status approved']);
+    // }
+
+    // public function rejectStatus($productId) {
+    //     $product = Product::find($productId);
+    //     $product->status = 'rejected';
+    //     $product->save();
+
+    //     return response()->json(['message' => 'Product status rejected']);
+    // }
+
 
     public function deleteProduct(Request $request){
         // dd($request->id);
@@ -60,4 +70,6 @@ class ProductController extends Controller
         $res = $deleteProduct->delete();
         return $res;
     }
+
+
 }

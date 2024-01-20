@@ -20,31 +20,26 @@ class UserController extends Controller
 
         $res = $newUser->save();
 
-        return $res;
+        return redirect('/user');
     }
 
     public function getUsers(){
         return User::all();
         }
 
-    public function updateUser(Request $request, $id = null){
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email,' . ($id ? $id : 'NULL') . ',id',
-                'role' => 'required|string|max:255',
-            ]);
+    public function updateUser(Request $request){
+        // dd($request->userPayload["name"]);
+        $user = User::findOrFail($request->editingUserId);
 
-            $user = $id ? User::findOrFail($id) : new User;
-            $user->fill($request->except($id ? ['password'] : []));
+        $user->name = $request->userPayload["name"];
+        $user->email = $request->userPayload["email"];
+        $user->role = $request->userPayload["role"];
 
-            if ($request->filled('password')) {
-                $user->password = bcrypt($request->input('password'));
-            }
+        $user->save();
 
-            $user->save();
+        return $user;
+    }
 
-            return redirect('/user');
-        }
 
     public function deleteUser(Request $request){
         // dd($request->id);

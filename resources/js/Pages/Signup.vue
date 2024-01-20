@@ -114,7 +114,7 @@
                         >
                             Create an account
                         </button>
-                        <p
+                        <!-- <p
                             class="text-sm font-light text-gray-500 dark:text-gray-400"
                         >
                             Already have an account?
@@ -125,7 +125,7 @@
                                     >Login here
                                 </a></RouterLink
                             >
-                        </p>
+                        </p> -->
                     </form>
                 </div>
             </div>
@@ -139,13 +139,13 @@ export default {
         return {
             name: "",
             email: "",
-            role:"",
+            role: "",
             password: "",
         };
     },
     methods: {
         signup() {
-            const { email,role, password, name } = this;
+            const { email, role, password, name } = this;
             axios
                 .post("/signup", { email, role, password, name })
                 .then(({ data }) => {

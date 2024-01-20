@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        schema::create('categories', function(Blueprint $table){
+        Schema::create('returnedProducts', function(Blueprint $table){
             $table->id();
-            $table->string('categoryCode'); //category
-            $table->string('categoryName');
-            //$table->integer('Availproducts');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->string('ret_name');
+            $table->string('item_code');
+            $table->string('supplier');
+            $table->integer('qty');
+            $table->text('description');
+            $table->string('status')->default('pending');
+            $table->timestamps();
         });
     }
 

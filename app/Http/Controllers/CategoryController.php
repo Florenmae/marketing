@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Categories;
-// use App\Models\Product;
-use DB;
+use App\Models\Product;
+
 
 class CategoryController extends Controller
 {
@@ -12,35 +14,43 @@ class CategoryController extends Controller
         $newCategory = new Categories();
 
         $newCategory->id = $request->id;
-        $newCategory->categoryCode = $request->categoryCode;
+        $newCategory->cat_code = $request->cat_code;
         $newCategory->categoryName = $request->categoryName;
+        //$newCategory->productCount = $request->productCount;
 
         $res = $newCategory->save();
 
         return $res;
     }
 
-    public function getCategory(){
-        return Categories::all();
+    public function getCategories(){
+        // return Categories::all();
+        // $categories = Categories::withCount(['products as product_count' => function (Builder $query) {
+        //     $query->whereColumn('products.product_code', '=', 'categories.cat_code');
+        // }])->get();
+
+        $categories = Categories::withCount([
+            'products as product_count' => function (Builder $query) {
+                $query->select(DB::raw('count(*)'))
+                      ->from('products')
+                      ->whereColumn('products.cat_code', '=', 'categories.cat_code');
+            }
+        ])->get();
+
+        return $categories;
     }
 
-    public function updateCategory(Request $request, $id)
-{
-    $request->validate([
-        'categoryCode' => 'required|string|max:255',
-        'categoryName' => 'required|string|max:255',
-    ]);
+    public function updateCategory(Request $request){
+        $category = Categories :: findOrFail($request->editingCategoryId);
 
-    $category = $id ? Categories::findOrFail($id) : new Categories;
+        $category->cat_code = $request->catPayload["cat_code"];
+        $category->categoryName = $request->catPayload["categoryName"];
 
-    $category->categoryCode = $request->input('categoryCode');
-    $category->categoryName = $request->input('categoryName');
+        $category->save();
 
-    $category->save();
+        return $category;
 
-    return $category->fresh(); // Optionally return the fresh instance of the updated category
-}
-
+    }
 
     public function deleteCategory(Request $request){
         // dd($request->id);
@@ -49,4 +59,6 @@ class CategoryController extends Controller
         $res = $deleteCategory->delete();
         return $res;
     }
+
+
 }
