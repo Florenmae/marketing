@@ -423,18 +423,11 @@
             </ul>
         </div>
     </aside>
-    <div class="ml-[300px] mx-10">
-        <div class="flex flex-col items-center justify-center h-screen">
+    <div class="ml-[250px] px-10">
+        <div class="flex flex-col items-center pb-20 pt-10 min-h-screen">
             <slot></slot>
         </div>
     </div>
-    <!-- <div class="page-wrapper">
-        <div
-            class="lg:content flex flex-col items-center justify-center h-screen"
-        >
-            <slot></slot>
-        </div>
-    </div> -->
 </template>
 
 <script>
@@ -470,12 +463,3 @@ export default {
     },
 };
 </script>
-<style>
-.clicked {
-    background-color: #008000;
-}
-
-.hovered {
-    background-color: #008000;
-}
-</style>
