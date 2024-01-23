@@ -48,9 +48,6 @@
                     </tr>
                 </tbody>
             </table>
-                <!-- <li v-for="product in returnedProducts" :key="product.id">
-            {{ product.name }} - {{ product.status }}
-        </li> -->
         </div>
     </Layout>
 </template>
