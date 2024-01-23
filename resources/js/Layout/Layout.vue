@@ -423,7 +423,8 @@
             </ul>
         </div>
     </aside>
-    <div class="ml-[250px] px-10">
+    <div class="fixed w-screen ml-64 h-10 shadow-md">test</div>
+    <div class="ml-64 px-10">
         <div class="flex flex-col items-center pb-20 pt-10 min-h-screen">
             <slot></slot>
         </div>
