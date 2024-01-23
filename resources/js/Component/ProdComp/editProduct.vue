@@ -169,7 +169,7 @@ export default {
                 price: "",
                 qty: "",
                 description: "",
-                status: "Pending"
+                status: "Pending",
             },
         };
     },
@@ -201,7 +201,7 @@ export default {
         },
     },
     mounted() {
-       this.getProducts();
+        this.getProducts();
     },
 };
 </script>

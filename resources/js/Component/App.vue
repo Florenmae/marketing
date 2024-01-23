@@ -4,7 +4,7 @@
             class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4 content-between w-full"
         >
             <div
-                class="bg-blue-500 text-white overflow-hidden shadow-md sm:rounded-lg"
+                class="bg-blue-400 text-white overflow-hidden shadow-md sm:rounded-lg"
             >
                 <div class="p-6">
                     <div class="flex items-center">
@@ -17,7 +17,7 @@
             </div>
 
             <div
-                class="bg-green-500 text-white overflow-hidden shadow-md sm:rounded-lg"
+                class="bg-green-400 text-white overflow-hidden shadow-md sm:rounded-lg"
             >
                 <div class="p-6">
                     <div class="flex items-center">
@@ -34,7 +34,7 @@
             </div>
 
             <div
-                class="bg-red-500 text-white overflow-hidden shadow-md sm:rounded-lg"
+                class="bg-red-400 text-white overflow-hidden shadow-md sm:rounded-lg"
             >
                 <div class="p-6">
                     <div class="flex items-center">
@@ -51,7 +51,7 @@
             </div>
 
             <div
-                class="bg-red-500 text-white overflow-hidden shadow-md sm:rounded-lg"
+                class="bg-red-400 text-white overflow-hidden shadow-md sm:rounded-lg"
             >
                 <div class="p-6">
                     <div class="flex items-center">

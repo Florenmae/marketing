@@ -299,7 +299,7 @@
                             </li>
                             <li>
                                 <a
-                                    href=""
+                                    href="/addReturn"
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                     >Add Return Item</a
                                 >
@@ -423,7 +423,7 @@
             </ul>
         </div>
     </aside>
-    <div class="fixed w-screen ml-64 h-10 shadow-md">test</div>
+    <div class="fixed w-screen ml-64 h-10 shadow-md"></div>
     <div class="ml-64 px-10">
         <div class="flex flex-col items-center pb-20 pt-10 min-h-screen">
             <slot></slot>

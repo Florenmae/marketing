@@ -44,17 +44,12 @@ Route::post("/submit-product", [ProductController::class, 'createProduct'])->nam
 Route::get("/get-products", [ProductController::class, 'getProducts']);
 Route::post("/update-product", [ProductController::class, 'updateProduct']);
 Route::post("/delete-product", [ProductController::class, 'deleteProduct']);
+Route::post("/return-product", [ProductController::class, 'returnProduct']);
 
+Route::post("/submit-return", [ReturnedProductController::class, 'createReturns'])->name("createReturns");
 Route::get("/get-returns", [ReturnedProductController::class, 'getReturnedProducts'])->name("getReturnedProducts");
+Route::get("/returned-products", [ReturnedProductController::class, 'fetchReturnedProducts'])->name("fetchReturnedProducts");
 Route::post("/update-returnedProduct", [ReturnedProductController::class, 'updateReturnedProduct']);
-Route::post("/returned-products", [ReturnedProductController::class, 'processReturn']);
-
-
-// Route::post("/products/{product}/approve", [ProductController::class, 'approveStatus'])->name("approveStatus");
-// Route::post("/products/{product}/reject", [ProductController::class, 'rejectStatus'])->name("rejectStatus");
-// Route::post('/products/{product}/update-status', [ProductController::class, 'updateProductStatus']);
-
-
 
 //Category
 Route::post("/submit-category", [CategoryController::class, 'createCategory'])->name("createCategory");

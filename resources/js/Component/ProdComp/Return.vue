@@ -1,6 +1,17 @@
 <template>
     <Layout>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <addReturn class=""></addReturn>
+            <button
+                v-if="modalStatus"
+                data-modal-target="crud-modal"
+                data-modal-toggle="crud-modal"
+                class="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button"
+                @click="changeModalStatus"
+            >
+                Add Return
+            </button>
             <table
                 class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
             >
@@ -29,10 +40,16 @@
                         >
                             {{ returnedProduct.name }}
                         </th>
-                        <td class="px-6 py-4">{{ returnedProduct.item_code }}</td>
-                        <td class="px-6 py-4">{{ returnedProduct.supplier }}</td>
+                        <td class="px-6 py-4">
+                            {{ returnedProduct.item_code }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ returnedProduct.supplier }}
+                        </td>
                         <td class="px-6 py-4">{{ returnedProduct.qty }}</td>
-                        <td class="px-6 py-4">{{ returnedProduct.description }}</td>
+                        <td class="px-6 py-4">
+                            {{ returnedProduct.description }}
+                        </td>
                         <td class="px-6 py-4">{{ returnedProduct.status }}</td>
                         <td>
                             <editReturn :returnedProduct="returnedProduct" />
@@ -87,6 +104,12 @@ export default {
             });
         },
 
+        fetchReturnedProducts() {
+            axios.get("/returned-products").then(({ data }) => {
+                this.returnedProducts = data;
+            });
+        },
+
         editReturnedProduct(returnedProduct) {
             this.editReturnedProduct = { ...returnedProduct };
             this.editingReturnedProductId = returnedProduct.id;
@@ -99,23 +122,15 @@ export default {
             const retPayload = { ...editReturnedProduct };
 
             axios
-                .post("/update-returnedProduct", { retPayload, editingReturnedProductId })
+                .post("/update-returnedProduct", {
+                    retPayload,
+                    editingReturnedProductId,
+                })
                 .then(({ data }) => {})
                 .catch((error) => {
                     console.error("Error updating product:", error);
                 });
         },
-
-        fetchReturnedProducts() {
-        axios.get("/returned-products")
-            .then(response => {
-            this.returnedProducts = response.data;
-            })
-            .catch(error => {
-            console.error('Error fetching returned products', error);
-            });
-        },
-
     },
     mounted() {
         this.getReturnedProducts();

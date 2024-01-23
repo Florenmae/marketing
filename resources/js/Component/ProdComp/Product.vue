@@ -1,7 +1,7 @@
 <template>
     <Layout>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <addProduct class="fixed top-20 right-10"></addProduct>
+            <addProduct class=""></addProduct>
             <table
                 class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
             >
@@ -17,7 +17,7 @@
                         <th scope="col" class="px-6 py-3">Quantity</th>
                         <th scope="col" class="px-6 py-3">Description</th>
                         <th scope="col" class="px-6 py-3">Status</th>
-                        <th scope="col" class="px-6 py-3">Action</th>
+                        <th scope="col" class="px-9 py-3">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,6 +50,15 @@
                                 Delete
                             </button>
                         </td>
+                        <!-- <td class="py-4">
+                            <button
+                                class="bg-blue-500 py-2 px-4 rounded text-white"
+                                @click="returnProduct(product.id)"
+                            >
+                                Return
+                            </button>
+                        </td> -->
+                        <addReturn :return="return" />
                     </tr>
                 </tbody>
             </table>
@@ -61,11 +70,17 @@
 import Modal from "@/Component/Modal.vue";
 import editProduct from "@/Component/ProdComp/editProduct.vue";
 import addProduct from "@/Component/ProdComp/addProduct.vue";
+import returnForm from "@/Component/ProdComp/returnForm.vue";
+import addReturn from "@/Component/ProdComp/addReturn.vue";
+
+import axios from "axios";
 export default {
     components: {
         Modal,
         addProduct,
         editProduct,
+        returnForm,
+        addReturn,
     },
     data() {
         return {
@@ -93,7 +108,6 @@ export default {
 
             axios.post("/submit-product", prodPayload).then(({ data }) => {
                 this.getProducts();
-
             });
         },
         changeModalStatus() {
@@ -132,6 +146,20 @@ export default {
             axios.post("/delete-product", { id }).then(({ data }) => {
                 this.getProducts();
             });
+        },
+
+        returnProduct(id) {
+            axios
+                .post("/return-product", { id })
+                .then(({ data }) => {
+                    this.$router.push({
+                        name: "addReturn",
+                        params: { id },
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error returning product:", error);
+                });
         },
         clearForm() {
             this.editProduct = {

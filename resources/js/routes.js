@@ -4,6 +4,8 @@ import MainUser from "@/Component/UserComp/MainUser.vue";
 import Category from "@/Component/ProdComp/Category.vue";
 import Product from "@/Component/ProdComp/Product.vue";
 import Return from "@/Component/ProdComp/Return.vue";
+import returnForm from "@/Component/ProdComp/returnForm.vue";
+import addReturn from "@/Component/ProdComp/addReturn.vue";
 import userProduct from "@/Component/UserDashboard/userProduct.vue";
 
 import userHome from "@/Component/userHome.vue";
@@ -47,9 +49,19 @@ export const routes = [
         component: userProduct,
     },
     {
+        path: "/returnForm",
+        name: "returnForm",
+        component: returnForm,
+    },
+    {
         path: "/return",
         name: "return",
         component: Return,
+    },
+    {
+        path: "/addReturn",
+        name: "addReturn",
+        component: addReturn,
     },
     {
         path: "/signup",
