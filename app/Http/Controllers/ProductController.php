@@ -74,7 +74,7 @@ class ProductController extends Controller
 
 
     public function returnProduct(Request $request){
-        $returnedProduct = Product::find($request->id);
+        $returnedProduct = Product::find($request->editingProductId);
 
         if (!$returnedProduct) {
             return response()->json(['message' => 'Product not found'], 404);
@@ -86,9 +86,9 @@ class ProductController extends Controller
             'supplier' => $returnedProduct->suplier,
             'qty' => $returnedProduct->qty,
             'description' => $returnedProduct->description,
-            
+
         ]);
-        
+
         $res = $returnedProduct->save();
 
         if ($res) {

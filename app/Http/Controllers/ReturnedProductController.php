@@ -10,7 +10,7 @@ class ReturnedProductController extends Controller
 {
      public function createReturns(Request $request){
         $newReturns =  new ReturnedProduct();
-        $currentProduct = Product::find($request->id);
+        $currentProduct = Product::find($request->editingProductId);
 
         $newReturns->id = $request->id;
         $newReturns->name = $request->name;
@@ -20,7 +20,6 @@ class ReturnedProductController extends Controller
         $newReturns->description = $request->description;
         // $newReturns->status = $request->status;
         $currentProduct->qty = $currentProduct->qty-$request->qty;
-        $currentProduct->save();
 
         $res = $newReturns->save();
 

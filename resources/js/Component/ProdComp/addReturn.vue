@@ -1,156 +1,142 @@
 <template>
     <Modal
-        :modalContent="modalContent"
-        :buttonLabel="'Add Product'"
-        :cancelLabel="'Cancel'"
-        :saveLabel="'Save'"
-        @save="submitReturn"
+        :modalContent="{
+            title: 'Return Product',
+            content: 'Please edit the product details',
+            disablebtn: false,
+        }"
+        :buttonLabel="'Return'"
+        :cancelLabel="'Close'"
+        :saveLabel="'Update'"
+        @save="returnProduct"
         :save-option="true"
     >
-        <form
-            @submit.prevent="submitReturn"
-            class="mx-auto max-w-md p-4 md:p-6 bg-white shadow-md rounded-md"
-        >
-            <div class="mb-4">
+        <div class="grid gap-4 mb-4 grid-cols-4">
+            <div class="col-span-2">
                 <label
-                    for="item_code"
-                    class="block mb-2 text-sm font-medium text-gray-700 dark:text-white"
+                    for="description"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Item Code</label
                 >
-                    Item Code
-                </label>
                 <input
-                    v-model="editReturn.item_code"
+                    v-model="product.item_code"
                     type="text"
                     name="item_code"
                     id="item_code"
-                    class="w-full p-2 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type the item code"
-                    required
+                    required=""
                 />
             </div>
-            <div class="mb-4">
+            <div class="col-span-2 border-red-500">
                 <label
-                    for="ret_name"
-                    class="block mb-2 text-sm font-medium text-gray-700 dark:text-white"
+                    for="name"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Product Name</label
                 >
-                    Product Name
-                </label>
                 <input
-                    v-model="editReturn.ret_name"
+                    v-model="product.name"
                     type="text"
-                    name="ret_name"
-                    id="ret_name"
-                    class="w-full p-2 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600"
+                    name="name"
+                    id="name"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type product name"
-                    required
+                    required=""
                 />
             </div>
-            <div class="mb-4">
+            <div class="col-span-2 border-red-500">
                 <label
                     for="supplier"
-                    class="block mb-2 text-sm font-medium text-gray-700 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Product supplier</label
                 >
-                    Product Supplier
-                </label>
                 <select
-                    v-model="editReturn.supplier"
+                    v-model="product.supplier"
+                    type="text"
                     name="supplier"
                     id="supplier"
-                    class="w-full p-2 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600"
-                    required
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    required=""
                 >
+                    <option selected>Choose a supplier</option>
                     <option value="IGP">IGP</option>
                     <option value="Project">Project</option>
                 </select>
             </div>
-            <div class="mb-4">
+            <div class="col-span-2">
                 <label
                     for="qty"
-                    class="block mb-2 text-sm font-medium text-gray-700 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Quantity</label
                 >
-                    Quantity
-                </label>
                 <input
-                    v-model="editReturn.qty"
+                    v-model="product.qty"
                     type="text"
                     name="qty"
                     id="qty"
-                    class="w-full p-2 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Product Quantity"
-                    required
+                    required=""
                 />
             </div>
-            <div class="mb-4">
+            <div class="col-span-4">
                 <label
                     for="description"
-                    class="block mb-2 text-sm font-medium text-gray-700 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Description</label
                 >
-                    Description
-                </label>
                 <textarea
-                    v-model="editReturn.description"
+                    v-model="product.description"
+                    type="text"
                     name="description"
                     id="description"
-                    class="w-full p-2 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600"
-                    placeholder="Product Details"
-                    required
-                ></textarea>
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                />
             </div>
-            <div>
-                <button
-                    type="submit"
-                    class="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
-                >
-                    Add Product
-                </button>
-            </div>
-        </form>
+        </div>
     </Modal>
 </template>
 
 <script>
 import Modal from "@/Component/Modal.vue";
-
 export default {
-    props: ["return"],
+    props: ["product"],
     components: {
         Modal,
     },
     data() {
         return {
-            returnedProducts: [],
-            editingReturnId: null,
-            editReturn: {
+            editingProductId: this.product.id,
+            editProduct: {
                 item_code: "",
-                ret_name: "",
+                name: "",
                 supplier: "",
                 qty: "",
                 description: "",
             },
-            modalContent: {
-                title: "Return Product",
-                content: "Please fill in the product details",
-                disablebtn: false,
-            },
         };
     },
-    methods: {
-        getReturnedProducts() {
-            axios.get("/get-returns").then(({ data }) => {
-                this.returnedProducts = data;
-            });
-        },
-        submitReturn() {
-            const { editReturn } = this;
-            const retPayload = { ...editReturn };
-
-            axios.post("/submit-returns", retPayload).then(({ data }) => {
-                this.getReturnedProducts();
-            });
+    watch: {
+        product: {
+            handler(newVal) {
+                this.editProduct = { ...newVal };
+            },
+            deep: true,
+            immediate: true,
         },
     },
-    mounted() {
-        this.getReturnedProducts();
+    methods: {
+        returnProduct() {
+            const { editProduct, editingProductId } = this;
+            const prodPayload = { ...editProduct };
+
+            axios
+                .head("/return-product", { prodPayload, editingProductId })
+                .then(({ data }) => {})
+                .catch((error) => {
+                    console.error("Error updating product:", error);
+                });
+        },
     },
 };
 </script>

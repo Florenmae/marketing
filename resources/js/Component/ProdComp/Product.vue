@@ -58,7 +58,7 @@
                                 Return
                             </button>
                         </td> -->
-                        <addReturn :return="return" />
+                        <addReturn :product="product" />
                     </tr>
                 </tbody>
             </table>
@@ -148,19 +148,21 @@ export default {
             });
         },
 
-        returnProduct(id) {
+        returnProduct(data) {
+            const { editProduct, editingProductId } = this;
+            const prodPayload = { ...editProduct };
+
             axios
-                .post("/return-product", { id })
+                .post("/return-product", { prodPayload, editingProductId })
                 .then(({ data }) => {
-                    this.$router.push({
-                        name: "addReturn",
-                        params: { id },
-                    });
+                    this.getProducts;
+                    this.changeModalStatus();
                 })
                 .catch((error) => {
-                    console.error("Error returning product:", error);
+                    console.error("Error updating product:", error);
                 });
         },
+
         clearForm() {
             this.editProduct = {
                 item_code: "",
