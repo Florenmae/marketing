@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('supplier');
             $table->integer('qty');
             $table->text('description');
-            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

@@ -53,7 +53,6 @@ class ReturnedProductController extends Controller
         $retproduct->item_code = $request->retPayload["item_code"];
         $retproduct->qty = $request->retPayload["qty"];
         $retproduct->description = $request->retPayload["description"];
-        $retproduct->status = $request->retPayload["status"];
 
         $retproduct->save();
 

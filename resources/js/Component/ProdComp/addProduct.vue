@@ -15,7 +15,7 @@
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >Category Code</label
                     >
-                    <input
+                    <!-- <input
                         v-model="editProduct.cat_code"
                         type="text"
                         name="cat_code"
@@ -23,20 +23,23 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Type the product code"
                         required=""
-                    />
-                    <!-- <select
-                        v-model="editProduct.cat_code"
-                        type="text"
-                        name="cat_code"
-                        id="cat_code"
+                    /> -->
+
+                    <select
+                        v-model="selectedCategory"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="select category "
-                        required=""
+                        id="cat_code"
+                        name="cat_code"
                     >
-                        <option selected>Choose a supplier</option>
-                        <option value="cat_code">{{ cat_code }}</option>
-                        <option value="Project">Project</option>
-                    </select> -->
+                        <option value="" disabled>Select a category</option>
+                        <option
+                            v-for="category in categories"
+                            :key="category.id"
+                            :value="category.id"
+                        >
+                            {{ category.name }}
+                        </option>
+                    </select>
                 </div>
                 <div class="col-span-2">
                     <label
@@ -96,7 +99,7 @@
                     >
                     <input
                         v-model="editProduct.price"
-                        type="text"
+                        type="number"
                         name="price"
                         id="price"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -112,7 +115,7 @@
                     >
                     <input
                         v-model="editProduct.qty"
-                        type="text"
+                        type="number"
                         name="qty"
                         id="qty"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -120,7 +123,7 @@
                         required=""
                     />
                 </div>
-                <div class="col-span-2">
+                <div class="col-span-4">
                     <label
                         for="description"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -160,6 +163,8 @@ export default {
                 qty: "",
                 description: "",
             },
+            categories: [],
+            selectedCategory: null,
             modalContent: {
                 title: "Create New Product",
                 content: "Please fill in the product details",
@@ -179,15 +184,24 @@ export default {
                 ...editProduct,
             };
 
+            axios.post("/submit-product", prodPayload).then(({ data }) => {
+                this.getProducts();
+            });
+        },
+        fetchCategories() {
             axios
-                .post("/submit-product", prodPayload)
-                .then(({ data }) => {
-                    this.getProducts();
+                .get("/categories")
+                .then((response) => {
+                    this.categories = response.data.categories;
+                })
+                .catch((error) => {
+                    console.error("Error fetching categories:", error);
                 });
         },
     },
     mounted() {
         this.getProducts();
+        this.fetchCategories();
     },
 };
 </script>

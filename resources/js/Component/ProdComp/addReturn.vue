@@ -1,5 +1,5 @@
 <template>
-    <Modal
+    <Modal1
         :modalContent="{
             title: 'Return Product',
             content: 'Please edit the product details',
@@ -7,7 +7,7 @@
         }"
         :buttonLabel="'Return'"
         :cancelLabel="'Close'"
-        :saveLabel="'Update'"
+        :saveLabel="'Return'"
         @save="returnProduct"
         :save-option="true"
     >
@@ -94,15 +94,15 @@
                 />
             </div>
         </div>
-    </Modal>
+    </Modal1>
 </template>
 
 <script>
-import Modal from "@/Component/Modal.vue";
+import Modal1 from "@/Component/Modal1.vue";
 export default {
     props: ["product"],
     components: {
-        Modal,
+        Modal1,
     },
     data() {
         return {
@@ -131,7 +131,7 @@ export default {
             const prodPayload = { ...editProduct };
 
             axios
-                .head("/return-product", { prodPayload, editingProductId })
+                .post("/return-product", { prodPayload, editingProductId })
                 .then(({ data }) => {})
                 .catch((error) => {
                     console.error("Error updating product:", error);

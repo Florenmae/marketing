@@ -12,9 +12,9 @@ class ProductController extends Controller
         $newProduct =  new Product();
 
         $newProduct->id = $request->id;
+        $newProduct->cat_code= $request->input('cat_code');
         $newProduct->name = $request->name;
         $newProduct->supplier = $request->supplier;
-        $newProduct->cat_code = $request->cat_code;
         $newProduct->item_code = $request->item_code;
         $newProduct->price = $request->price;
         $newProduct->qty = $request-> qty;

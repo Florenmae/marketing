@@ -24,11 +24,6 @@ class CategoryController extends Controller
     }
 
     public function getCategories(){
-        // return Categories::all();
-        // $categories = Categories::withCount(['products as product_count' => function (Builder $query) {
-        //     $query->whereColumn('products.product_code', '=', 'categories.cat_code');
-        // }])->get();
-
         $categories = Categories::withCount([
             'products as product_count' => function (Builder $query) {
                 $query->select(DB::raw('count(*)'))
