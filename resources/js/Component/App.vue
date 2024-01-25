@@ -85,18 +85,12 @@
                 </div>
             </div>
         </div>
-        <BarGraph />
+        <BarGraph :recentProducts="recentProducts" />
     </Layout>
 </template>
 
 <script>
 import Layout from "../Layout/Layout.vue";
-import MainUser from "@/Component/UserComp/MainUser.vue";
-import EditUser from "@/Component/UserComp/EditUser.vue";
-import Product from "@/Component/ProdComp/Product.vue";
-import Category from "@/Component/ProdComp/Category.vue";
-import editProduct from "@/Component/ProdComp/editProduct.vue";
-import editCategory from "@/Component/ProdComp/editCategory.vue";
 import Modal from "../Component/Modal.vue";
 import BarGraph from "./UserComp/Graph/BarGraph.vue";
 
@@ -104,13 +98,7 @@ export default {
     props: ["authenticated"],
     components: {
         Layout,
-        MainUser,
-        EditUser,
         Modal,
-        Product,
-        Category,
-        editCategory,
-        editProduct,
         BarGraph,
     },
     data() {
@@ -119,6 +107,7 @@ export default {
             userCounts: [],
             productCount: [],
             categoryCount: [],
+            recentProducts: [],
         };
     },
     methods: {
@@ -159,12 +148,24 @@ export default {
                 this.categoryCount = response.data.count;
             });
         },
+        getRecentProducts() {
+            axios
+                .get("/recent-products")
+                .then((response) => {
+                    this.recentProducts = response.data.recentProducts;
+                })
+                .catch((error) => {
+                    console.error("Error fetching recent items:", error);
+                });
+        },
     },
     mounted() {
         this.checkAuth();
         this.getUserCount();
         this.getProductCount();
         this.getCategoryCount();
+        this.getRecentProducts();
+        this.fetchRecentProducts();
     },
 };
 </script>

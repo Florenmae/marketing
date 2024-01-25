@@ -16,7 +16,6 @@ class CategoryController extends Controller
         $newCategory->id = $request->id;
         $newCategory->cat_code = $request->cat_code;
         $newCategory->categoryName = $request->categoryName;
-        //$newCategory->productCount = $request->productCount;
 
         $res = $newCategory->save();
 

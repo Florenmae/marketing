@@ -20,6 +20,11 @@ class Product extends Model
         'description',
     ];
 
+    public function scopeRecent($query, $limit = 5)
+    {
+        return $query->orderBy('created_at', 'description')->limit($limit);
+    }
+
     public function category()
     {
         return $this->belongsTo(Categories::class, 'cat_code');

@@ -36,14 +36,6 @@ class ReturnedProductController extends Controller
         return $returnedProducts;
 
     }
-//     public function getReturnedProducts(){
-//     $returnedProducts = ReturnedProduct::all();
-//     $productsWithReturnedStatus = Product::where('status', 'returned')->get();
-
-//     $combinedResults = $returnedProducts->union($productsWithReturnedStatus);
-
-//     return $combinedResults;
-// }
 
     public function updateReturnedProduct(Request $request){
         $retproduct = ReturnedProduct :: findOrFail($request->editingReturnedProductId);

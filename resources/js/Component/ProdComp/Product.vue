@@ -89,16 +89,6 @@ export default {
         };
     },
     methods: {
-        submitProduct() {
-            const { editProduct } = this;
-            const prodPayload = {
-                ...editProduct,
-            };
-
-            axios.post("/submit-product", prodPayload).then(({ data }) => {
-                this.getProducts();
-            });
-        },
         changeModalStatus() {
             this.modalStatus = !this.modalStatus;
         },
@@ -150,21 +140,6 @@ export default {
                 .catch((error) => {
                     console.error("Error updating product:", error);
                 });
-        },
-
-        clearForm() {
-            this.editProduct = {
-                item_code: "",
-                product_code: "",
-                name: "",
-                supplier: "",
-                price: "",
-                qty: "",
-                description: "",
-                status: "",
-            };
-            this.changeModalStatus();
-            this.editingProductId = null;
         },
     },
     mounted() {

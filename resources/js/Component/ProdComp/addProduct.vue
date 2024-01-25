@@ -15,7 +15,7 @@
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >Category Code</label
                     >
-                    <!-- <input
+                    <input
                         v-model="editProduct.cat_code"
                         type="text"
                         name="cat_code"
@@ -23,9 +23,9 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Type the product code"
                         required=""
-                    /> -->
+                    />
 
-                    <select
+                    <!-- <select
                         v-model="selectedCategory"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         id="cat_code"
@@ -39,7 +39,7 @@
                         >
                             {{ category.name }}
                         </option>
-                    </select>
+                    </select> -->
                 </div>
                 <div class="col-span-2">
                     <label
@@ -185,6 +185,7 @@ export default {
             };
 
             axios.post("/submit-product", prodPayload).then(({ data }) => {
+                this.$router.push("/product");
                 this.getProducts();
             });
         },
