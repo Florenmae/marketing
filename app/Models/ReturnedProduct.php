@@ -8,9 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class ReturnedProduct extends Model
 {
     use HasFactory;
-    protected $table = "returnedProducts";
+    // protected $table = "returnedProducts";
 
-    protected $fillable = ['product_id'];
+    protected $fillable = [
+        'product_id',
+        'name',
+        'item_code',
+        'supplier',
+        'qty',
+        'description',
+    ];
 
     public function product()
     {

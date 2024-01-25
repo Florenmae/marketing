@@ -83,7 +83,7 @@ class ProductController extends Controller
         ReturnedProduct::create([
             'name' => $returnedProduct->name,
             'item_code' => $returnedProduct->item_code,
-            'supplier' => $returnedProduct->suplier,
+            'supplier' => $returnedProduct->supplier,
             'qty' => $returnedProduct->qty,
             'description' => $returnedProduct->description,
 

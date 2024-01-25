@@ -44,7 +44,6 @@ Route::post("/submit-product", [ProductController::class, 'createProduct'])->nam
 Route::get("/get-products", [ProductController::class, 'getProducts']);
 Route::post("/update-product", [ProductController::class, 'updateProduct']);
 Route::post("/delete-product", [ProductController::class, 'deleteProduct']);
-//Route::post("/submit-return", [ProductController::class, 'returnProduct'])->name("returnProduct");
 Route::post("/return-product", [ProductController::class, 'returnProduct'])->name("returnProduct");
 
 // Route::post("/submit-return", [ReturnedProductController::class, 'createReturns'])->name("createReturns");
