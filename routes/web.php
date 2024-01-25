@@ -31,7 +31,7 @@ Route::post("/home", [HomeController::class,'index']);
 Route::get("/get-user-count", [HomeController::class, 'getUserCount']);
 Route::get("/get-product-count", [HomeController::class, 'getProductCount']);
 Route::get("/get-category-count", [HomeController::class, 'getCategoryCount']);
-Route::get('/api/recent-products', [HomeController::class, 'recentProducts']);
+Route::get("/recent-products", [HomeController::class, 'recentProducts']);
 
 //User
 Route::post("/submit-user", [UserController::class, 'createUser'])->name("createUser");
