@@ -139,13 +139,6 @@
                         <ul id="dropdown-product" class="hidden py-2 space-y-2">
                             <li>
                                 <a
-                                    href="/addProduct"
-                                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >Add Product</a
-                                >
-                            </li>
-                            <li>
-                                <a
                                     href="/product"
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                     >Product List</a
@@ -155,14 +148,7 @@
                                 <a
                                     href="/category"
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >Category</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >Add Category</a
+                                    >Category List</a
                                 >
                             </li>
                             <li>
@@ -295,13 +281,6 @@
                                     href="/return"
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                     >Returned Items</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/addReturn"
-                                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >Add Return Item</a
                                 >
                             </li>
                             <li>

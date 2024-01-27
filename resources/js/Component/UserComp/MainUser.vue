@@ -1,7 +1,6 @@
 <template>
     <Layout>
-        <!-- Table -->
-        <addUser class=""></addUser>
+        <addUser class="justify self-end"></addUser>
         <table
             class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
         >
@@ -9,10 +8,10 @@
                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
             >
                 <tr>
-                    <th scope="col" class="px-6 py-3">Name</th>
-                    <th scope="col" class="px-6 py-3">Role</th>
-                    <th scope="col" class="px-6 py-3">Email</th>
-                    <th scope="col" class="px-6 py-3">Action</th>
+                    <th scope="col" class="px-6 py-2">Name</th>
+                    <th scope="col" class="px-6 py-2">Role</th>
+                    <th scope="col" class="px-6 py-2">Email</th>
+                    <th scope="col" class="px-6 py-2">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,17 +28,23 @@
                     </th>
                     <td class="px-6 py-4">{{ user.role }}</td>
                     <td class="px-6 py-4">{{ user.email }}</td>
-                    <td>
+                    <td class="flex space-x-4 >">
                         <EditUser :user="user" />
+                        <button
+                            class="bg-red-500 px-4 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
+                            @click="deleteUser(user.id)"
+                        >
+                            Delete
+                        </button>
                     </td>
-                    <td class="py-4">
+                    <!-- <td class="">
                         <button
                             class="bg-red-500 py-2 px-4 rounded text-white"
                             @click="deleteUser(user.id)"
                         >
                             Delete
                         </button>
-                    </td>
+                    </td> -->
                 </tr>
             </tbody>
         </table>

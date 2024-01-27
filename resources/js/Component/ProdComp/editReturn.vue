@@ -11,7 +11,7 @@
         @save="updateReturnedProduct"
         :save-option="true"
     >
-
+        <div class="grid gap-4 mb-4 grid-cols-4">
             <div class="col-span-2">
                 <label
                     for="item_code"
@@ -35,10 +35,10 @@
                     >Product Name</label
                 >
                 <input
-                    v-model="returnedProduct.ret_name"
+                    v-model="returnedProduct.name"
                     type="text"
-                    name="ret_name"
-                    id="ret_name"
+                    name="name"
+                    id="name"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type product name"
                     required=""
@@ -80,42 +80,21 @@
                     required=""
                 />
             </div>
-            <div class="col-span-2">
+            <div class="col-span-4">
                 <label
-                    for="remarks"
+                    for="description"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Description</label
                 >
                 <textarea
-                    v-model="returnedProduct.remarks"
+                    v-model="returnedProduct.description"
                     type="text"
-                    name="remarks"
-                    id="remarks"
+                    name="description"
+                    id="description"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 ></textarea>
             </div>
-
-            <div class="col-span-2 border-red-500">
-                <label
-                    for="status"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Product status</label
-                >
-                <select
-                    v-model="returnedProduct.status"
-                    type="text"
-                    name="status"
-                    id="status"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    required=""
-                >
-                    <option selected>Choose a status</option>
-                    <option value="pending">Pending Approval</option>
-                    <option value="Approved">Approve</option>
-                    <option value="Rejected">Reject</option>
-                </select>
-            </div>
-
+        </div>
     </Modal>
 </template>
 
@@ -154,13 +133,15 @@ export default {
             const retPayload = { ...editReturnedProduct };
 
             axios
-                .post("/update-returnedProduct", { retPayload, editingReturnedProductId })
+                .post("/update-returnedProduct", {
+                    retPayload,
+                    editingReturnedProductId,
+                })
                 .then(({ data }) => {})
                 .catch((error) => {
                     console.error("Error updating product:", error);
                 });
         },
     },
-
 };
 </script>

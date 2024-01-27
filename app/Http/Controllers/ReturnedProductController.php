@@ -10,7 +10,12 @@ class ReturnedProductController extends Controller
 {
      public function createReturns(Request $request){
         $newReturns =  new ReturnedProduct();
+<<<<<<< HEAD
         // $currentProduct = Product::find($request->id);
+=======
+        $currentProduct = Product::find($request->editingProductId);
+
+>>>>>>> 56326e53543457e0ddd35690d4b2a3ea39d8ac5b
         $newReturns->id = $request->id;
         $newReturns->name = $request->name;
         $newReturns->supplier = $request->supplier;
@@ -18,6 +23,10 @@ class ReturnedProductController extends Controller
         $newReturns->qty = $request-> qty;
         $newReturns->description = $request->description;
         // $newReturns->status = $request->status;
+<<<<<<< HEAD
+=======
+        $currentProduct->qty = $currentProduct->qty-$request->qty;
+>>>>>>> 56326e53543457e0ddd35690d4b2a3ea39d8ac5b
 
         $res = $newReturns->save();
 
@@ -34,14 +43,6 @@ class ReturnedProductController extends Controller
         return $returnedProducts;
 
     }
-//     public function getReturnedProducts(){
-//     $returnedProducts = ReturnedProduct::all();
-//     $productsWithReturnedStatus = Product::where('status', 'returned')->get();
-
-//     $combinedResults = $returnedProducts->union($productsWithReturnedStatus);
-
-//     return $combinedResults;
-// }
 
     public function updateReturnedProduct(Request $request){
         $retproduct = ReturnedProduct :: findOrFail($request->editingReturnedProductId);
@@ -51,7 +52,6 @@ class ReturnedProductController extends Controller
         $retproduct->item_code = $request->retPayload["item_code"];
         $retproduct->qty = $request->retPayload["qty"];
         $retproduct->description = $request->retPayload["description"];
-        $retproduct->status = $request->retPayload["status"];
 
         $retproduct->save();
 

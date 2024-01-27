@@ -16,7 +16,6 @@ class CategoryController extends Controller
         $newCategory->id = $request->id;
         $newCategory->cat_code = $request->cat_code;
         $newCategory->categoryName = $request->categoryName;
-        //$newCategory->productCount = $request->productCount;
 
         $res = $newCategory->save();
 
@@ -24,11 +23,6 @@ class CategoryController extends Controller
     }
 
     public function getCategories(){
-        // return Categories::all();
-        // $categories = Categories::withCount(['products as product_count' => function (Builder $query) {
-        //     $query->whereColumn('products.product_code', '=', 'categories.cat_code');
-        // }])->get();
-
         $categories = Categories::withCount([
             'products as product_count' => function (Builder $query) {
                 $query->select(DB::raw('count(*)'))

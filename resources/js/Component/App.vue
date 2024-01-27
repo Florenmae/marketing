@@ -9,8 +9,26 @@
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="ml-4 text-lg leading-7 font-semibold">
-                            <label>Total Users</label>
-                            <h1>{{ userCounts }}</h1>
+                            <!-- <label>Total Users</label> -->
+                            <td class="flex space-x-4">
+                                <svg
+                                    class="w-10 h-10"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                                    />
+                                </svg>
+                                {{ userCounts }}
+                            </td>
                         </div>
                     </div>
                 </div>
@@ -56,7 +74,7 @@
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="ml-4 text-lg leading-7 font-semibold">
-                            Categories
+                            Returned Items
                         </div>
                     </div>
                     <div class="ml-12">
@@ -67,18 +85,12 @@
                 </div>
             </div>
         </div>
-        <BarGraph />
+        <BarGraph :recentProducts="recentProducts" />
     </Layout>
 </template>
 
 <script>
 import Layout from "../Layout/Layout.vue";
-import MainUser from "@/Component/UserComp/MainUser.vue";
-import EditUser from "@/Component/UserComp/EditUser.vue";
-import Product from "@/Component/ProdComp/Product.vue";
-import Category from "@/Component/ProdComp/Category.vue";
-import editProduct from "@/Component/ProdComp/editProduct.vue";
-import editCategory from "@/Component/ProdComp/editCategory.vue";
 import Modal from "../Component/Modal.vue";
 import BarGraph from "./UserComp/Graph/BarGraph.vue";
 
@@ -86,13 +98,7 @@ export default {
     props: ["authenticated"],
     components: {
         Layout,
-        MainUser,
-        EditUser,
         Modal,
-        Product,
-        Category,
-        editCategory,
-        editProduct,
         BarGraph,
     },
     data() {
@@ -101,6 +107,7 @@ export default {
             userCounts: [],
             productCount: [],
             categoryCount: [],
+            recentProducts: [],
         };
     },
     methods: {
@@ -141,12 +148,24 @@ export default {
                 this.categoryCount = response.data.count;
             });
         },
+        getRecentProducts() {
+            axios
+                .get("/recent-products")
+                .then((response) => {
+                    this.recentProducts = response.data.recentProducts;
+                })
+                .catch((error) => {
+                    console.error("Error fetching recent items:", error);
+                });
+        },
     },
     mounted() {
         this.checkAuth();
         this.getUserCount();
         this.getProductCount();
         this.getCategoryCount();
+        this.getRecentProducts();
+        this.fetchRecentProducts();
     },
 };
 </script>

@@ -12,9 +12,9 @@ class ProductController extends Controller
         $newProduct =  new Product();
 
         $newProduct->id = $request->id;
+        $newProduct->cat_code= $request->input('cat_code');
         $newProduct->name = $request->name;
         $newProduct->supplier = $request->supplier;
-        $newProduct->cat_code = $request->cat_code;
         $newProduct->item_code = $request->item_code;
         $newProduct->price = $request->price;
         $newProduct->qty = $request-> qty;
@@ -74,10 +74,35 @@ class ProductController extends Controller
 
 
     public function returnProduct(Request $request){
+<<<<<<< HEAD
     $returnedProduct = Product::find($request->editingProductId);
     
     if (!$returnedProduct) {
         return response()->json(['message' => 'Product not found'], 404);
+=======
+        $returnedProduct = Product::find($request->editingProductId);
+
+        if (!$returnedProduct) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        ReturnedProduct::create([
+            'name' => $returnedProduct->name,
+            'item_code' => $returnedProduct->item_code,
+            'supplier' => $returnedProduct->supplier,
+            'qty' => $returnedProduct->qty,
+            'description' => $returnedProduct->description,
+
+        ]);
+
+        $res = $returnedProduct->save();
+
+        if ($res) {
+            return response()->json(['message' => 'Product returned successfully']);
+        } else {
+            return response()->json(['message' => 'Error returning product'], 500);
+        }
+>>>>>>> 56326e53543457e0ddd35690d4b2a3ea39d8ac5b
     }
 
     ReturnedProduct::create([
