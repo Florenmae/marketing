@@ -72,48 +72,72 @@ class ProductController extends Controller
         return $res;
     }
 
+    // public function returnProduct(Request $request){
+    //     $returnedProduct = Product::find($request->editingProductId);
 
-    public function returnProduct(Request $request){
-<<<<<<< HEAD
+    //     if (!$returnedProduct) {
+    //         return response()->json(['message' => 'Product not found'], 404);
+    //     }
+    //     $returnedQty = $request->qty;
+
+    // if ($returnedQty >= $returnedProduct->qty) {
+    //     $returnedProduct->delete();
+    // } else {
+    //     $returnedProduct->qty -= $returnedQty;
+    //     $returnedProduct->save();
+    // }
+
+    //     ReturnedProduct::create([
+    //         'name' => $returnedProduct->name,
+    //         'item_code' => $returnedProduct->item_code,
+    //         'supplier' => $returnedProduct->supplier,
+    //         'qty' => $returnedProduct->qty,
+    //         'description' => $returnedProduct->description,
+
+    //     ]);
+
+    //     // $res = $returnedProduct->save();
+    //     // $returnedProduct->delete();
+    // }
+
+    public function returnProduct(Request $request)
+{
     $returnedProduct = Product::find($request->editingProductId);
-    
+
     if (!$returnedProduct) {
         return response()->json(['message' => 'Product not found'], 404);
-=======
-        $returnedProduct = Product::find($request->editingProductId);
+    }
 
-        if (!$returnedProduct) {
-            return response()->json(['message' => 'Product not found'], 404);
-        }
+    $returnedQty = $request->qty;
 
-        ReturnedProduct::create([
-            'name' => $returnedProduct->name,
-            'item_code' => $returnedProduct->item_code,
-            'supplier' => $returnedProduct->supplier,
-            'qty' => $returnedProduct->qty,
-            'description' => $returnedProduct->description,
-
-        ]);
-
-        $res = $returnedProduct->save();
-
-        if ($res) {
-            return response()->json(['message' => 'Product returned successfully']);
-        } else {
-            return response()->json(['message' => 'Error returning product'], 500);
-        }
->>>>>>> 56326e53543457e0ddd35690d4b2a3ea39d8ac5b
+    if ($returnedQty >= $returnedProduct->qty) {
+        $returnedProduct->delete();
+    } else {
+        $returnedProduct->qty -= $returnedQty;
+        $returnedProduct->save();
     }
 
     ReturnedProduct::create([
-        $returnedProduct->name = $request->retPayload["name"],
-        $returnedProduct->item_code  = $request->retPayload["item_code"],
-        $returnedProduct->supplier  = $request->retPayload["supplier"],
-        $returnedProduct->qty = $request->retPayload["qty"],
-        $returnedProduct->description = $request->retPayload["description"],
+        'name' => $returnedProduct->name,
+        'item_code' => $returnedProduct->item_code,
+        'supplier' => $returnedProduct->supplier,
+        'qty' => $returnedQty,
+        'description' => $returnedProduct->description,
     ]);
 
-    $res = $returnedProduct->save();
+    return response()->json(['message' => 'Product returned successfully']);
 }
 
+
+    // ReturnedProduct::create([
+    //     $returnedProduct->name = $request->retPayload["name"],
+    //     $returnedProduct->item_code  = $request->retPayload["item_code"],
+    //     $returnedProduct->supplier  = $request->retPayload["supplier"],
+    //     $returnedProduct->qty = $request->retPayload["qty"],
+    //     $returnedProduct->description = $request->retPayload["description"],
+    // ]);
+
+    // $res = $returnedProduct->save();
 }
+
+

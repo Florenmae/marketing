@@ -39,58 +39,19 @@
                     <td class="px-6 py-4">{{ product.description }}</td>
                     <td class="px-6 py-4">{{ product.status }}</td>
                     <td class="flex space-x-4 >">
+                        <addReturn :product="product" />
                         <editProduct :product="product" />
                         <button
                             class="bg-red-500 px-4 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
                             @click="deleteProduct(product.id)"
                         >
-<<<<<<< HEAD
-                            {{ product.name }}
-                        </th>
-                        <td class="px-6 py-4">{{ product.cat_code }}</td>
-                        <td class="px-6 py-4">{{ product.item_code }}</td>
-                        <td class="px-6 py-4">{{ product.supplier }}</td>
-                        <td class="px-6 py-4">{{ product.price }}</td>
-                        <td class="px-6 py-4">{{ product.qty }}</td>
-                        <td class="px-6 py-4">{{ product.description }}</td>
-                        <td class="px-6 py-4">{{ product.status }}</td>
-                        <td>
-                            <addReturn :product="product" />
-                        </td>
-                        <td>
-                            <editProduct :product="product" />
-                        </td>
-                        <td class="py-4">
-                            <button
-                                class="bg-red-500 py-2 px-4 rounded text-white"
-                                @click="deleteProduct(product.id)"
-                            >
-                                Delete
-                            </button>
-                        </td>
-                        <!-- <td class="py-4">
-                            <button
-                                class="bg-blue-500 py-2 px-4 rounded text-white"
-                                @click="returnProduct(product.id)"
-                            >
-                                Return
-                            </button>
-                        </td> -->
-                        <!-- <addReturn :product="product" /> -->
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-=======
                             Delete
                         </button>
-
-                        <addReturn :product="product" />
+                        <!-- <addReturn :product="product" /> -->
                     </td>
                 </tr>
             </tbody>
         </table>
->>>>>>> 56326e53543457e0ddd35690d4b2a3ea39d8ac5b
     </Layout>
 </template>
 
@@ -164,8 +125,6 @@ export default {
                 this.getProducts();
             });
         },
-<<<<<<< HEAD
-=======
 
         returnProduct(data) {
             const { editProduct, editingProductId } = this;
@@ -181,7 +140,6 @@ export default {
                     console.error("Error updating product:", error);
                 });
         },
->>>>>>> 56326e53543457e0ddd35690d4b2a3ea39d8ac5b
     },
     mounted() {
         this.getProducts();

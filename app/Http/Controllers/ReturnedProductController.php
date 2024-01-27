@@ -8,30 +8,29 @@ use App\Models\Product;
 
 class ReturnedProductController extends Controller
 {
-     public function createReturns(Request $request){
-        $newReturns =  new ReturnedProduct();
-<<<<<<< HEAD
-        // $currentProduct = Product::find($request->id);
-=======
-        $currentProduct = Product::find($request->editingProductId);
+     public function createReturns(Request $request)
+{
+    $newReturns = new ReturnedProduct();
+    $currentProduct = Product::find($request->editingProductId);
 
->>>>>>> 56326e53543457e0ddd35690d4b2a3ea39d8ac5b
-        $newReturns->id = $request->id;
-        $newReturns->name = $request->name;
-        $newReturns->supplier = $request->supplier;
-        $newReturns->item_code = $request->item_code;
-        $newReturns->qty = $request-> qty;
-        $newReturns->description = $request->description;
-        // $newReturns->status = $request->status;
-<<<<<<< HEAD
-=======
-        $currentProduct->qty = $currentProduct->qty-$request->qty;
->>>>>>> 56326e53543457e0ddd35690d4b2a3ea39d8ac5b
+    $newReturns->id = $request->id;
+    $newReturns->name = $request->name;
+    $newReturns->supplier = $request->supplier;
+    $newReturns->item_code = $request->item_code;
+    $newReturns->qty = $request->qty;
+    $newReturns->description = $request->description;
 
-        $res = $newReturns->save();
+    // Update the current product's quantity
+    $currentProduct->qty -= $request->qty;
 
-        return $res;
-    }
+    // Save the changes to the current product
+    $currentProduct->save();
+
+    // Save the new returns record
+    $res = $newReturns->save();
+
+    return $res;
+}
 
     public function getReturnedProducts(){
         return ReturnedProduct::all();
@@ -57,6 +56,13 @@ class ReturnedProductController extends Controller
 
         return $retproduct;
 
+    }
+    public function deleteReturn(Request $request){
+        // dd($request->id);
+        $deleteReturn = ReturnedProduct::find($request->id);
+
+        $res = $deleteReturn->delete();
+        return $res;
     }
 }
 

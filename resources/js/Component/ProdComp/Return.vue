@@ -116,6 +116,11 @@ export default {
                     console.error("Error updating product:", error);
                 });
         },
+        deleteReturn(id) {
+            axios.post("/delete-returns", { id }).then(({ data }) => {
+                this.getReturnedProducts();
+            });
+        },
     },
     mounted() {
         this.getReturnedProducts();
