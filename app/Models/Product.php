@@ -9,7 +9,6 @@ use App\Models\Categories;
 class Product extends Model
 {
     use HasFactory;
-    // protected $table = "products";
     protected $fillable = [
         'cat_code',
         'item_code',

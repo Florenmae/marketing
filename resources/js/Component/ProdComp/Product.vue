@@ -40,6 +40,9 @@
                         <td class="px-6 py-4">{{ product.description }}</td>
                         <td class="px-6 py-4">{{ product.status }}</td>
                         <td>
+                            <addReturn :product="product" />
+                        </td>
+                        <td>
                             <editProduct :product="product" />
                         </td>
                         <td class="py-4">
@@ -58,7 +61,7 @@
                                 Return
                             </button>
                         </td> -->
-                        <addReturn :return="return" />
+                        <!-- <addReturn :product="product" /> -->
                     </tr>
                 </tbody>
             </table>
@@ -141,39 +144,10 @@ export default {
                     console.error("Error updating product:", error);
                 });
         },
-
         deleteProduct(id) {
             axios.post("/delete-product", { id }).then(({ data }) => {
                 this.getProducts();
             });
-        },
-
-        returnProduct(id) {
-            axios
-                .post("/return-product", { id })
-                .then(({ data }) => {
-                    this.$router.push({
-                        name: "addReturn",
-                        params: { id },
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error returning product:", error);
-                });
-        },
-        clearForm() {
-            this.editProduct = {
-                item_code: "",
-                product_code: "",
-                name: "",
-                supplier: "",
-                price: "",
-                qty: "",
-                description: "",
-                status: "",
-            };
-            this.changeModalStatus();
-            this.editingProductId = null;
         },
     },
     mounted() {

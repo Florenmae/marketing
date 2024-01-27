@@ -44,9 +44,11 @@ Route::post("/submit-product", [ProductController::class, 'createProduct'])->nam
 Route::get("/get-products", [ProductController::class, 'getProducts']);
 Route::post("/update-product", [ProductController::class, 'updateProduct']);
 Route::post("/delete-product", [ProductController::class, 'deleteProduct']);
-Route::post("/return-product", [ProductController::class, 'returnProduct']);
+//Route::post("/return-product", [ProductController::class, 'returnProduct']);
+Route::post("/submit-return", [ProductController::class, 'returnProduct'])->name("returnProduct");;
 
-Route::post("/submit-return", [ReturnedProductController::class, 'createReturns'])->name("createReturns");
+
+//Route::post("/submit-return", [ReturnedProductController::class, 'createReturns'])->name("createReturns");
 Route::get("/get-returns", [ReturnedProductController::class, 'getReturnedProducts'])->name("getReturnedProducts");
 Route::get("/returned-products", [ReturnedProductController::class, 'fetchReturnedProducts'])->name("fetchReturnedProducts");
 Route::post("/update-returnedProduct", [ReturnedProductController::class, 'updateReturnedProduct']);

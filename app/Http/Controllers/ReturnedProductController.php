@@ -10,8 +10,7 @@ class ReturnedProductController extends Controller
 {
      public function createReturns(Request $request){
         $newReturns =  new ReturnedProduct();
-        $currentProduct = Product::find($request->id);
-
+        // $currentProduct = Product::find($request->id);
         $newReturns->id = $request->id;
         $newReturns->name = $request->name;
         $newReturns->supplier = $request->supplier;
@@ -19,8 +18,6 @@ class ReturnedProductController extends Controller
         $newReturns->qty = $request-> qty;
         $newReturns->description = $request->description;
         // $newReturns->status = $request->status;
-        $currentProduct->qty = $currentProduct->qty-$request->qty;
-        $currentProduct->save();
 
         $res = $newReturns->save();
 
@@ -61,20 +58,5 @@ class ReturnedProductController extends Controller
         return $retproduct;
 
     }
-
-//     public function processReturn($productId)
-// {
-//     $product = Product::find($productId);
-//     if ($product->status === 'returned') {
-//         ReturnedProduct::create(['product_id' => $product->id]);
-
-//         $product->delete();
-
-//         return redirect()->route('your.route');
-//     } else {
-
-//         return redirect()->back()->with('error', 'Product cannot be returned.');
-//     }
-// }
 }
 
