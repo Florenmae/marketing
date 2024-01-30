@@ -28,7 +28,7 @@ class HomeController extends Controller
 
         return response()->json(['count' => $categoryCount]);
     }
-    public function recentItems()
+    public function recentProducts()
     {
         $recentProducts = Product::latest()->take(5)->get();
 

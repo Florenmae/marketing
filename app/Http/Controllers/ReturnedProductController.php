@@ -11,7 +11,6 @@ class ReturnedProductController extends Controller
      public function createReturns(Request $request)
 {
     $newReturns = new ReturnedProduct();
-    $currentProduct = Product::find($request->editingProductId);
 
     $newReturns->id = $request->id;
     $newReturns->name = $request->name;
@@ -20,13 +19,6 @@ class ReturnedProductController extends Controller
     $newReturns->qty = $request->qty;
     $newReturns->description = $request->description;
 
-    // Update the current product's quantity
-    $currentProduct->qty -= $request->qty;
-
-    // Save the changes to the current product
-    $currentProduct->save();
-
-    // Save the new returns record
     $res = $newReturns->save();
 
     return $res;

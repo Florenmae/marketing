@@ -85,7 +85,7 @@
                 </div>
             </div>
         </div>
-        <BarGraph :recentProducts="recentProducts" />
+        <BarGraph />
     </Layout>
 </template>
 

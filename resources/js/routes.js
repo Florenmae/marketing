@@ -1,5 +1,4 @@
 import App from "@/Component/App.vue";
-import Modal from "@/Component/Modal.vue";
 import MainUser from "@/Component/UserComp/MainUser.vue";
 import Category from "@/Component/ProdComp/Category.vue";
 import Product from "@/Component/ProdComp/Product.vue";
@@ -7,6 +6,7 @@ import Return from "@/Component/ProdComp/Return.vue";
 import returnForm from "@/Component/ProdComp/returnForm.vue";
 import addReturn from "@/Component/ProdComp/addReturn.vue";
 import userProduct from "@/Component/UserDashboard/userProduct.vue";
+import Pos from "@/Component/PosComp/Pos.vue";
 
 import userHome from "@/Component/userHome.vue";
 import Login from "@/Pages/Login.vue";
@@ -62,6 +62,11 @@ export const routes = [
         path: "/addReturn",
         name: "addReturn",
         component: addReturn,
+    },
+    {
+        path: "/pos",
+        name: "pos",
+        component: Pos,
     },
     {
         path: "/signup",

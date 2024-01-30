@@ -39,7 +39,6 @@
                     <td class="px-6 py-4">{{ product.description }}</td>
                     <td class="px-6 py-4">{{ product.status }}</td>
                     <td class="flex space-x-4 >">
-                        <addReturn :product="product" />
                         <editProduct :product="product" />
                         <button
                             class="bg-red-500 px-4 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
@@ -47,7 +46,7 @@
                         >
                             Delete
                         </button>
-                        <!-- <addReturn :product="product" /> -->
+                        <addReturn :product="product" />
                     </td>
                 </tr>
             </tbody>
