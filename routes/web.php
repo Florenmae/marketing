@@ -31,6 +31,7 @@ Route::post("/home", [HomeController::class,'index']);
 Route::get("/get-user-count", [HomeController::class, 'getUserCount']);
 Route::get("/get-product-count", [HomeController::class, 'getProductCount']);
 Route::get("/get-category-count", [HomeController::class, 'getCategoryCount']);
+Route::get("/get-return-count", [HomeController::class, 'getReturnCount']);
 Route::get("/recent-products", [HomeController::class, 'recentProducts']);
 
 //User
@@ -47,7 +48,7 @@ Route::post("/update-product", [ProductController::class, 'updateProduct']);
 Route::post("/delete-product", [ProductController::class, 'deleteProduct']);
 Route::post("/return-product", [ProductController::class, 'returnProduct'])->name("returnProduct");
 
-// Route::post("/submit-return", [ReturnedProductController::class, 'createReturns'])->name("createReturns");
+Route::post("/submit-return", [ReturnedProductController::class, 'createReturns'])->name("createReturns");
 Route::get("/get-returns", [ReturnedProductController::class, 'getReturnedProducts'])->name("getReturnedProducts");
 Route::get("/returned-products", [ReturnedProductController::class, 'fetchReturnedProducts'])->name("fetchReturnedProducts");
 Route::post("/update-returnedProduct", [ReturnedProductController::class, 'updateReturnedProduct']);

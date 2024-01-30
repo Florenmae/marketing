@@ -1,7 +1,7 @@
 <template>
     <Modal
         :modalContent="modalContent"
-        :buttonLabel="'Return'"
+        :buttonLabel="'Add Return'"
         :cancelLabel="'Cancel'"
         :saveLabel="'Return'"
         @save="submitReturn"
@@ -11,7 +11,7 @@
             <div class="grid gap-4 mb-4 grid-cols-4">
                 <div class="col-span-2">
                     <label
-                        for="description"
+                        for="item_code"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >Item Code</label
                     >
@@ -125,7 +125,7 @@ export default {
             const { editReturn } = this;
             const retPayload = { ...editReturn };
 
-            axios.post("/submit-returns", retPayload).then(({ data }) => {
+            axios.post("/submit-return", retPayload).then(({ data }) => {
                 this.getReturnedProducts();
             });
         },

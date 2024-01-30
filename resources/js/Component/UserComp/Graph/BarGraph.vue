@@ -16,33 +16,23 @@
 <script>
 export default {
     props: ["recentProducts"],
-
+    data() {
+        return {    
+            recentProducts: null,
+        };
+    },
     methods: {
         getRecentProducts() {
-            axios
-                .get("/recent-products")
-                .then((response) => {
-                    this.recentProducts = response.data.recentProducts;
-                })
-                .catch((error) => {
-                    console.error("Error fetching recent items:", error);
-                });
+            axios.get("/recent-products").then((response) => {
+                this.recentProducts = response.data.recentProducts;
+            });
         },
-        // fetchRecentProducts() {
-        //     // Dummy data for testing
-        //     this.recentProducts = [
-        //         { id: 1, name: "Product 1", created_at: "2024-01-25 12:00:00" },
-        //         { id: 2, name: "Product 2", created_at: "2024-01-25 11:30:00" },
-        //         // Add more dummy data as needed
-        //     ];
-        // },
         formatDate(date) {
             return date;
         },
     },
     mounted() {
         this.getRecentProducts();
-        //this.fetchRecentProducts();
     },
 };
 </script>

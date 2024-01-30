@@ -1,5 +1,6 @@
 <template>
     <Layout>
+        <div class="justify self-end"><returnForm /></div>
         <table
             class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
         >
@@ -55,13 +56,13 @@
 <script>
 import Modal from "@/Component/Modal.vue";
 import editReturn from "@/Component/ProdComp/editReturn.vue";
-import addReturn from "@/Component/ProdComp/addReturn.vue";
+import returnForm from "@/Component/ProdComp/returnForm.vue";
 
 export default {
     components: {
         Modal,
         editReturn,
-        addReturn,
+        returnForm,
     },
     data() {
         return {

@@ -58,7 +58,6 @@
 import Modal from "@/Component/Modal.vue";
 import editProduct from "@/Component/ProdComp/editProduct.vue";
 import addProduct from "@/Component/ProdComp/addProduct.vue";
-import returnForm from "@/Component/ProdComp/returnForm.vue";
 import addReturn from "@/Component/ProdComp/addReturn.vue";
 
 import axios from "axios";
@@ -67,7 +66,6 @@ export default {
         Modal,
         addProduct,
         editProduct,
-        returnForm,
         addReturn,
     },
     data() {

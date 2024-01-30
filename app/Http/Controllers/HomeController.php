@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Categories;
 use App\Models\Product;
+use App\Models\ReturnedProduct;
+
 
 class HomeController extends Controller
 {
@@ -25,8 +27,14 @@ class HomeController extends Controller
     public function getCategoryCount()
     {
         $categoryCount = Categories::count();
-
+        // dd($categoryCount);
         return response()->json(['count' => $categoryCount]);
+    }
+    public function getReturnCount()
+    {
+        $returnCount = ReturnedProduct::count();
+
+        return response()->json(['count' => $returnCount]);
     }
     public function recentProducts()
     {

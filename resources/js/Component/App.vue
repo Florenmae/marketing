@@ -79,7 +79,7 @@
                     </div>
                     <div class="ml-12">
                         <div class="mt-2 text-sm">
-                            Total Categories: {{ categoryCount }}
+                            Total Returned Items: {{ returnCount }}
                         </div>
                     </div>
                 </div>
@@ -104,10 +104,11 @@ export default {
     data() {
         return {
             authenticated: 0,
-            userCounts: [],
-            productCount: [],
-            categoryCount: [],
-            recentProducts: [],
+            userCounts: null,
+            productCount: null,
+            categoryCount: null,
+            returnCount: null,
+            recentProducts: null,
         };
     },
     methods: {
@@ -138,7 +139,7 @@ export default {
         },
         getProductCount() {
             axios.get("/get-product-count").then((response) => {
-                console.log("Product count response:", response.data);
+                console.log("Product count response:" + response.data);
                 this.productCount = response.data.count;
             });
         },
@@ -146,6 +147,12 @@ export default {
             axios.get("/get-category-count").then((response) => {
                 console.log("Category count response:", response.data);
                 this.categoryCount = response.data.count;
+            });
+        },
+        getReturnCount() {
+            axios.get("/get-return-count").then((response) => {
+                console.log("Return count response:", response.data);
+                this.returnCount = response.data.count;
             });
         },
         getRecentProducts() {
@@ -164,8 +171,8 @@ export default {
         this.getUserCount();
         this.getProductCount();
         this.getCategoryCount();
+        this.getReturnCount();
         this.getRecentProducts();
-        this.fetchRecentProducts();
     },
 };
 </script>

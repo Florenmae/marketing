@@ -18,6 +18,8 @@ import addCategory from "@/Component/ProdComp/addCategory.vue";
 
 import Return from "@/Component/ProdComp/Return.vue";
 import editReturn from "@/Component/ProdComp/editReturn.vue";
+import addReturn from "@/Component/ProdComp/addReturn.vue";
+import returnForm from "@/Component/ProdComp/returnForm.vue";
 
 import Pos from "@/Component/PosComp/Pos.vue";
 
@@ -53,6 +55,8 @@ app.component("addcategory", addCategory);
 
 app.component("return", Return);
 app.component("editreturn", editReturn);
+app.component("addreturn", addReturn);
+app.component("returnForm", returnForm);
 
 app.component("modal", Modal);
 app.component("modal1", Modal1);
