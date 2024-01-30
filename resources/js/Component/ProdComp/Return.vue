@@ -68,11 +68,10 @@ export default {
         return {
             editReturnedProduct: {
                 item_code: "",
-                ret_name: "",
+                name: "",
                 supplier: "",
                 qty: "",
-                remarks: "",
-                status: "",
+                description: "",
             },
             returnedProducts: [],
             editingReturnedProductId: null,

@@ -101,35 +101,6 @@ class ProductController extends Controller
         $res = $returnedProduct->save();
     }
 
-//     public function returnProduct(Request $request)
-// {
-//     $returnedProduct = Product::find($request->editingProductId);
-
-//     if (!$returnedProduct) {
-//         return response()->json(['message' => 'Product not found'], 404);
-//     }
-
-//     $returnedQty = $request->qty;
-
-//     if ($returnedQty >= $returnedProduct->qty) {
-//         $returnedProduct->delete();
-//     } else {
-//         $returnedProduct->qty -= $returnedQty;
-//         $returnedProduct->save();
-//     }
-
-//     ReturnedProduct::create([
-//         'name' => $returnedProduct->name,
-//         'item_code' => $returnedProduct->item_code,
-//         'supplier' => $returnedProduct->supplier,
-//         'qty' => $returnedQty,
-//         'description' => $returnedProduct->description,
-//     ]);
-
-//     return response()->json(['message' => 'Product returned successfully']);
-// }
-
-
     // ReturnedProduct::create([
     //     $returnedProduct->name = $request->retPayload["name"],
     //     $returnedProduct->item_code  = $request->retPayload["item_code"],

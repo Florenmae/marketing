@@ -16,7 +16,7 @@
                         >Item Code</label
                     >
                     <input
-                        v-model="returnedProduct.item_code"
+                        v-model="editReturnedProduct.item_code"
                         type="text"
                         name="item_code"
                         id="item_code"
@@ -32,7 +32,7 @@
                         >Product Name</label
                     >
                     <input
-                        v-model="returnedProduct.name"
+                        v-model="editReturnedProduct.name"
                         type="text"
                         name="name"
                         id="name"
@@ -48,7 +48,7 @@
                         >Product supplier</label
                     >
                     <select
-                        v-model="returnedProduct.supplier"
+                        v-model="editReturnedProduct.supplier"
                         type="text"
                         name="supplier"
                         id="supplier"
@@ -66,7 +66,7 @@
                         >Quantity</label
                     >
                     <input
-                        v-model="returnedProduct.qty"
+                        v-model="editReturnedProduct.qty"
                         type="text"
                         name="qty"
                         id="qty"
@@ -75,14 +75,14 @@
                         required=""
                     />
                 </div>
-                <div class="col-span-2">
+                <div class="col-span-4">
                     <label
                         for="description"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >Description</label
                     >
                     <textarea
-                        v-model="returnedProduct.description"
+                        v-model="editReturnedProduct.description"
                         type="text"
                         name="description"
                         id="description"
@@ -99,14 +99,14 @@
 <script>
 import Modal from "@/Component/Modal.vue";
 export default {
-    props: ["return"],
+    props: ["returnedProduct"],
     components: {
         Modal,
     },
     data() {
         return {
-            editingReturnId: null,
-            editReturn: {
+            editingReturnedProductId: null,
+            editReturnedProduct: {
                 item_code: "",
                 name: "",
                 supplier: "",
@@ -122,8 +122,8 @@ export default {
     },
     methods: {
         submitReturn() {
-            const { editReturn } = this;
-            const retPayload = { ...editReturn };
+            const { editReturnedProduct } = this;
+            const retPayload = { ...editReturnedProduct };
 
             axios.post("/submit-return", retPayload).then(({ data }) => {
                 this.getReturnedProducts();

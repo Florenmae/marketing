@@ -110,11 +110,10 @@ export default {
             editingReturnedProductId: this.returnedProduct.id,
             editReturnedProduct: {
                 item_code: "",
-                ret_name: "",
+                name: "",
                 supplier: "",
                 qty: "",
                 remarks: "",
-                status: "",
             },
         };
     },
