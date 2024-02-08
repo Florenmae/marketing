@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('cat_code'); //category
             $table->string('item_code'); //item number
             $table->string('name');
+            $table->string('image')->nullable();
             $table->string('supplier');
             $table->integer('price');
             $table->integer('qty');

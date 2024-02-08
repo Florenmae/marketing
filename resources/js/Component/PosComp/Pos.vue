@@ -1,286 +1,168 @@
 <template>
     <posLayout>
-        <section
-            class="section-content padding-y-sm bg-default"
-            style="padding: 50px"
-        >
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-8 card padding-y-sm card">
-                        <form
-                            action="#"
-                            class="search-wrap"
-                            style="float: right"
+        <div class="flex">
+            <div class="flex-3 p-4 relative">
+                <h2 class="text-2xl font-semibold mb-4">Categories</h2>
+                <div class="absolute top-10 right-3 mt-2 mr-2">
+                    <button @click="prevPage" class="text-gray-500">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="h-6 w-6"
                         >
-                            <div class="input-group">
-                                <input
-                                    type="text"
-                                    placeholder="Search"
-                                    class="form-control"
-                                    v-on:keyup="keymonitor"
-                                    v-model="ThisIsField1"
-                                />
-                                <div class="input-group-append">
-                                    <button
-                                        type="submit"
-                                        class="btn btn-primary"
-                                    >
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                        <ul
-                            class="nav bg radius nav-pills nav-fill mb-3 bg"
-                            role="tablist"
-                        ></ul>
-                        <span id="items">
-                            <div class="row">
-                                <div
-                                    class="col-md-3"
-                                    v-for="product in allproduct"
-                                    :key="product.id"
-                                >
-                                    <figure class="card card-product">
-                                        <div class="img-wrap">
-                                            <img :src="product.image" />
-                                            <a class="btn-overlay" href="#"
-                                                ><i
-                                                    class="fa fa-search-plus"
-                                                ></i>
-                                                Quick view</a
-                                            >
-                                        </div>
-                                        <figcaption class="info-wrap">
-                                            <a href="#" class="title">{{
-                                                product.name
-                                            }}</a>
-                                            <div class="action-wrap">
-                                                <button
-                                                    @click="
-                                                        addtocart(product.id)
-                                                    "
-                                                    class="btn btn-primary btn-sm float-right"
-                                                >
-                                                    <i
-                                                        class="fa fa-cart-plus"
-                                                    ></i>
-                                                    Add
-                                                </button>
-                                                <div class="price-wrap h5">
-                                                    <span class="price-new"
-                                                        >$
-                                                        {{
-                                                            product.price
-                                                        }}</span
-                                                    >
-                                                </div>
-                                            </div>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                            </div>
-                        </span>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <span id="cart">
-                                <table
-                                    class="table table-hover shopping-cart-wrap table-responsive"
-                                >
-                                    <thead class="text-muted">
-                                        <tr>
-                                            <th scope="col">Item</th>
-                                            <th scope="col" width="120">Qty</th>
-                                            <th scope="col" width="120">
-                                                Price
-                                            </th>
-                                            <th
-                                                scope="col"
-                                                class="text-right"
-                                                width="200"
-                                            >
-                                                Delete
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr
-                                            v-for="product in allcartproduct"
-                                            :key="product.id"
-                                        >
-                                            <td>
-                                                <figure class="media">
-                                                    <div class="img-wrap">
-                                                        <img
-                                                            :src="product.image"
-                                                            class="img-thumbnail img-xs"
-                                                        />
-                                                    </div>
-                                                    <figcaption
-                                                        class="media-body"
-                                                    >
-                                                        <h6
-                                                            class="title text-truncate"
-                                                        >
-                                                            {{ product.name }}
-                                                        </h6>
-                                                    </figcaption>
-                                                </figure>
-                                            </td>
-                                            <td class="text-center">
-                                                <div
-                                                    class="m-btn-group m-btn-group--pill btn-group mr-2"
-                                                    role="group"
-                                                    aria-label="..."
-                                                >
-                                                    <button
-                                                        @click="
-                                                            decrement(
-                                                                product.id
-                                                            )
-                                                        "
-                                                        type="button"
-                                                        class="m-btn btn btn-default"
-                                                    >
-                                                        <i
-                                                            class="fa fa-minus"
-                                                        ></i>
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        class="m-btn btn btn-default"
-                                                        disabled
-                                                    >
-                                                        {{ product.quantity }}
-                                                    </button>
-                                                    <button
-                                                        @click="
-                                                            increment(
-                                                                product.id
-                                                            )
-                                                        "
-                                                        type="button"
-                                                        class="m-btn btn btn-default"
-                                                    >
-                                                        <i
-                                                            class="fa fa-plus"
-                                                        ></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="price-wrap">
-                                                    <var class="price"
-                                                        ><font
-                                                            style="
-                                                                font-size: 15px;
-                                                            "
-                                                            >${{
-                                                                product.total
-                                                            }}</font
-                                                        ></var
-                                                    >
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <button
-                                                    @click="
-                                                        removefromcart(
-                                                            product.id
-                                                        )
-                                                    "
-                                                    class="btn btn-outline-danger"
-                                                >
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </span>
+                            <path
+                                stroke="none"
+                                d="M0 0h24v24H0z"
+                                fill="none"
+                            ></path>
+                            <polyline points="15 6 9 12 15 18"></polyline>
+                        </svg>
+                    </button>
+                    <button @click="nextPage" class="text-gray-500">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="h-6 w-6"
+                        >
+                            <path
+                                stroke="none"
+                                d="M0 0h24v24H0z"
+                                fill="none"
+                            ></path>
+                            <polyline points="9 6 15 12 9 18"></polyline>
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-wrap">
+                    <div
+                        v-for="category in visibleCategories"
+                        :key="category.id"
+                        class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
+                    >
+                        <div
+                            class="bg-white shadow-md mb-4 category-item hover:bg-gray-100 cursor-pointer p-2 rounded-md"
+                        >
+                            <p class="">{{ category.categoryName }}</p>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="box">
-                            <dl class="dlist-align">
-                                <dt>Tax:</dt>
-                                <dd class="text-right">0%</dd>
-                            </dl>
-                            <dl class="dlist-align">
-                                <dt>Discount:</dt>
-                                <dd class="text-right"><a href="#">0%</a></dd>
-                            </dl>
-                            <dl class="dlist-align">
-                                <dt>Sub Total:</dt>
-                                <dd class="text-right">${{ sum }}</dd>
-                            </dl>
-                            <dl class="dlist-align">
-                                <dt>Total:</dt>
-                                <dd class="text-right h4 b">${{ sum }}</dd>
-                            </dl>
-                            <hr />
-                            <form
-                                action="javascript:void(0)"
-                                @submit="submitdata"
-                                method="post"
-                                enctype="multipart/form-data"
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+                >
+                    <div
+                        v-for="product in products"
+                        :key="product.id"
+                        class="p-4 border rounded-md"
+                    >
+                        <img
+                            :src="product.image"
+                            alt="Product Image"
+                            class="w-full h-32 object-cover mb-2 rounded-md"
+                        />
+                        <h2 class="text-lg font-semibold">
+                            {{ product.name }}
+                        </h2>
+                        <p class="text-gray-600">{{ product.description }}</p>
+                        <div class="mt-2">
+                            <span class="text-lg font-bold text-blue-500">{{
+                                product.price
+                            }}</span>
+                            <button
+                                @click="addToCart(product)"
+                                class="ml-2 bg-green-500 text-white px-3 py-1 rounded-md"
                             >
-                                <div class="row">
-                                    <div
-                                        class="col-md-12"
-                                        style="padding-bottom: 5px"
-                                    >
-                                        <p>Customer name :</p>
-                                        <input
-                                            type="text"
-                                            v-model="order.customername"
-                                            class="form-control"
-                                            placeholder="Customer name"
-                                            required
-                                        />
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <p>Customer phone :</p>
-                                        <input
-                                            type="text"
-                                            v-model="order.customerphone"
-                                            class="form-control"
-                                            placeholder="Customer phone"
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <a
-                                            href="#"
-                                            class="btn btn-default btn-error btn-lg btn-block"
-                                            ><i class="fa fa-times-circle"></i>
-                                            Cancel
-                                        </a>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <button
-                                            type="submit"
-                                            class="btn btn-primary btn-lg btn-block"
-                                        >
-                                            <i class="fa fa-shopping-bag"></i
-                                            >{{
-                                                processing
-                                                    ? " Please wait"
-                                                    : " Submit"
-                                            }}
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+
+            <div class="flex-1 p-4">
+                <h2 class="text-2xl font-semibold mb-4">Shopping Cart</h2>
+                <div v-if="cart.length === 0" class="text-gray-600">
+                    Your cart is empty.
+                </div>
+                <div v-else>
+                    <div
+                        v-for="product in cart"
+                        :key="product.id"
+                        class="flex items-center justify-between p-2 border-b"
+                    >
+                        <div class="flex items-center space-x-4">
+                            <img
+                                :src="product.image"
+                                alt="Product Image"
+                                class="w-10 h-10 object-cover rounded-md"
+                            />
+                            <span>{{ product.name }}</span>
+                        </div>
+
+                        <div class="flex items-center space-x-0">
+                            <button
+                                @click="decrementQuantity(product)"
+                                class="px-2 py-1 border rounded-none"
+                            >
+                                -
+                            </button>
+                            <span class="px-4 py-1 border-t border-b">{{
+                                product.quantity
+                            }}</span>
+                            <button
+                                @click="incrementQuantity(product)"
+                                class="px-2 py-1 border rounded-none"
+                            >
+                                +
+                            </button>
+                        </div>
+                        <span class="font-semibold"
+                            >Php {{ product.price.toFixed(2) }}</span
+                        >
+                        <span class="text-gray-600"
+                            >Total: Php {{ product.total.toFixed(2) }}</span
+                        >
+                        <button @click="deleteItem(product.id)">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash"
+                                viewBox="0 0 16 16"
+                            >
+                                <path
+                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                                />
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="font-semibold"
+                            >Total: Php {{ calculateTotal().toFixed(2) }}</span
+                        >
+                        <button
+                            @click="checkout"
+                            class="bg-green-500 text-white px-4 py-2 rounded-md"
+                        >
+                            Checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </posLayout>
 </template>
 
@@ -288,19 +170,92 @@
 export default {
     data() {
         return {
-            processing: false,
-            allproduct: [],
-            ThisIsField1: "",
-            search: {
-                query: "",
-            },
-            allcartproduct: [],
-            sum: 0,
-            order: {
-                customername: "",
-                customerphone: "",
-            },
+            products: [],
+            cart: [],
+            categories: [],
+            currentPage: 0,
+            itemsPerPage: 4,
         };
+    },
+    methods: {
+        addToCart(product) {
+            console.log("Adding to Cart:", product);
+            axios
+                .post("/addToCart", {
+                    productId: product.id,
+                    name: product.name,
+                    image: product.image,
+                    price: product.price,
+                    quantity: product.quantity,
+                    description: product.description,
+                    total: product.total,
+                })
+                .then((data) => {
+                    this.showCartItem();
+                });
+        },
+        calculateTotal() {
+            return this.cart.reduce((total, product) => {
+                return total + product.total;
+            }, 0);
+        },
+        incrementQuantity(product) {
+            product.quantity = Math.max(1, product.quantity + 1);
+            product.total = product.price * product.quantity;
+        },
+
+        decrementQuantity(product) {
+            product.quantity = Math.max(1, product.quantity - 1);
+            product.total = product.price * product.quantity;
+        },
+
+        showCartItem() {
+            axios.get("/showCartItem").then(({ data }) => {
+                this.cart = data;
+            });
+        },
+
+        checkout() {
+            console.log("Checkout clicked. Implement your checkout logic.");
+        },
+        async fetchProducts() {
+            try {
+                const { data } = await axios.get("/get-products");
+                this.products = data;
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        },
+
+        fetchCategories() {
+            axios.get("/fetch-categories").then(({ data }) => {
+                this.categories = data;
+            });
+        },
+        nextPage() {
+            this.currentPage += 1;
+        },
+        prevPage() {
+            this.currentPage = Math.max(0, this.currentPage - 1);
+        },
+        deleteItem(id) {
+            axios.post("/delete-item", { id }).then(({ data }) => {
+                this.showCartItem();
+            });
+        },
+    },
+    computed: {
+        visibleCategories() {
+            const start = this.currentPage * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            return this.categories.slice(start, end);
+        },
+    },
+
+    mounted() {
+        this.fetchProducts();
+        this.showCartItem();
+        this.fetchCategories();
     },
 };
 </script>

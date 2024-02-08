@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PosController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
@@ -59,6 +61,16 @@ Route::post("/submit-category", [CategoryController::class, 'createCategory'])->
 Route::get("/get-categories", [CategoryController::class, 'getCategories']);
 Route::post("/update-category", [CategoryController::class, 'updateCategory']);
 Route::post("/delete-category", [CategoryController::class, 'deleteCategory']);
+
+//POS
+Route::get("/get-products", [PosController::class, 'fetchProducts']);
+Route::get('/fetch-categories', [PosController::class, 'fetchCategories']);
+
+Route::post('/addToCart', [CartController::class, 'addToCart'])->name("addToCart");
+Route::get('/showCartItem', [CartController::class, 'showCartItem']);
+Route::post('/delete-item', [CartController::class, 'deleteItem']);
+
+
 
 //
 Route::get('/{vue?}', function(){

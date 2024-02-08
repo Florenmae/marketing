@@ -63,7 +63,6 @@ class ProductController extends Controller
     //     return response()->json(['message' => 'Product status rejected']);
     // }
 
-
     public function deleteProduct(Request $request){
         // dd($request->id);
         $deleteProduct = Product::find($request->id);
@@ -84,7 +83,7 @@ class ProductController extends Controller
     if ($returnedQty >= $returnedProduct->qty) {
         $returnedProduct->delete();
     } else {
-        $returnedProduct->qty = $returnedProduct->qty-$returnedQty;
+        $returnedProduct->qty = $returnedProduct->qty - $returnedQty;
         // dd($returnedProduct);
         $returnedProduct->save();
     }
@@ -93,23 +92,13 @@ class ProductController extends Controller
             'name' => $returnedProduct->name,
             'item_code' => $returnedProduct->item_code,
             'supplier' => $returnedProduct->supplier,
-            'qty' => $returnedProduct->qty,
+            'qty' => $returnedQty,
             'description' => $returnedProduct->description,
 
         ]);
 
         $res = $returnedProduct->save();
     }
-
-    // ReturnedProduct::create([
-    //     $returnedProduct->name = $request->retPayload["name"],
-    //     $returnedProduct->item_code  = $request->retPayload["item_code"],
-    //     $returnedProduct->supplier  = $request->retPayload["supplier"],
-    //     $returnedProduct->qty = $request->retPayload["qty"],
-    //     $returnedProduct->description = $request->retPayload["description"],
-    // ]);
-
-    // $res = $returnedProduct->save();
 }
 
 
