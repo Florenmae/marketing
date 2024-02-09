@@ -216,8 +216,17 @@ export default {
         },
 
         checkout() {
-            console.log("Checkout clicked. Implement your checkout logic.");
+            axios
+                .post("/checkout", { cart: this.cart })
+                .then(() => {
+                    this.cart = [];
+                    console.log("Checkout successful!");
+                })
+                .catch((error) => {
+                    console.error("Error during checkout:", error);
+                });
         },
+
         async fetchProducts() {
             try {
                 const { data } = await axios.get("/get-products");

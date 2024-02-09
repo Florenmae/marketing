@@ -10,6 +10,7 @@ class OrderProduct extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'order_id',
         'name',
         'image',
@@ -18,5 +19,10 @@ class OrderProduct extends Model
         'quantity',
         'total',
     ];
+
+    public function orderProduct()
+    {
+        return $this->hasMany(OrderProduct::class);
+    }
 
 }

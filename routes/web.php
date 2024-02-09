@@ -66,10 +66,10 @@ Route::post("/delete-category", [CategoryController::class, 'deleteCategory']);
 Route::get("/get-products", [PosController::class, 'fetchProducts']);
 Route::get('/fetch-categories', [PosController::class, 'fetchCategories']);
 
-Route::post('/addToCart', [CartController::class, 'addToCart'])->name("addToCart");
-Route::get('/showCartItem', [CartController::class, 'showCartItem']);
-Route::post('/delete-item', [CartController::class, 'deleteItem']);
-
+Route::post('/addToCart', [PosController::class, 'addToCart'])->name("addToCart");
+Route::get('/showCartItem', [PosController::class, 'showCartItem']);
+Route::post('/delete-item', [PosController::class, 'deleteItem']);
+Route::post('/checkout', [PosController::class, 'checkout']);
 
 
 //
