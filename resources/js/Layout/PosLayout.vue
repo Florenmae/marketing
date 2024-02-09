@@ -1,8 +1,10 @@
 <template>
     <div class="flex flex-col h-screen border-gray-300">
+        <!-- Header -->
         <header
             class="bg-slate-500 text-black p-4 border-b border-gray-300 flex justify-between items-center"
         >
+            <!-- Logo and title -->
             <div class="flex items-center space-x-4">
                 <img
                     src="../../../public/mmsu_logo.png"
@@ -10,9 +12,7 @@
                     class="w-10 h-10"
                 />
                 <h1 class="text-lg mr-4">Point of Sale System</h1>
-                <div
-                    class="sm:border-b-0 sm:border-r border-gray-400 h-8 mr-6"
-                ></div>
+                <!-- Search input -->
                 <div class="relative rounded-full bg-gray-200">
                     <input
                         type="text"
@@ -39,6 +39,7 @@
                 </div>
             </div>
 
+            <!-- Cart and profile buttons -->
             <div class="flex items-center space-x-4">
                 <button class="text-black flex items-center space-x-4">
                     <svg
@@ -55,26 +56,39 @@
                     </svg>
                 </button>
 
-                <div class="relative group">
+                <!-- Profile dropdown -->
+                <div class="relative" @click="toggleDropdown">
                     <button class="text-black flex items-center space-x-2">
                         <img
-                            src="/../../public/user.webp"
+                            src="../../../public/user.webp"
                             alt=""
                             class="w-10 h-10"
-                            @click="handleProfileClick"
                         />
                     </button>
                     <div
-                        class="absolute right-0 mt-2 hidden group-hover:block bg-white rounded-md shadow-md"
+                        v-if="showDropdown"
+                        class="absolute right-0 mt-2 bg-white rounded-md shadow-md"
                     >
                         <a
-                            href="#"
+                            href="pos"
                             class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                         >
-                            Profile
+                            POS
                         </a>
                         <a
-                            href="#"
+                            href="orders"
+                            class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                        >
+                            Orders
+                        </a>
+                        <a
+                            href="/home"
+                            class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                        >
+                            Exit
+                        </a>
+                        <a
+                            href="/"
                             class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                         >
                             Logout
@@ -84,6 +98,7 @@
             </div>
         </header>
 
+        <!-- Main content -->
         <main class="flex-1 flex">
             <section class="flex-1 p-4">
                 <slot></slot>
@@ -95,9 +110,14 @@
 <script>
 export default {
     name: "PosLayout",
+    data() {
+        return {
+            showDropdown: false,
+        };
+    },
     methods: {
-        handleProfileClick() {
-            console.log("Profile clicked!");
+        toggleDropdown() {
+            this.showDropdown = !this.showDropdown;
         },
     },
 };

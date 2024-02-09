@@ -20,6 +20,8 @@ class OrderProduct extends Model
         'total',
     ];
 
+    public $timestamps = true;
+
     public function orderProduct()
     {
         return $this->hasMany(OrderProduct::class);

@@ -22,6 +22,8 @@ import addReturn from "@/Component/ProdComp/addReturn.vue";
 import returnForm from "@/Component/ProdComp/returnForm.vue";
 
 import Pos from "@/Component/PosComp/Pos.vue";
+import Orders from "@/Component/PosComp/Orders.vue";
+import ViewOrder from "@/Component/PosComp/ViewOrder.vue";
 
 import userHome from "@/Component/userHome.vue";
 import { createRouter, createWebHistory } from "vue-router";
@@ -62,6 +64,8 @@ app.component("modal", Modal);
 app.component("modal1", Modal1);
 
 app.component("pos", Pos);
+app.component("orders", Orders);
+app.component("viewOrder", ViewOrder);
 
 app.component("userHome", userHome);
 app.component("Layout", Layout);

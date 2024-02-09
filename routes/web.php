@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
@@ -71,6 +72,7 @@ Route::get('/showCartItem', [PosController::class, 'showCartItem']);
 Route::post('/delete-item', [PosController::class, 'deleteItem']);
 Route::post('/checkout', [PosController::class, 'checkout']);
 
+Route::get('/fetch-orders', [OrderController::class, 'fetchOrders']);
 
 //
 Route::get('/{vue?}', function(){

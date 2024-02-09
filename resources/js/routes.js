@@ -8,6 +8,7 @@ import returnForm from "@/Component/ProdComp/returnForm.vue";
 import addReturn from "@/Component/ProdComp/addReturn.vue";
 import userProduct from "@/Component/UserDashboard/userProduct.vue";
 import Pos from "@/Component/PosComp/Pos.vue";
+import Orders from "@/Component/PosComp/Orders.vue";
 
 import userHome from "@/Component/userHome.vue";
 import Login from "@/Pages/Login.vue";
@@ -68,6 +69,11 @@ export const routes = [
         path: "/pos",
         name: "pos",
         component: Pos,
+    },
+    {
+        path: "/orders",
+        name: "orders",
+        component: Orders,
     },
     {
         path: "/signup",

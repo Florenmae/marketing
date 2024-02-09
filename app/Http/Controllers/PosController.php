@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Categories;
-use App\Models\Product;
-use App\Models\ReturnedProduct;
 use App\Models\Cart;
+use App\Models\User;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Categories;
 use App\Models\OrderProduct;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\Models\ReturnedProduct;
 
 class PosController extends Controller
 {
@@ -74,17 +75,23 @@ class PosController extends Controller
     $cartItems = Cart::all();
 
     $orderItems = [];
+    $now = Carbon::now();
     foreach ($cartItems as $cartItem) {
         $orderItems[] = [
             'product_id' => $cartItem->product_id,
             'name' => $cartItem->name,
             'price' => $cartItem->price,
             'quantity' => $cartItem->quantity,
-            'total' => $cartItem->total
+            'total' => $cartItem->total,
+            'description' => $cartItem->description,
+            'image' => $cartItem->image,
+            'created_at' => $now->toDateTimeString(),
+            'updated_at' => $now->toDateTimeString(),
         ];
     }
 
     $orderProduct = new OrderProduct();
+
     $orderProduct->insert($orderItems);
 
     Cart::truncate();
