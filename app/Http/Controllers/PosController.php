@@ -70,28 +70,25 @@ class PosController extends Controller
     }
 
     public function checkout(Request $request)
-    {
-        $cartItems = Cart::all();
+{
+    $cartItems = Cart::all();
 
-        $orderItems = [];
-        foreach ($cartItems as $cartItem) {
-            $orderItems[] = [
-                'order_id' => $cartItem->order_id,
-                'name' => $cartItem->name,
-                'price' => $cartItem->price,
-                'quantity' => $cartItem->quantity,
-                'total' => $cartItem->total
-            ];
-        }
-
-        $order = new OrderProduct();
-        $order->orderProduct()->createMany($orderItems);
-
-        // Clear the cart
-        Cart::truncate();
-
-        return response()->json(['message' => 'Checkout successful']);
+    $orderItems = [];
+    foreach ($cartItems as $cartItem) {
+        $orderItems[] = [
+            'product_id' => $cartItem->product_id,
+            'name' => $cartItem->name,
+            'price' => $cartItem->price,
+            'quantity' => $cartItem->quantity,
+            'total' => $cartItem->total
+        ];
     }
 
+    $orderProduct = new OrderProduct();
+    $orderProduct->insert($orderItems);
 
+    Cart::truncate();
+
+    return response()->json(['message' => 'Checkout successful']);
+}
 }
