@@ -278,6 +278,7 @@ export default {
         },
 
         checkout() {
+            const originalCart = [...this.cart];
             const orderPayload = {
                 paymentMethod: this.paymentMethod,
                 amountGiven: this.amountGiven,
@@ -294,9 +295,11 @@ export default {
                 .then((response) => {
                     const { status, remainingBalance } = response.data;
                     this.cart = [];
+                    this.amountGiven = 0;
                 })
                 .catch((error) => {
                     console.error("Error during checkout:", error);
+                    this.cart = originalCart;
                 });
         },
 

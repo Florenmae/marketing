@@ -40,10 +40,17 @@ class OrderController extends Controller
         $formattedOrders = $orders->map(function ($order) {
             return [
                 'id' => $order->id,
+                'name' => $order->name,
+                'product_id' => $order->product_id,
+                'image' => $order->image,
+                'description' => $order->description,
+                'price' => $order->price,
                 'quantity' => $order->quantity,
                 'total' => $order->total,
                 'balance' => $order->balance,
+                'paymentMethod' => $order->paymentMethod,
                 'created_at' => Carbon::parse($order->created_at)->format('Y-m-d'),
+                'updated_at' => Carbon::parse($order->updated_at)->format('Y-m-d'),
             ];
         });
 

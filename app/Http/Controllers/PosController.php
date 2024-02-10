@@ -83,14 +83,14 @@ class PosController extends Controller
     $paymentMethod = $request->input('paymentMethod');
     $amountGiven = $request->input('amountGiven');
 
-    $balance = $totalAmount - $amountGiven ;
+    $balance = $amountGiven - $totalAmount ;
 
     $orderItems = [];
     $now = Carbon::now();
 
     foreach ($cartItems as $cartItem) {
         $orderItems[] = [
-            'order_id' => $cartItem->order_id,
+            'product_id' => $cartItem->product_id,
             'name' => $cartItem->name,
             'price' => $cartItem->price,
             'quantity' => $cartItem->quantity,

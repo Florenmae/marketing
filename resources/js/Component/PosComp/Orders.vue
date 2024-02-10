@@ -84,7 +84,7 @@
                             >
                                 View Details
                             </button> -->
-                            <ViewOrder></ViewOrder>
+                            <ViewOrder :order="order"></ViewOrder>
                         </td>
                     </tr>
                 </tbody>

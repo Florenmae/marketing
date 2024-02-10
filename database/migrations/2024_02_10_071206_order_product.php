@@ -24,7 +24,7 @@ return new class extends Migration
             $table->float('total')->nullable();
             $table->string('paymentMethod')->default('cash');
             $table->float('balance')->nullable();
-            $table->longText('data');
+            // $table->longText('data');
             $table->timestamps();
         });
     }
