@@ -29,6 +29,12 @@
                         >
                             Total
                         </th>
+                        <th
+                            scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                            Balance
+                        </th>
                         <th scope="col" class="relative px- py-2">
                             <span class="sr-only">View Details</span>
                         </th>
@@ -56,6 +62,19 @@
                                 Php {{ order.total.toFixed(2) }}
                             </div>
                         </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">
+                                <span
+                                    class="bg-green-500 px-2 py-1 rounded-md text-white my-1 text-sm hover:bg-green-600"
+                                    v-if="order.balance === 0"
+                                >
+                                    Paid
+                                </span>
+                                <span v-else>
+                                    Php {{ order.balance.toFixed(2) }}
+                                </span>
+                            </div>
+                        </td>
                         <td
                             class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
                         >
@@ -65,7 +84,7 @@
                             >
                                 View Details
                             </button> -->
-                            <ViewOrder :orders="ordes"></ViewOrder>
+                            <ViewOrder></ViewOrder>
                         </td>
                     </tr>
                 </tbody>

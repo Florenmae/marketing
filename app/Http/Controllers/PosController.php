@@ -63,7 +63,7 @@ class PosController extends Controller
         return Cart::all();
     }
 
-     public function deleteItem(Request $request){
+    public function deleteItem(Request $request){
         $deleteItem = Cart::find($request->id);
 
         $res = $deleteItem->delete();
@@ -73,23 +73,36 @@ class PosController extends Controller
     public function checkout(Request $request)
 {
     $cartItems = Cart::all();
+    $totalAmount = 0;
+
+
+    foreach ($cartItems as $cartItem) {
+        $totalAmount += $cartItem->total;
+    }
+
+    $paymentMethod = $request->input('paymentMethod');
+    $amountGiven = $request->input('amountGiven');
+
+    $balance = $totalAmount - $amountGiven ;
 
     $orderItems = [];
     $now = Carbon::now();
+
     foreach ($cartItems as $cartItem) {
         $orderItems[] = [
-            'product_id' => $cartItem->product_id,
+            'order_id' => $cartItem->order_id,
             'name' => $cartItem->name,
             'price' => $cartItem->price,
             'quantity' => $cartItem->quantity,
             'total' => $cartItem->total,
             'description' => $cartItem->description,
             'image' => $cartItem->image,
-            'created_at' => $now->toDateTimeString(),
-            'updated_at' => $now->toDateTimeString(),
+            'paymentMethod' => $paymentMethod,
+            'balance' => $balance,
+            'created_at' => $now,
+            'updated_at' => $now,
         ];
     }
-
     $orderProduct = new OrderProduct();
 
     $orderProduct->insert($orderItems);
@@ -99,3 +112,4 @@ class PosController extends Controller
     return response()->json(['message' => 'Checkout successful']);
 }
 }
+

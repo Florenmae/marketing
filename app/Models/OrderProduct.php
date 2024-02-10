@@ -18,6 +18,8 @@ class OrderProduct extends Model
         'price',
         'quantity',
         'total',
+        'paymentMethod',
+        'balance',
     ];
 
     public $timestamps = true;

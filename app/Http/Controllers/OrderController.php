@@ -42,6 +42,7 @@ class OrderController extends Controller
                 'id' => $order->id,
                 'quantity' => $order->quantity,
                 'total' => $order->total,
+                'balance' => $order->balance,
                 'created_at' => Carbon::parse($order->created_at)->format('Y-m-d'),
             ];
         });

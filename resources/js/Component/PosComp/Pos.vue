@@ -61,7 +61,7 @@
                     <div
                         v-for="product in products"
                         :key="product.id"
-                        class="p-4 border rounded-md"
+                        class="p-4 border rounded-md text-center"
                     >
                         <img
                             :src="product.image"
@@ -153,13 +153,73 @@
                         <span class="font-semibold"
                             >Total: Php {{ calculateTotal().toFixed(2) }}</span
                         >
-                        <button
-                            @click="checkout"
-                            class="bg-green-500 text-white px-4 py-2 rounded-md"
-                        >
-                            Checkout
-                        </button>
+                        <button @click="checkout">Checkout</button>
                     </div>
+                </div>
+                <div class="mb-4 mt-4">
+                    <label for="paymentMethod" class="mr-2"
+                        >Payment Method:</label
+                    >
+                    <div class="flex items-center space-x-4 mt-4">
+                        <div
+                            class="payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            @click="paymentMethod = 'cash'"
+                            :class="{
+                                'bg-green-100': paymentMethod === 'cash',
+                            }"
+                        >
+                            <span class="font-semibold">Cash</span>
+                        </div>
+                        <div
+                            class="payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            @click="paymentMethod = 'credit'"
+                            :class="{
+                                'bg-green-100': paymentMethod === 'credit',
+                            }"
+                        >
+                            <span class="font-semibold">Credit</span>
+                        </div>
+                        <div
+                            class="payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            @click="paymentMethod = 'gcash'"
+                            :class="{
+                                'bg-green-100': paymentMethod === 'gcash',
+                            }"
+                        >
+                            <span class="font-semibold">Gcash</span>
+                        </div>
+                        <div
+                            class="payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            @click="paymentMethod = 'card'"
+                            :class="{
+                                'bg-green-100': paymentMethod === 'card',
+                            }"
+                        >
+                            <span class="font-semibold">Card</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <div class="flex items-center">
+                        <label for="amountGiven" class="mr-2"
+                            >Amount Given:</label
+                        >
+                        <input
+                            type="number"
+                            v-model="amountGiven"
+                            id="amountGiven"
+                            class="px-2 py-2 border border-gray-300 rounded-md w-40"
+                        />
+                        <div v-if="amountGiven > totalAmount"></div>
+                    </div>
+                </div>
+
+                <div v-if="change > 0" class="mb-2">
+                    <span class="font-semibold">Change:</span>
+                    <span class="ml-2 text-green-500"
+                        >Php {{ change.toFixed(2) }}</span
+                    >
                 </div>
             </div>
         </div>
@@ -175,6 +235,8 @@ export default {
             categories: [],
             currentPage: 0,
             itemsPerPage: 4,
+            paymentMethod: "cash",
+            amountGiven: 0,
         };
     },
     methods: {
@@ -216,11 +278,22 @@ export default {
         },
 
         checkout() {
+            const orderPayload = {
+                paymentMethod: this.paymentMethod,
+                amountGiven: this.amountGiven,
+                items: this.cart.map((product) => ({
+                    productId: product.id,
+                    quantity: product.quantity,
+                    price: product.price,
+                    total: product.total,
+                })),
+            };
+
             axios
-                .post("/checkout", { cart: this.cart })
-                .then(() => {
+                .post("/checkout", orderPayload)
+                .then((response) => {
+                    const { status, remainingBalance } = response.data;
                     this.cart = [];
-                    console.log("Checkout successful!");
                 })
                 .catch((error) => {
                     console.error("Error during checkout:", error);
@@ -258,6 +331,15 @@ export default {
             const start = this.currentPage * this.itemsPerPage;
             const end = start + this.itemsPerPage;
             return this.categories.slice(start, end);
+        },
+        totalAmount() {
+            return this.cart.reduce(
+                (total, product) => total + product.total,
+                0
+            );
+        },
+        change() {
+            return this.amountGiven - this.totalAmount;
         },
     },
 
