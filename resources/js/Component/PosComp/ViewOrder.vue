@@ -139,6 +139,7 @@
 
 <script>
 import Modal from "@/Component/Modal.vue";
+
 export default {
     props: ["order"],
     components: {

@@ -73,6 +73,7 @@ Route::post('/delete-item', [PosController::class, 'deleteItem']);
 Route::post('/checkout', [PosController::class, 'checkout']);
 
 Route::get('/fetch-orders', [OrderController::class, 'fetchOrders']);
+Route::get('/view-order', [OrderController::class, 'viewOrder']);
 
 //
 Route::get('/{vue?}', function(){

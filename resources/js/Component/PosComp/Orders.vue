@@ -78,13 +78,22 @@
                         <td
                             class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
                         >
-                            <!-- <button
-                                @click="viewOrder(order)"
+                            <!-- <RouterLink to="/ViewOrder">
+                                <button
+                                    :order="order"
+                                    class="bg-green-500 px-2 py-1 rounded-md text-white my-1 text-sm hover:bg-green-600"
+                                >
+                                    View Details
+                                </button>
+                            </RouterLink> -->
+
+                            <viewOrder :order="order"></viewOrder>
+                            <!-- <router-link
+                                :to="'/view'"
                                 class="bg-green-500 px-2 py-1 rounded-md text-white my-1 text-sm hover:bg-green-600"
                             >
-                                View Details
-                            </button> -->
-                            <ViewOrder :order="order"></ViewOrder>
+                                View Order
+                            </router-link> -->
                         </td>
                     </tr>
                 </tbody>
@@ -102,17 +111,32 @@
 <script>
 import Modal from "@/Component/Modal.vue";
 import ViewOrder from "@/Component/PosComp/ViewOrder.vue";
+import View from "@/Component/PosComp/View.vue";
+
 export default {
-    props: ["orders"],
+    props: ["order"],
     components: {
         Modal,
         ViewOrder,
+        View,
     },
     data() {
         return {
+            showViewOrder: false,
             orders: [],
             loading: false,
             error: null,
+            orderDetails: this.order,
+            order: {
+                id: "",
+                name: "",
+                description: "",
+                price: "",
+                quantity: "",
+                total: "",
+                paymentMethod: "",
+                balance: "",
+            },
         };
     },
     methods: {
@@ -121,13 +145,19 @@ export default {
                 this.orders = data;
             });
         },
-
-        viewOrder(order) {
-            this.$emit("view-order-details", order);
+        toggleViewOrder() {
+            this.showViewOrder = !this.showViewOrder; // Toggle the visibility of ViewOrder component
         },
+
+        // viewOrder(order) {
+        //     axios.get(`/view-order/${order.id}`).then((response) => {
+        //         this.orderDetails = response.data;
+        //     });
+        // },
     },
     mounted() {
         this.fetchOrders();
+        //this.viewOrder();
     },
 };
 </script>

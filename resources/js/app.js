@@ -4,6 +4,7 @@ import App from "@/Component/App.vue";
 import Modal from "@/Component/Modal.vue";
 import Modal1 from "@/Component/Modal1.vue";
 
+
 import EditUser from "@/Component/UserComp/EditUser.vue";
 import addUser from "@/Component/UserComp/addUser.vue";
 import MainUser from "@/Component/UserComp/MainUser.vue";
@@ -24,6 +25,7 @@ import returnForm from "@/Component/ProdComp/returnForm.vue";
 import Pos from "@/Component/PosComp/Pos.vue";
 import Orders from "@/Component/PosComp/Orders.vue";
 import ViewOrder from "@/Component/PosComp/ViewOrder.vue";
+import View from "@/Component/PosComp/View.vue";
 
 import userHome from "@/Component/userHome.vue";
 import { createRouter, createWebHistory } from "vue-router";
@@ -63,9 +65,11 @@ app.component("returnForm", returnForm);
 app.component("modal", Modal);
 app.component("modal1", Modal1);
 
+
 app.component("pos", Pos);
 app.component("orders", Orders);
 app.component("viewOrder", ViewOrder);
+app.component("view", View);
 
 app.component("userHome", userHome);
 app.component("Layout", Layout);

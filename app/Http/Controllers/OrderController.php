@@ -57,4 +57,18 @@ class OrderController extends Controller
         return response()->json($formattedOrders);
     }
 
+    public function viewOrder(Request $request){
+
+    if(OrderProduct::where('id', $request->orderId)->exists()){
+        return OrderProduct::find($request->orderId);
+    }
+    else{
+        return $data = (object)[
+            "id"=>0,
+            "name"=> "",
+
+        ];
+    }
+}
+
 }
