@@ -153,7 +153,12 @@
                         <span class="font-semibold"
                             >Total: Php {{ calculateTotal().toFixed(2) }}</span
                         >
-                        <button @click="checkout">Checkout</button>
+                        <button
+                            @click="checkout"
+                            class="bg-green-500 text-white px-4 py-1 rounded-md"
+                        >
+                            Checkout
+                        </button>
                     </div>
                 </div>
                 <div class="mb-4 mt-4">
@@ -162,64 +167,79 @@
                     >
                     <div class="flex items-center space-x-4 mt-4">
                         <div
-                            class="payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
                             @click="paymentMethod = 'cash'"
                             :class="{
                                 'bg-green-100': paymentMethod === 'cash',
                             }"
+                            style="width: 25%"
                         >
                             <span class="font-semibold">Cash</span>
                         </div>
                         <div
-                            class="payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
                             @click="paymentMethod = 'credit'"
                             :class="{
                                 'bg-green-100': paymentMethod === 'credit',
                             }"
+                            style="width: 25%"
                         >
                             <span class="font-semibold">Credit</span>
                         </div>
                         <div
-                            class="payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
                             @click="paymentMethod = 'gcash'"
                             :class="{
                                 'bg-green-100': paymentMethod === 'gcash',
                             }"
+                            style="width: 25%"
                         >
                             <span class="font-semibold">Gcash</span>
                         </div>
                         <div
-                            class="payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
                             @click="paymentMethod = 'card'"
                             :class="{
                                 'bg-green-100': paymentMethod === 'card',
                             }"
+                            style="width: 25%"
                         >
-                            <span class="font-semibold">Card</span>
+                            <span class="font-semibold text-center">Card</span>
+                        </div>
+                        <div
+                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            @click="paymentMethod = 'maya'"
+                            :class="{
+                                'bg-green-100': paymentMethod === 'maya',
+                            }"
+                            style="width: 25%"
+                        >
+                            <span class="font-semibold">Maya</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="mb-2">
+                <div class="mb-2 space-x-2">
                     <div class="flex items-center">
-                        <label for="amountGiven" class="mr-2"
+                        <label for="amountGiven" class="mr-4"
                             >Amount Given:</label
                         >
                         <input
                             type="number"
                             v-model="amountGiven"
                             id="amountGiven"
-                            class="px-2 py-2 border border-gray-300 rounded-md w-40"
+                            class="px-4 py-2 border border-gray-300 rounded-md w-full md:w-40"
                         />
-                        <div v-if="amountGiven > totalAmount"></div>
+                        <div class="space-x-4">
+                            <div v-if="amountGiven > totalAmount"></div>
+                            <div v-if="change > 0" class="">
+                                <span class="">Change:</span>
+                                <span class="font-bold ml-2 text-green-500"
+                                    >Php {{ change.toFixed(2) }}</span
+                                >
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div v-if="change > 0" class="mb-2">
-                    <span class="font-semibold">Change:</span>
-                    <span class="ml-2 text-green-500"
-                        >Php {{ change.toFixed(2) }}</span
-                    >
                 </div>
             </div>
         </div>

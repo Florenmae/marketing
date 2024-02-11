@@ -4,14 +4,17 @@ import App from "@/Component/App.vue";
 import Modal from "@/Component/Modal.vue";
 import Modal1 from "@/Component/Modal1.vue";
 
-
 import EditUser from "@/Component/UserComp/EditUser.vue";
 import addUser from "@/Component/UserComp/addUser.vue";
 import MainUser from "@/Component/UserComp/MainUser.vue";
 
 import Product from "@/Component/ProdComp/Product.vue";
+import ProductList from "@/Component/ProdComp/ProductList.vue";
 import addProduct from "@/Component/ProdComp/addProduct.vue";
 import editProduct from "@/Component/ProdComp/editProduct.vue";
+
+import Transaction from "@/Component/ProdComp/Transaction.vue";
+import OrderList from "@/Component/ProdComp/OrderList.vue";
 
 import Category from "@/Component/ProdComp/Category.vue";
 import editCategory from "@/Component/ProdComp/editCategory.vue";
@@ -28,6 +31,8 @@ import ViewOrder from "@/Component/PosComp/ViewOrder.vue";
 import View from "@/Component/PosComp/View.vue";
 
 import userHome from "@/Component/userHome.vue";
+import userProduct from "@/Component/UserDashboard/userProduct.vue";
+
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "./routes";
 
@@ -50,8 +55,12 @@ app.component("EditUser", EditUser);
 app.component("addUser", addUser);
 
 app.component("product", Product);
+app.component("productlist", ProductList);
 app.component("addproduct", addProduct);
 app.component("editproduct", editProduct);
+
+app.component("transaction", Transaction);
+app.component("orderlist", OrderList);
 
 app.component("category", Category);
 app.component("editcategory", editCategory);
@@ -65,13 +74,14 @@ app.component("returnForm", returnForm);
 app.component("modal", Modal);
 app.component("modal1", Modal1);
 
-
 app.component("pos", Pos);
 app.component("orders", Orders);
 app.component("viewOrder", ViewOrder);
 app.component("view", View);
 
 app.component("userHome", userHome);
+app.component("userProduct", userProduct);
+
 app.component("Layout", Layout);
 app.component("userLayout", userLayout);
 app.component("posLayout", PosLayout);

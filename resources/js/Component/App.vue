@@ -1,86 +1,250 @@
 <template>
     <Layout>
-        <div
+        <!-- <div
             class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4 content-between w-full"
         >
             <div
-                class="bg-blue-400 text-white overflow-hidden shadow-md sm:rounded-lg"
+                class="bg-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full border border-red-600"
             >
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="ml-4 text-lg leading-7 font-semibold">
-                            <!-- <label>Total Users</label> -->
-                            <td class="flex space-x-4">
-                                <svg
-                                    class="w-10 h-10"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                                    />
-                                </svg>
-                                {{ userCounts }}
-                            </td>
+                <div class="p-4 flex flex-col items-center w-full">
+                    <div class="flex justify-between items-center w-full">
+                        <div class="text-4xl leading-7 font-semibold">
+                            <span>{{ userCounts }}</span>
+                            <div class="pb-1">
+                                <label class="text-sm">Users</label>
+                            </div>
                         </div>
+                        <svg
+                            class="w-12 h-12 ml-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                            />
+                        </svg>
                     </div>
                 </div>
             </div>
-
             <div
-                class="bg-green-400 text-white overflow-hidden shadow-md sm:rounded-lg"
+                class="bg-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full border border-blue-600"
             >
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="ml-4 text-lg leading-7 font-semibold">
-                            Products
+                <div class="p-4 flex flex-col items-center w-full">
+                    <div class="flex justify-between items-center w-full">
+                        <div class="text-4xl leading-7 font-semibold">
+                            <span>{{ userCounts }}</span>
+                            <div class="pb-1">
+                                <label class="text-sm">Users</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="ml-12">
-                        <div class="mt-2 text-sm">
-                            Total Products: {{ productCount }}
-                        </div>
+                        <svg
+                            class="w-12 h-12 ml-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                            />
+                        </svg>
                     </div>
                 </div>
             </div>
-
             <div
-                class="bg-red-400 text-white overflow-hidden shadow-md sm:rounded-lg"
+                class="bg-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full border border-blue-900"
             >
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="ml-4 text-lg leading-7 font-semibold">
-                            Categories
+                <div class="p-4 flex flex-col items-center w-full">
+                    <div class="flex justify-between items-center w-full">
+                        <div class="text-4xl leading-7 font-semibold">
+                            <span>{{ userCounts }}</span>
+                            <div class="pb-1">
+                                <label class="text-sm">Users</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="ml-12">
-                        <div class="mt-2 text-sm">
-                            Total Categories: {{ categoryCount }}
-                        </div>
+                        <svg
+                            class="w-12 h-12 ml-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                            />
+                        </svg>
                     </div>
                 </div>
             </div>
-
             <div
-                class="bg-red-400 text-white overflow-hidden shadow-md sm:rounded-lg"
+                class="bg-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full border border-green-600"
             >
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="ml-4 text-lg leading-7 font-semibold">
-                            Returned Items
+                <div class="p-4 flex flex-col items-center w-full">
+                    <div class="flex justify-between items-center w-full">
+                        <div class="text-4xl leading-7 font-semibold">
+                            <span>{{ userCounts }}</span>
+                            <div class="pb-1">
+                                <label class="text-sm">Users</label>
+                            </div>
                         </div>
+                        <svg
+                            class="w-12 h-12 ml-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                            />
+                        </svg>
                     </div>
-                    <div class="ml-12">
-                        <div class="mt-2 text-sm">
-                            Total Returned Items: {{ returnCount }}
+                </div>
+            </div>
+        </div> -->
+
+        <div
+            class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-12 content-between w-full"
+        >
+            <div
+                class="bg-red-400 text-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full"
+            >
+                <div class="p-4 flex flex-col items-center w-full">
+                    <div class="flex justify-between items-center w-full">
+                        <div class="text-4xl leading-7 font-semibold">
+                            <span>{{ userCounts }}</span>
+                            <div class="pb-1">
+                                <label class="text-sm">Users</label>
+                            </div>
                         </div>
+                        <svg
+                            class="w-12 h-12 ml-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                            />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="bg-blue-300 text-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full"
+            >
+                <div class="p-4 flex flex-col items-center w-full">
+                    <div class="flex justify-between items-center w-full">
+                        <div class="text-4xl leading-7 font-semibold">
+                            <span>{{ productCount }}</span>
+                            <div class="pb-1">
+                                <label class="text-sm">Products</label>
+                            </div>
+                        </div>
+                        <svg
+                            class="w-12 h-12 ml-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                            />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="bg-blue-900 text-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full"
+            >
+                <div class="p-4 flex flex-col items-center w-full">
+                    <div class="flex justify-between items-center w-full">
+                        <div class="text-4xl leading-7 font-semibold">
+                            <span>{{ categoryCount }}</span>
+                            <div class="pb-1">
+                                <label class="text-sm">Category</label>
+                            </div>
+                        </div>
+                        <svg
+                            class="w-12 h-12 ml-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                            />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="bg-green-500 text-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full"
+            >
+                <div class="p-4 flex flex-col items-center w-full">
+                    <div class="flex justify-between items-center w-full">
+                        <div class="text-4xl leading-7 font-semibold">
+                            <span>{{ returnCount }}</span>
+                            <div class="pb-1">
+                                <label class="text-sm">Returns</label>
+                            </div>
+                        </div>
+                        <svg
+                            class="w-12 h-12 ml-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                            />
+                        </svg>
                     </div>
                 </div>
             </div>

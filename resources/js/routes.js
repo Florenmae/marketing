@@ -2,7 +2,13 @@ import App from "@/Component/App.vue";
 import Modal from "@/Component/Modal.vue";
 import MainUser from "@/Component/UserComp/MainUser.vue";
 import Category from "@/Component/ProdComp/Category.vue";
+
 import Product from "@/Component/ProdComp/Product.vue";
+import ProductList from "@/Component/ProdComp/ProductList.vue";
+import OrderList from "@/Component/ProdComp/OrderList.vue";
+
+import Transaction from "@/Component/ProdComp/Transaction.vue";
+
 import Return from "@/Component/ProdComp/Return.vue";
 import returnForm from "@/Component/ProdComp/returnForm.vue";
 import addReturn from "@/Component/ProdComp/addReturn.vue";
@@ -47,6 +53,21 @@ export const routes = [
         path: "/product",
         name: "product",
         component: Product,
+    },
+    {
+        path: "/transaction",
+        name: "transaction",
+        component: Transaction,
+    },
+    {
+        path: "/productlist",
+        name: "productlist",
+        component: ProductList,
+    },
+    {
+        path: "/orderlist",
+        name: "orderlist",
+        component: OrderList,
     },
     {
         path: "/userProduct",
