@@ -12,7 +12,9 @@ import Transaction from "@/Component/ProdComp/Transaction.vue";
 import Return from "@/Component/ProdComp/Return.vue";
 import returnForm from "@/Component/ProdComp/returnForm.vue";
 import addReturn from "@/Component/ProdComp/addReturn.vue";
+
 import userProduct from "@/Component/UserDashboard/userProduct.vue";
+// import addProductUser from "@/Component/UserDashboard/addProductUser.vue";
 
 import Pos from "@/Component/PosComp/Pos.vue";
 import Orders from "@/Component/PosComp/Orders.vue";
@@ -74,6 +76,7 @@ export const routes = [
         name: "userProduct",
         component: userProduct,
     },
+
     {
         path: "/returnForm",
         name: "returnForm",

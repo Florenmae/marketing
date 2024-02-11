@@ -32,6 +32,7 @@ import View from "@/Component/PosComp/View.vue";
 
 import userHome from "@/Component/userHome.vue";
 import userProduct from "@/Component/UserDashboard/userProduct.vue";
+import addProductUser from "@/Component/UserDashboard/addProductUser.vue";
 
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "./routes";
@@ -81,6 +82,7 @@ app.component("view", View);
 
 app.component("userHome", userHome);
 app.component("userProduct", userProduct);
+app.component("addProductUser", addProductUser);
 
 app.component("Layout", Layout);
 app.component("userLayout", userLayout);

@@ -8,7 +8,7 @@
                         >Product List</span
                     >
                 </div>
-                <div><addProduct /></div>
+                <div><addProductUser /></div>
             </div>
 
             <div class="overflow-x-auto border border-gray-300">
@@ -80,14 +80,14 @@
 <script>
 import Modal from "@/Component/Modal.vue";
 import editProduct from "@/Component/ProdComp/editProduct.vue";
-import addProduct from "@/Component/ProdComp/addProduct.vue";
+import addProductUser from "@/Component/UserDashboard/addProductUser.vue";
 
 import axios from "axios";
 import UserLayout from "../../Layout/userLayout.vue";
 export default {
     components: {
         Modal,
-        addProduct,
+        addProductUser,
         editProduct,
         UserLayout,
     },

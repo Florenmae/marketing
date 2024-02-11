@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Transaction;
+use Illuminate\Http\Request;
 use App\Models\ReturnedProduct;
 
 class ProductController extends Controller
@@ -20,9 +21,28 @@ class ProductController extends Controller
         $newProduct->qty = $request-> qty;
         $newProduct->description = $request->description;
 
-        $res = $newProduct->save();
+        $productSaved = $newProduct->save();
 
-        return $res;
+    if($productSaved) {
+        $transaction = new Transaction();
+        $transaction->trans_id = $newProduct->trans_id;
+        $transaction->name = $newProduct->name;
+        $transaction->supplier = $newProduct->supplier;
+        $transaction->description = $newProduct->description;
+        $transaction->qty = $newProduct->qty;
+        $transaction->timestamps = $newProduct->timestamps;
+
+        $transactionSaved = $transaction->save();
+
+        if($transactionSaved) {
+            return response()->json(['success' => true, 'message' => 'Product and Transaction created successfully']);
+        } else {
+            $newProduct->delete();
+            return response()->json(['success' => false, 'message' => 'Failed to create transaction']);
+        }
+    } else {
+        return response()->json(['success' => false, 'message' => 'Failed to create product']);
+    }
     }
 
     public function getProducts(){

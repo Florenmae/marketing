@@ -3,7 +3,7 @@
         <div class="justify-center w-full">
             <div class="justify self-start mt-10 mb-4">
                 <span class="text-xl font-bold text-gray-700 dark:text-gray-300"
-                    >Order List</span
+                    >Transaction List</span
                 >
             </div>
             <div class="overflow-x-auto border border-gray-300">
@@ -16,13 +16,19 @@
                                 scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                                Order ID
+                                Transaction No.
                             </th>
                             <th
                                 scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                                Order Date
+                                Supplier
+                            </th>
+                            <th
+                                scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Product
                             </th>
                             <th
                                 scope="col"
@@ -34,13 +40,13 @@
                                 scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                                Total
+                                Description
                             </th>
                             <th
                                 scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                                Balance
+                                Date
                             </th>
                             <th scope="col" class="relative px- py-2">
                                 <span class="sr-only">View Details</span>
@@ -85,15 +91,6 @@
                             <td
                                 class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
                             >
-                                <!-- <RouterLink to="/ViewOrder">
-                                <button
-                                    :order="order"
-                                    class="bg-green-500 px-2 py-1 rounded-md text-white my-1 text-sm hover:bg-green-600"
-                                >
-                                    View Details
-                                </button>
-                            </RouterLink> -->
-
                                 <viewOrder :order="order"></viewOrder>
                                 <!-- <router-link
                                 :to="'/view'"
