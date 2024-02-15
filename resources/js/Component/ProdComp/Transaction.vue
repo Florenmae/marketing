@@ -54,44 +54,45 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="order in orders" :key="order.id">
+                        <tr
+                            v-for="transaction in transactions"
+                            :key="transactions.id"
+                        >
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{ order.id }}
+                                    {{ transaction.id }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{ order.created_at }}
+                                    {{ transaction.supplier }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{ order.quantity }}
+                                    {{ transaction.name }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    Php {{ order.total.toFixed(2) }}
+                                    {{ transactions.quantity }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    <span
-                                        class="bg-green-500 px-2 py-1 rounded-md text-white my-1 text-sm hover:bg-green-600"
-                                        v-if="order.balance === 0"
-                                    >
-                                        Paid
-                                    </span>
-                                    <span v-else>
-                                        Php {{ order.balance.toFixed(2) }}
-                                    </span>
+                                    {{ transactions.description }}
                                 </div>
                             </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    {{ transactions.created_at }}
+                                </div>
+                            </td>
+
                             <td
                                 class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
                             >
-                                <viewOrder :order="order"></viewOrder>
+                                <!-- <viewOrder :transaction="transaction"></viewOrder> -->
                                 <!-- <router-link
                                 :to="'/view'"
                                 class="bg-green-500 px-2 py-1 rounded-md text-white my-1 text-sm hover:bg-green-600"
@@ -104,10 +105,10 @@
                 </table>
             </div>
             <div
-                v-if="orders && orders.length === 0"
+                v-if="transaction && transactions.length === 0"
                 class="text-gray-600 mt-4"
             >
-                No orders available.
+                No transaction recorded.
             </div>
         </div>
     </Layout>
@@ -119,7 +120,7 @@ import ViewOrder from "@/Component/PosComp/ViewOrder.vue";
 import View from "@/Component/PosComp/View.vue";
 
 export default {
-    props: ["order"],
+    props: ["transaction"],
     components: {
         Modal,
         ViewOrder,
@@ -127,42 +128,27 @@ export default {
     },
     data() {
         return {
-            showViewOrder: false,
-            orders: [],
+            transactions: [],
             loading: false,
             error: null,
-            orderDetails: this.order,
-            order: {
-                id: "",
+            transactionDetails: this.transaction,
+            transaction: {
                 name: "",
+                supplier: "",
                 description: "",
-                price: "",
                 quantity: "",
-                total: "",
-                paymentMethod: "",
-                balance: "",
             },
         };
     },
     methods: {
-        fetchOrders() {
-            axios.get("/fetch-orders").then(({ data }) => {
-                this.orders = data;
+        fetchTransactions() {
+            axios.get("/fetch-transactions").then(({ data }) => {
+                this.transactions = data;
             });
         },
-        toggleViewOrder() {
-            this.showViewOrder = !this.showViewOrder; // Toggle the visibility of ViewOrder component
-        },
-
-        // viewOrder(order) {
-        //     axios.get(`/view-order/${order.id}`).then((response) => {
-        //         this.orderDetails = response.data;
-        //     });
-        // },
     },
     mounted() {
-        this.fetchOrders();
-        //this.viewOrder();
+        this.fetchTransactions();
     },
 };
 </script>

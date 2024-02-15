@@ -10,6 +10,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReturnedProductController;
 
 /*
@@ -49,6 +50,7 @@ Route::post("/submit-product", [ProductController::class, 'createProduct'])->nam
 Route::get("/get-products", [ProductController::class, 'getProducts']);
 Route::post("/update-product", [ProductController::class, 'updateProduct']);
 Route::post("/delete-product", [ProductController::class, 'deleteProduct']);
+Route::post("/upload-image", [ProductController::class, 'uploadImage']);
 Route::post("/return-product", [ProductController::class, 'returnProduct'])->name("returnProduct");
 
 Route::post("/submit-return", [ReturnedProductController::class, 'createReturns'])->name("createReturns");
@@ -74,6 +76,8 @@ Route::post('/checkout', [PosController::class, 'checkout']);
 
 Route::get('/fetch-orders', [OrderController::class, 'fetchOrders']);
 Route::get('/view-order', [OrderController::class, 'viewOrder']);
+
+Route::get('/fetch-transactions', [TransactionController::class, 'fetchTransactions']);
 
 //
 Route::get('/{vue?}', function(){

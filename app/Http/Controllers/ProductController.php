@@ -7,34 +7,38 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Models\ReturnedProduct;
 
-class ProductController extends Controller
-{
-    public function createProduct(Request $request){
-        $newProduct =  new Product();
+class ProductController extends Controller{
 
-        $newProduct->id = $request->id;
-        $newProduct->cat_code= $request->input('cat_code');
-        $newProduct->name = $request->name;
-        $newProduct->supplier = $request->supplier;
-        $newProduct->item_code = $request->item_code;
-        $newProduct->price = $request->price;
-        $newProduct->qty = $request-> qty;
-        $newProduct->description = $request->description;
+    public function createProduct(Request $request) {
 
-        $productSaved = $newProduct->save();
+    // // $imagePath = $request->file('image')->store('public/images');
+    // $imageName = $request->image->getClientOriginalName();
+    // $request->image->move(public_path('images'), $imageName);
 
-    if($productSaved) {
+    $newProduct = new Product();
+    $newProduct->cat_code = $request->input('cat_code');
+    $newProduct->image = $request->input('image');
+    $newProduct->name = $request->input('name');
+    $newProduct->supplier = $request->input('supplier');
+    $newProduct->item_code = $request->input('item_code');
+    $newProduct->price = $request->input('price');
+    $newProduct->qty = $request->input('qty');
+    $newProduct->description = $request->input('description');
+
+
+    $productSaved = $newProduct->save();
+
+    if ($productSaved) {
+
         $transaction = new Transaction();
-        $transaction->trans_id = $newProduct->trans_id;
         $transaction->name = $newProduct->name;
         $transaction->supplier = $newProduct->supplier;
         $transaction->description = $newProduct->description;
         $transaction->qty = $newProduct->qty;
-        $transaction->timestamps = $newProduct->timestamps;
 
         $transactionSaved = $transaction->save();
 
-        if($transactionSaved) {
+        if ($transactionSaved) {
             return response()->json(['success' => true, 'message' => 'Product and Transaction created successfully']);
         } else {
             $newProduct->delete();
@@ -43,7 +47,20 @@ class ProductController extends Controller
     } else {
         return response()->json(['success' => false, 'message' => 'Failed to create product']);
     }
-    }
+}
+
+    public function uploadImage(Request $request) {
+    $request->validate([
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    $imageName = $request->image->getClientOriginalName();
+    $request->image->move(public_path('images'), $imageName);
+
+    return response()->json(['imagePath' => $imageName]);
+}
+
+
 
     public function getProducts(){
         return Product::all();
@@ -66,22 +83,6 @@ class ProductController extends Controller
         return $product;
 
     }
-
-    // public function approveStatus($productId) {
-    //     $product = Product::find($productId);
-    //     $product->status = 'approved';
-    //     $product->save();
-
-    //     return response()->json(['message' => 'Product status approved']);
-    // }
-
-    // public function rejectStatus($productId) {
-    //     $product = Product::find($productId);
-    //     $product->status = 'rejected';
-    //     $product->save();
-
-    //     return response()->json(['message' => 'Product status rejected']);
-    // }
 
     public function deleteProduct(Request $request){
         // dd($request->id);

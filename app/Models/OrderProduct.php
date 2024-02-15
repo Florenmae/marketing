@@ -20,6 +20,7 @@ class OrderProduct extends Model
         'total',
         'paymentMethod',
         'balance',
+        'changeAmount',
     ];
 
     public $timestamps = true;

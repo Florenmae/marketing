@@ -75,7 +75,6 @@ class PosController extends Controller
     $cartItems = Cart::all();
     $totalAmount = 0;
 
-
     foreach ($cartItems as $cartItem) {
         $totalAmount += $cartItem->total;
     }
@@ -83,10 +82,18 @@ class PosController extends Controller
     $paymentMethod = $request->input('paymentMethod');
     $amountGiven = $request->input('amountGiven');
 
-    $balance = $amountGiven - $totalAmount ;
+    
+    if ($amountGiven >= $totalAmount) {
+        $balance = 0;
+        $changeAmount = $amountGiven - $totalAmount;
+    } else {
+        $balance = $totalAmount - $amountGiven;
+        $changeAmount = 0;
+    }
+
 
     $orderItems = [];
-    $now = Carbon::now();
+    $now = now();
 
     foreach ($cartItems as $cartItem) {
         $orderItems[] = [
@@ -99,17 +106,17 @@ class PosController extends Controller
             'image' => $cartItem->image,
             'paymentMethod' => $paymentMethod,
             'balance' => $balance,
+            'changeAmount' => $changeAmount,
             'created_at' => $now,
             'updated_at' => $now,
         ];
     }
-    $orderProduct = new OrderProduct();
 
+    $orderProduct = new OrderProduct();
     $orderProduct->insert($orderItems);
 
     Cart::truncate();
 
-    return response()->json(['message' => 'Checkout successful']);
+    return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
 }
 }
-
