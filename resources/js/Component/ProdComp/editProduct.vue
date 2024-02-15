@@ -144,7 +144,6 @@
                     <option value="pending">Pending Approval</option>
                     <option value="Approved">Approve</option>
                     <option value="Rejected">Reject</option>
-                    <option value="Returned">Return</option>
                 </select>
             </div>
         </div>

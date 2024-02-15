@@ -107,12 +107,12 @@ export default {
             });
         },
 
-        fetchReturnedProducts() {
-            axios.get("/returned-products").then(({ data }) => {
-                this.returnedProducts = data;
-                this.fetchReturnedProducts();
-            });
-        },
+        // fetchReturnedProducts() {
+        //     axios.get("/returned-products").then(({ data }) => {
+        //         this.returnedProducts = data;
+        //         this.fetchReturnedProducts();
+        //     });
+        // },
 
         editReturnedProduct(returnedProduct) {
             this.editReturnedProduct = { ...returnedProduct };
@@ -143,7 +143,7 @@ export default {
     },
     mounted() {
         this.getReturnedProducts();
-        this.fetchReturnedProducts();
+        // this.fetchReturnedProducts();
     },
 };
 </script>

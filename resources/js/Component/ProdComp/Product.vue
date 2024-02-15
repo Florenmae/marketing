@@ -127,7 +127,7 @@ export default {
             this.editingProductId = product.id;
             this.modalContent.title = "Edit Product";
             this.modalStatus = true;
-            this.getProducts();
+            // this.getProducts();
         },
 
         updateProduct(data) {
@@ -137,7 +137,7 @@ export default {
             axios
                 .post("/update-product", { prodPayload, editingProductId })
                 .then(({ data }) => {
-                    this.getProducts;
+                    // this.getProducts;
                     this.changeModalStatus();
                 })
                 .catch((error) => {

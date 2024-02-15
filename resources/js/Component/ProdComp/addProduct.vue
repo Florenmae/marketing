@@ -139,7 +139,7 @@
                         required=""
                     />
                 </div>
-                <div class="col-span-2">
+                <div class="col-span-4">
                     <label
                         for="image"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
