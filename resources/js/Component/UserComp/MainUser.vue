@@ -101,7 +101,6 @@ export default {
             const userPayload = {
                 ...editedUser,
             };
-
             axios
                 .post("/submit-user", userPayload)
                 .then(({ data }) => {
@@ -120,6 +119,7 @@ export default {
                 .get("/get-users")
                 .then(({ data }) => {
                     this.users = data;
+                    this.getUsers();
                     console.log(data);
                 })
                 .catch((error) => {

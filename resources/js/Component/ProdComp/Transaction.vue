@@ -56,7 +56,7 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr
                             v-for="transaction in transactions"
-                            :key="transactions.id"
+                            :key="transaction.id"
                         >
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
@@ -75,17 +75,17 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{ transactions.quantity }}
+                                    {{ transaction.qty }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{ transactions.description }}
+                                    {{ transaction.description }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{ transactions.created_at }}
+                                    {{ transaction.created_at }}
                                 </div>
                             </td>
 
@@ -105,7 +105,7 @@
                 </table>
             </div>
             <div
-                v-if="transaction && transactions.length === 0"
+                v-if="transactions && transactions.length === 0"
                 class="text-gray-600 mt-4"
             >
                 No transaction recorded.
@@ -115,17 +115,8 @@
 </template>
 
 <script>
-import Modal from "@/Component/Modal.vue";
-import ViewOrder from "@/Component/PosComp/ViewOrder.vue";
-import View from "@/Component/PosComp/View.vue";
-
 export default {
     props: ["transaction"],
-    components: {
-        Modal,
-        ViewOrder,
-        View,
-    },
     data() {
         return {
             transactions: [],
@@ -133,10 +124,11 @@ export default {
             error: null,
             transactionDetails: this.transaction,
             transaction: {
+                id: "",
                 name: "",
                 supplier: "",
                 description: "",
-                quantity: "",
+                qty: "",
             },
         };
     },

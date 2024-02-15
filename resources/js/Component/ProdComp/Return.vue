@@ -103,12 +103,14 @@ export default {
         getReturnedProducts() {
             axios.get("/get-returns").then(({ data }) => {
                 this.returnedProducts = data;
+                this.getReturnedProducts();
             });
         },
 
         fetchReturnedProducts() {
             axios.get("/returned-products").then(({ data }) => {
                 this.returnedProducts = data;
+                this.fetchReturnedProducts();
             });
         },
 

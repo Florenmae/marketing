@@ -316,6 +316,8 @@ export default {
                     const { status, remainingBalance } = response.data;
                     this.cart = [];
                     this.amountGiven = 0;
+                    this.receipt = response.data.receipt;
+                    this.showReceiptModal = true;
                 })
                 .catch((error) => {
                     console.error("Error during checkout:", error);

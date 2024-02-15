@@ -109,11 +109,9 @@ export default {
             const userPayload = {
                 ...editedUser,
             };
-
             axios
                 .post("/submit-user", userPayload)
                 .then(({ data }) => {
-                    
                     this.getUsers();
                     this.changeModalStatus();
                 })

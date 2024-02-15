@@ -202,7 +202,6 @@ export default {
             };
 
             axios.post("/submit-product", prodPayload).then(({ data }) => {
-                this.$router.push("/product");
                 this.getProducts();
             });
         },

@@ -1,6 +1,5 @@
 <template>
     <Layout>
-        <!-- <div class="justify self-end mt-6"><addProduct /></div> -->
         <div class="justify-center w-full">
             <div class="flex justify-between items-end mt-6">
                 <div class="mt-6 mb-6">
@@ -119,14 +118,16 @@ export default {
         getProducts() {
             axios.get("/get-products").then(({ data }) => {
                 this.products = data;
+                // this.getProducts();
             });
         },
+
         editProduct(product) {
             this.editProduct = { ...product };
             this.editingProductId = product.id;
             this.modalContent.title = "Edit Product";
             this.modalStatus = true;
-            this.getProducts;
+            this.getProducts();
         },
 
         updateProduct(data) {
@@ -156,7 +157,7 @@ export default {
             axios
                 .post("/return-product", { prodPayload, editingProductId })
                 .then(({ data }) => {
-                    this.getProducts;
+                    this.getProducts();
                     this.changeModalStatus();
                 })
                 .catch((error) => {

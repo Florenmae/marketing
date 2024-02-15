@@ -104,6 +104,7 @@ export default {
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;
+                this.getCategories();
             });
         },
         editCategory(category) {
