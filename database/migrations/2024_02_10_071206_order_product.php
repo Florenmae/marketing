@@ -14,15 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('order_products', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('order_id')->nullable();
-            $table->string('name')->nullable();
+            $table->id('orderId');
+            $table->string('customerId')->nullable();
+            $table->string('productId')->nullable();
             $table->string('image')->nullable();
             $table->longText('description')->nullable();
             $table->float('price')->nullable();
-            $table->bigInteger('quantity')->nullable();
+            $table->float('qty')->nullable();
             $table->float('total')->nullable();
-            $table->string('paymentMethod')->default('cash');
+            $table->boolean('paymentMethod')->default('1'); //1 for cash 2 credit
             $table->float('balance')->nullable();
             $table->float('changeAmount')->nullable();
             $table->timestamps();

@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             // $table->bigInteger('trans_id')->nullable();
-            $table->string('name')->nullable();
-            $table->string('supplier')->nullable();
+            $table->string('productId')->nullable();
+            $table->string('supplierId')->nullable();
             $table->longText('description')->nullable();
-            $table->bigInteger('quantity')->nullable();
+            $table->float('qty')->nullable();
+            $table->string('approved_by')->nullable();
             $table->timestamps();
         });
     }

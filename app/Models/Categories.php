@@ -10,7 +10,7 @@ class Categories extends Model
 {
     use HasFactory;
     protected  $fillable=[
-        'cat_code',
+        'categoryId',
         'categoryName',
         'product_count'
 
