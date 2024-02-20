@@ -27,7 +27,7 @@
                     <tbody>
                         <tr
                             v-for="category in categories"
-                            :key="category.id"
+                            :key="category.categoryId"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
                             <th
@@ -36,7 +36,7 @@
                             >
                                 {{ category.categoryName }}
                             </th>
-                            <td class="px-16 py-4">{{ category.cat_code }}</td>
+                            <td class="px-16 py-4">{{ category.categoryId }}</td>
                             <td class="px-16 py-4">
                                 {{ category.product_count }}
                             </td>
@@ -44,7 +44,7 @@
                                 <editCategory :category="category" />
                                 <button
                                     class="bg-red-500 px-4 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
-                                    @click="deleteCategory(category.id)"
+                                    @click="deleteCategory(category.categoryId)"
                                 >
                                     Delete
                                 </button>
@@ -59,8 +59,8 @@
 
 <script>
 import Modal from "@/Component/Modal.vue";
-import editCategory from "@/Component/ProdComp/editCategory.vue";
-import addCategory from "@/Component/ProdComp/addCategory.vue";
+import editCategory from "@/Component/Marketing/Inventory/editCategory.vue";
+import addCategory from "@/Component/Marketing/Inventory/addCategory.vue";
 export default {
     components: {
         Modal,
@@ -70,7 +70,7 @@ export default {
     data() {
         return {
             editCategory: {
-                cat_code: "",
+                categoryId: "",
                 categoryName: "",
                 product_count: "",
             },
@@ -104,7 +104,6 @@ export default {
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;
-                this.getCategories();
             });
         },
         editCategory(category) {

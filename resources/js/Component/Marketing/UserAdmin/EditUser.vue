@@ -49,17 +49,16 @@
                     >Select a Role</label
                 >
                 <select
-                    v-model="user.role"
-                    name="role"
-                    id="role"
+                    v-model="user.roleId"
+                    name="roleId"
+                    id="roleId"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Select a role"
                 >
                     <option selected>Choose a role</option>
-                    <option value="admin">admin</option>
-                    <option value="IGP">IGP</option>
-                    <option value="Project">Project</option>
-                    <option value="Employee">Employee</option>
+                    <option value="1">admin</option>
+                    <option value="2">IGP</option>
+                    <option value="3">Project</option>
                 </select>
             </div>
         </div>

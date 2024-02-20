@@ -41,22 +41,21 @@
                 </div>
                 <div class="col-span-2">
                     <label
-                        for="role"
+                        for="roleId"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >Select a Role</label
                     >
                     <select
-                        v-model="editedUser.role"
-                        id="role"
+                        v-model="editedUser.roleId"
+                        id="roleId"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Select a role"
                         required
                     >
                         <option selected>Choose a role</option>
-                        <option value="admin">admin</option>
-                        <option value="IGP">IGP</option>
-                        <option value="Project">Project</option>
-                        <option value="Employee">Employee</option>
+                        <option value="1">admin</option>
+                        <option value="2">IGP</option>
+                        <option value="3">Project</option>
                     </select>
                 </div>
                 <div class="col-span-2 border-red-500">
@@ -91,7 +90,7 @@ export default {
             editedUser: {
                 name: "",
                 email: "",
-                role: "",
+                roleId: "",
                 password: "",
             },
             editingUserId: null,
@@ -109,15 +108,19 @@ export default {
             const userPayload = {
                 ...editedUser,
             };
-            axios
-                .post("/submit-user", userPayload)
-                .then(({ data }) => {
-                    this.getUsers();
-                    this.changeModalStatus();
-                })
-                .catch((error) => {
-                    console.error("Error submitting user:", error);
-                });
+
+            const confirmed = window.confirm(
+                "Are you sure you want to submit this user?"
+            );
+
+            if (confirmed) {
+                axios
+                    .post("/submit-user", userPayload)
+                    .then(({ data }) => {
+                        this.$router.push("/user");
+                        window.location.reload("Reloading");
+                    });
+            }
         },
     },
 };

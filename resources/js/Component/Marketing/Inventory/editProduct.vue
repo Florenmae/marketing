@@ -14,19 +14,26 @@
         <div class="grid gap-4 mb-4 grid-cols-4">
             <div class="col-span-2">
                 <label
-                    for="cat_code"
+                    for="categoryId"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Product Code</label
+                    >Category</label
                 >
-                <input
-                    v-model="product.cat_code"
-                    type="text"
-                    name="cat_code"
-                    id="cat_code"
+                <select
+                    v-model="product.categoryId"
+                    id="categoryId"
+                    name="categoryId"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type the product code"
-                    required=""
-                />
+                    required
+                >
+                    <option value="">Select a category</option>
+                    <option
+                        v-for="category in categories"
+                        :key="category.categoryId"
+                        :value="category.categoryId"
+                    >
+                        {{ category.categoryName }}
+                    </option>
+                </select>
             </div>
             <div class="col-span-2">
                 <label
@@ -35,7 +42,7 @@
                     >Item Code</label
                 >
                 <input
-                    v-model="product.item_code"
+                    v-model="editProduct.item_code"
                     type="text"
                     name="item_code"
                     id="item_code"
@@ -46,15 +53,15 @@
             </div>
             <div class="col-span-2 border-red-500">
                 <label
-                    for="name"
+                    for="productName"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Product Name</label
                 >
                 <input
-                    v-model="product.name"
+                    v-model="editProduct.productName"
                     type="text"
-                    name="name"
-                    id="name"
+                    name="productName"
+                    id="productName"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type product name"
                     required=""
@@ -62,21 +69,21 @@
             </div>
             <div class="col-span-2 border-red-500">
                 <label
-                    for="supplier"
+                    for="supplierId"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Product supplier</label
                 >
                 <select
-                    v-model="product.supplier"
+                    v-model="editProduct.supplierId"
                     type="text"
-                    name="supplier"
-                    id="supplier"
+                    name="supplierId"
+                    id="supplierId"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     required=""
                 >
                     <option selected>Choose a supplier</option>
-                    <option value="IGP">IGP</option>
-                    <option value="Project">Project</option>
+                    <option value="2">IGP</option>
+                    <option value="3">Project</option>
                 </select>
             </div>
             <div class="col-span-2">
@@ -86,12 +93,28 @@
                     >Price</label
                 >
                 <input
-                    v-model="product.price"
+                    v-model="editProduct.price"
                     type="text"
-                    name="price"
                     id="price"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type the product price"
+                    name="price"
+                    required=""
+                />
+            </div>
+            <div class="col-span-2">
+                <label
+                    for="unit"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >unit</label
+                >
+                <input
+                    v-model="editProduct.unit"
+                    type="text"
+                    id="unit"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Select Product Unit"
+                    name="unit"
                     required=""
                 />
             </div>
@@ -102,7 +125,7 @@
                     >Quantity</label
                 >
                 <input
-                    v-model="product.qty"
+                    v-model="editProduct.qty"
                     type="text"
                     name="qty"
                     id="qty"
@@ -111,29 +134,14 @@
                     required=""
                 />
             </div>
-            <div class="col-span-2">
-                <label
-                    for="description"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Description</label
-                >
-                <textarea
-                    v-model="product.description"
-                    type="text"
-                    name="description"
-                    id="description"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                />
-            </div>
-
-            <div class="col-span-2 border-red-500">
+            <!-- <div class="col-span-3 border-red-500">
                 <label
                     for="status"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Product status</label
                 >
                 <select
-                    v-model="product.status"
+                    v-model="editProduct.status"
                     type="text"
                     name="status"
                     id="status"
@@ -141,10 +149,38 @@
                     required=""
                 >
                     <option selected>Choose a status</option>
-                    <option value="pending">Pending Approval</option>
-                    <option value="Approved">Approve</option>
-                    <option value="Rejected">Reject</option>
+                    <option value="0">Pending Approval</option>
+                    <option value="1">Approve</option>
+                    <option value="2">Reject</option>
                 </select>
+            </div> -->
+            <!-- <div class="col-span-6">
+                <label
+                    for="approved_by"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Approved By:</label
+                >
+                <input
+                    v-model="editProduct.approved_by"
+                    type="text"
+                    name="approved_by"
+                    id="approved_by"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                />
+            </div> -->
+            <div class="col-span-4">
+                <label
+                    for="description"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Remarks</label
+                >
+                <textarea
+                    v-model="editProduct.description"
+                    type="text"
+                    name="description"
+                    id="description"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                />
             </div>
         </div>
     </Modal>
@@ -159,16 +195,18 @@ export default {
     },
     data() {
         return {
-            editingProductId: this.product.id,
+            editingProductId: this.product.productId,
             editProduct: {
                 item_code: "",
-                cat_code: "",
+                categoryId: "",
                 name: "",
-                supplier: "",
+                supplierId: "",
                 price: "",
+                unit: "",
                 qty: "",
                 description: "",
-                status: "Pending",
+                status: 0,
+                approved_by: "",
             },
         };
     },
@@ -188,7 +226,10 @@ export default {
 
             axios
                 .post("/update-product", { prodPayload, editingProductId })
-                .then(({ data }) => {})
+                .then(({ data }) => {
+                    prodPayload.approved_by = this.approved_by;
+                    window.location.reload("Reloading");
+                })
                 .catch((error) => {
                     console.error("Error updating product:", error);
                 });
@@ -198,9 +239,15 @@ export default {
                 this.products = data;
             });
         },
+        getCategories() {
+            axios.get("/get-categories").then(({ data }) => {
+                this.categories = data;
+            });
+        },
     },
     mounted() {
         this.getProducts();
+        this.getCategories();
     },
 };
 </script>

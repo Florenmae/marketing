@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('products', function(Blueprint $table){
             $table->id('productId');
-            $table->string('categoryId')->nullable();
+            $table->integer('categoryId')->nullable();
             $table->string('item_code')->nullable();
             $table->string('productName')->nullable();
             $table->string('image')->nullable();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('unit')->nullable();
             $table->float('qty')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('status')->default('1'); //1 accept 2 reject
+            $table->boolean('status')->default('0'); //0 pending 1 accept  2 reject
             $table->timestamps();
         });
     }

@@ -9,6 +9,8 @@ use App\Models\Product;
 class Categories extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'categoryId';
+
     protected  $fillable=[
         'categoryId',
         'categoryName',
@@ -16,14 +18,8 @@ class Categories extends Model
 
     ];
 
-    protected $primarykey = 'cat_code';
-
-    // protected $attributes = [
-    //     'product_count' => 0,
-    // ];
-
     public function products()
     {
-        return $this->hasMany(Product::class, 'cat_code', 'cat_code');
+        return $this->hasMany(Product::class, 'categoryId');
     }
 }

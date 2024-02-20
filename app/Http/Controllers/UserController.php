@@ -13,7 +13,7 @@ class UserController extends Controller
         $newUser = new User();
 
         $newUser->id = $request->id;
-        $newUser->role = $request->role;
+        $newUser->roleId = $request->roleId;
         $newUser->name = $request->name;
         $newUser->email = $request->email;
         $newUser->password = $request->password;
@@ -33,7 +33,7 @@ class UserController extends Controller
 
         $user->name = $request->userPayload["name"];
         $user->email = $request->userPayload["email"];
-        $user->role = $request->userPayload["role"];
+        $user->roleId = $request->userPayload["roleId"];
 
         $user->save();
 

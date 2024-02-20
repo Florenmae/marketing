@@ -52,12 +52,21 @@ Route::post("/update-product", [ProductController::class, 'updateProduct']);
 Route::post("/delete-product", [ProductController::class, 'deleteProduct']);
 Route::post("/upload-image", [ProductController::class, 'uploadImage']);
 Route::post("/return-product", [ProductController::class, 'returnProduct'])->name("returnProduct");
+Route::get("/get-categories", [ProductController::class, 'getCategories']);
+Route::get("/get-suppliers", [ProductController::class, 'getSuppliers']);
+Route::post("/approved-product", [ProductController::class, 'ApprovedProduct']);
 
-Route::post("/submit-return", [ReturnedProductController::class, 'createReturns'])->name("createReturns");
-Route::get("/get-returns", [ReturnedProductController::class, 'getReturnedProducts'])->name("getReturnedProducts");
-Route::get("/returned-products", [ReturnedProductController::class, 'fetchReturnedProducts'])->name("fetchReturnedProducts");
-Route::post("/update-returnedProduct", [ReturnedProductController::class, 'updateReturnedProduct']);
-Route::post("delete-returns",[ReturnedProductController::class,'deleteReturn']);
+// // Route for fetching pending products
+// Route::get('/get-pending-products', [ProductController::class, 'getPendingProducts']);
+
+// // Route for fetching approved products
+// Route::get('/get-approved-products', [ProductController::class, 'getApprovedProducts']);
+
+// Route::post("/submit-return", [ReturnedProductController::class, 'createReturns'])->name("createReturns");
+// Route::get("/get-returns", [ReturnedProductController::class, 'getReturnedProducts'])->name("getReturnedProducts");
+// Route::get("/returned-products", [ReturnedProductController::class, 'fetchReturnedProducts'])->name("fetchReturnedProducts");
+// Route::post("/update-returnedProduct", [ReturnedProductController::class, 'updateReturnedProduct']);
+// Route::post("delete-returns",[ReturnedProductController::class,'deleteReturn']);
 
 //Category
 Route::post("/submit-category", [CategoryController::class, 'createCategory'])->name("createCategory");
@@ -66,18 +75,18 @@ Route::post("/update-category", [CategoryController::class, 'updateCategory']);
 Route::post("/delete-category", [CategoryController::class, 'deleteCategory']);
 
 //POS
-Route::get("/get-products", [PosController::class, 'fetchProducts']);
-Route::get('/fetch-categories', [PosController::class, 'fetchCategories']);
+// Route::get("/get-products", [PosController::class, 'fetchProducts']);
+// Route::get('/fetch-categories', [PosController::class, 'fetchCategories']);
 
-Route::post('/addToCart', [PosController::class, 'addToCart'])->name("addToCart");
-Route::get('/showCartItem', [PosController::class, 'showCartItem']);
-Route::post('/delete-item', [PosController::class, 'deleteItem']);
-Route::post('/checkout', [PosController::class, 'checkout']);
+// Route::post('/addToCart', [PosController::class, 'addToCart'])->name("addToCart");
+// Route::get('/showCartItem', [PosController::class, 'showCartItem']);
+// Route::post('/delete-item', [PosController::class, 'deleteItem']);
+// Route::post('/checkout', [PosController::class, 'checkout']);
 
-Route::get('/fetch-orders', [OrderController::class, 'fetchOrders']);
-Route::get('/view-order', [OrderController::class, 'viewOrder']);
+// Route::get('/fetch-orders', [OrderController::class, 'fetchOrders']);
+// Route::get('/view-order', [OrderController::class, 'viewOrder']);
 
-Route::get('/fetch-transactions', [TransactionController::class, 'fetchTransactions']);
+// Route::get('/fetch-transactions', [TransactionController::class, 'fetchTransactions']);
 
 //
 Route::get('/{vue?}', function(){

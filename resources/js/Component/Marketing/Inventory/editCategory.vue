@@ -14,15 +14,15 @@
         <div class="grid gap-4 mb-4 grid-cols-2">
             <div class="col-span-2 border-red-500">
                 <label
-                    for="cat_code"
+                    for="categoryId"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Category Code</label
                 >
                 <input
-                    v-model="category.cat_code"
+                    v-model="category.categoryId"
                     type="text"
-                    name="cat_code"
-                    id="cat_code"
+                    name="categoryId"
+                    id="categoryId"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 />
             </div>
@@ -53,7 +53,7 @@ export default {
     },
     data() {
         return {
-            editingCategoryId: this.category.id,
+            editingCategoryId: this.category.categoryId,
             editCategory: {
                 cat_code: "",
                 categoryName: "",

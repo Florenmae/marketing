@@ -104,8 +104,8 @@ export default {
                 .then((res) => {
                     if (res.status === 200) {
                         console.log(res);
-                        console.log("User Role:", res.data.role);
-                        if (res.data.role === "admin") {
+                        console.log("User Role:", res.data.roleId);
+                        if (res.data.roleId === "1") {
                             this.$router.push("/home");
                         } else {
                             this.$router.push("/userHome");

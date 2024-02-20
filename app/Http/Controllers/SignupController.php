@@ -17,7 +17,7 @@ class SignupController extends Controller
 
     $user->name = $request->name;
     $user->email = $request->email;
-    $user->role = $request->role;
+    $user->roleId = $request->roleId;
     $user->password = Hash::make($request->password);
 
     $user->save();

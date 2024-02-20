@@ -9,14 +9,14 @@ use Auth;
 
 class LoginController extends Controller
 {
-    //
+    
     public function login(Request $request){
         if(User::where("email",$request->email)->exists()){
             $user = User::where("email",$request->email)->first();
             if(Hash::check($request->password, $user->password)){
                 Auth::login($user);
-                $role = Auth::User()->role;
-                return response()->json(['message' => 'Login Successful', 'role' => $role], 200);
+                $roleId = Auth::User()->roleId;
+                return response()->json(['message' => 'Login Successful', 'roleId' => $roleId], 200);
             }else{
                 return response()->json(['message' => 'Invalid'], 401);
             }

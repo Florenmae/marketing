@@ -249,21 +249,21 @@
                 </div>
             </div>
         </div>
-        <BarGraph />
+        <!-- <BarGraph /> -->
     </Layout>
 </template>
 
 <script>
 import Layout from "../Layout/Layout.vue";
 import Modal from "../Component/Modal.vue";
-import BarGraph from "./UserComp/Graph/BarGraph.vue";
+// import BarGraph from "./UserComp/Graph/BarGraph.vue";
 
 export default {
     props: ["authenticated"],
     components: {
         Layout,
         Modal,
-        BarGraph,
+        // BarGraph,
     },
     data() {
         return {

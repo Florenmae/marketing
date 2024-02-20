@@ -9,8 +9,9 @@ use App\Models\Categories;
 class Product extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'productId';
+
     protected $fillable = [
-        'productId',
         'categoryId',
         'item_code',
         'productName',
@@ -19,6 +20,7 @@ class Product extends Model
         'price',
         'unit',
         'qty',
+        'status',
         'description',
     ];
 
@@ -29,7 +31,12 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Categories::class, 'cat_code');
+        return $this->belongsTo(Categories::class, 'categoryId');
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplierId');
     }
 
     public function returnedProduct()

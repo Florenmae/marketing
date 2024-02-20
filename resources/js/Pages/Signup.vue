@@ -62,19 +62,33 @@
                         </div>
                         <div>
                             <label
-                                for="role"
+                                for="roleId"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                 >Your Role</label
                             >
-                            <input
-                                v-model="role"
-                                type="role"
-                                name="role"
-                                id="role"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="employee"
-                                required=""
-                            />
+                            <!-- <div>
+                                <select v-model="selectedRole">
+                                    <option
+                                        v-for="role in roles"
+                                        :key="role.id"
+                                        :value="role.id"
+                                    >
+                                        {{ role.name }}
+                                    </option>
+                                </select>
+                            </div> -->
+                            <select
+                                v-model="roleId"
+                                type="text"
+                                name="roleId"
+                                id="roleId"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Choose Role"
+                            >
+                                <option value=1>Admin</option>
+                                <option value="2">IGP</option>
+                                <option value="3">Project</option>
+                            </select>
                         </div>
                         <div>
                             <label
@@ -114,18 +128,6 @@
                         >
                             Create an account
                         </button>
-                        <!-- <p
-                            class="text-sm font-light text-gray-500 dark:text-gray-400"
-                        >
-                            Already have an account?
-                            <RouterLink to="/">
-                                <a
-                                    href="#"
-                                    class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                                    >Login here
-                                </a></RouterLink
-                            >
-                        </p> -->
                     </form>
                 </div>
             </div>
@@ -139,15 +141,15 @@ export default {
         return {
             name: "",
             email: "",
-            role: "",
+            roleId: "",
             password: "",
         };
     },
     methods: {
         signup() {
-            const { email, role, password, name } = this;
+            const { email, roleId, password, name } = this;
             axios
-                .post("/signup", { email, role, password, name })
+                .post("/signup", { email, roleId, password, name })
                 .then(({ data }) => {
                     this.$emit("success");
                     this.$router.push("/");

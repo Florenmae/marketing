@@ -36,13 +36,13 @@
                             >
                                 {{ user.name }}
                             </th>
-                            <td class="px-6 py-4">{{ user.role }}</td>
+                            <td class="px-6 py-4">{{ user.roleId }}</td>
                             <td class="px-6 py-4">{{ user.email }}</td>
                             <td class="flex space-x-4 >">
                                 <EditUser :user="user" />
                                 <button
                                     class="bg-red-500 px-4 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
-                                    @click="deleteUser(user.id)"
+                                    @click="promptDeleteUser(user)"
                                 >
                                     Delete
                                 </button>
@@ -66,8 +66,8 @@
 <script>
 import axios from "axios";
 import Modal from "@/Component/Modal.vue";
-import EditUser from "@/Component/UserComp/EditUser.vue";
-import addUser from "@/Component/UserComp/addUser.vue";
+import EditUser from "@/Component/Marketing/UserAdmin/EditUser.vue";
+import addUser from "@/Component/Marketing/UserAdmin/addUser.vue";
 
 export default {
     components: {
@@ -82,7 +82,7 @@ export default {
             editedUser: {
                 name: "",
                 email: "",
-                role: "",
+                roleId: "",
                 password: "",
             },
             editingUserId: null,
@@ -114,12 +114,12 @@ export default {
         changeModalStatus() {
             this.modalStatus = !this.modalStatus;
         },
+
         getUsers() {
             axios
                 .get("/get-users")
                 .then(({ data }) => {
                     this.users = data;
-                    this.getUsers();
                     console.log(data);
                 })
                 .catch((error) => {
@@ -147,6 +147,15 @@ export default {
             this.editingUserId = user.id;
             this.modalContent.title = "Edit User";
             this.modalStatus = true;
+        },
+
+        promptDeleteUser(user) {
+            const confirmed = confirm(
+                "Are you sure you want to delete this user?"
+            );
+            if (confirmed) {
+                this.deleteUser(user.id); 
+            }
         },
 
         deleteUser(id) {
