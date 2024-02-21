@@ -66,19 +66,9 @@
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
                                 <editProduct :product="product" />
-                                <!-- <button
-                                    class="bg-blue-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-blue-700"
-                                    @click="approveProduct(product.productId)"
-                                >
-                                    Approve
-                                </button> -->
-                                <ApprovedProd :approved_product="approved_product"/>
-                                <button
-                                    class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
-                                    @click=""
-                                >
-                                    Return
-                                </button>
+                                <ApprovedProd
+                                    :approveProduct="approveProduct"
+                                />
                                 <addReturn :product="product" />
                             </td>
                         </tr>
@@ -177,6 +167,7 @@ import ApprovedProd from "@/Component/Marketing/inventory/ApprovedProd.vue";
 
 import axios from "axios";
 export default {
+    props: ["approveProduct"],
     components: {
         Modal,
         editProduct,
@@ -254,6 +245,21 @@ export default {
                     if (prodPayload.status === 1) {
                         this.getProducts();
                     }
+                });
+        },
+
+        approveProduct(productId) {
+            axios
+                .get(`/get-product/${productId}`)
+                .then(({ data }) => {
+                    console.log("Product for approval:", data);
+                    this.approveProduct = data;
+                })
+                .catch((error) => {
+                    console.error(
+                        "Error fetching product for approval:",
+                        error
+                    );
                 });
         },
 

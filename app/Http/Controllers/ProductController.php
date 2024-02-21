@@ -57,6 +57,7 @@ class ProductController extends Controller{
 
 
     public function updateProduct(Request $request){
+        dd($request->id);
         $product = Product :: findOrFail($request->editingProductId);
 
         $product->productName = $request->prodPayload["productName"];
@@ -109,7 +110,8 @@ class ProductController extends Controller{
     // }
 
     public function ApprovedProduct(Request $request){
-        $product = Product::find($request->editingProductId);
+        dd($request->editingApprovedProduct);
+        $product = Product::findOrFail($request->editingApprovedProduct);
 
         $product->productName = $request->prodPayload["productName"];
         $product->supplierId = $request->prodPayload["supplierId"];
@@ -117,8 +119,7 @@ class ProductController extends Controller{
         $product->qty = $request->prodPayload["qty"];
         $product->description = $request->prodPayload["description"];
 
-         if ($product->status == 1) {
-
+        if ($product->status == 1) {
             $transaction = new Transaction();
             $transaction->productId = $product->productId;
             $transaction->supplierId = $product->supplierId;
@@ -128,6 +129,8 @@ class ProductController extends Controller{
 
             $transaction->save();
         }
+
+        $product->save();
     }
 
 

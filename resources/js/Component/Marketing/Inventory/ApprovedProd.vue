@@ -1,5 +1,5 @@
 <template>
-    <Modal
+    <Modal1
         :modalContent="{
             title: 'Approve Product',
             content: 'Please check the product details',
@@ -8,31 +8,25 @@
         :buttonLabel="'Approve'"
         :cancelLabel="'Close'"
         :saveLabel="'Approve'"
-        @save="ApprovedProduct"
+        @save="approvedProduct"
         :save-option="true"
     >
         <div class="grid gap-4 mb-4 grid-cols-4">
-            <div class="col-span-2">
+            <div class="col-span-2 border-red-500">
                 <label
-                    for="productId"
+                    for="productName"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Product</label
+                    >Product Name</label
                 >
-                <select
-                    v-model="product.productId"
-                    id="productId"
-                    name="productId"
+                <input
+                    v-model="approveProduct.productName"
+                    type="text"
+                    name="productName"
+                    id="productName"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    required
-                >
-                    <option
-                        v-for="product in products"
-                        :key="product.productId"
-                        :value="product.productId"
-                    >
-                        {{ product.productName }}
-                    </option>
-                </select>
+                    placeholder="Type product name"
+                    required=""
+                />
             </div>
             <div class="col-span-2 border-red-500">
                 <label
@@ -41,7 +35,7 @@
                     >Product supplier</label
                 >
                 <select
-                    v-model="product.supplierId"
+                    v-model="approveProduct.supplierId"
                     type="text"
                     name="supplierId"
                     id="supplierId"
@@ -55,18 +49,37 @@
             </div>
             <div class="col-span-2">
                 <label
+                    for="price"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Price</label
+                >
+                <input
+                    v-model="approveProduct.price"
+                    type="text"
+                    id="price"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Type the product price"
+                    name="price"
+                    required=""
+                />
+            </div>
+            <div class="col-span-2">
+                <label
                     for="qty"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Quantity</label
                 >
                 <input
-                    v-model="product.qty"
+                    v-model="approveProduct.qty"
                     type="text"
                     name="qty"
                     id="qty"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Product Quantity"
+                    required=""
                 />
             </div>
+
             <div class="col-span-4">
                 <label
                     for="approved_by"
@@ -74,7 +87,7 @@
                     >Approved By:</label
                 >
                 <input
-                    v-model="product.approved_by"
+                    v-model="approveProduct.approved_by"
                     type="text"
                     name="approved_by"
                     id="approved_by"
@@ -88,7 +101,7 @@
                     >Remarks</label
                 >
                 <textarea
-                    v-model="product.description"
+                    v-model="description"
                     type="text"
                     name="description"
                     id="description"
@@ -96,46 +109,55 @@
                 />
             </div>
         </div>
-    </Modal>
+    </Modal1>
 </template>
 
 <script>
-import Modal from "@/Component/Modal.vue";
+import Modal1 from "@/Component/Modal.vue";
 export default {
-    props: ["approved_product"],
+    props: ["approvedProduct"],
     components: {
-        Modal,
+        Modal1,
     },
     data() {
         return {
-            editingProductId: this.product.productId,
-            product: {
-                productId: "",
+            editingApprovedProduct: this.approvedProduct
+                ? this.approvedProduct.productId
+                : "",
+            approveProduct: {
+                productId: this.approvedProduct
+                    ? this.approvedProduct.productId
+                    : "",
+                productName: "",
                 supplierId: "",
                 qty: "",
                 description: "",
-                status: 0,
                 approved_by: "",
             },
         };
     },
+
     methods: {
-        ApprovedProduct() {
-            const { product, editingProductId } = this;
-            const prodPayload = { ...product };
+        approvedProduct() {
+            const { approveProduct, editingApprovedProduct } = this;
+            const prodPayload = { ...approveProduct };
 
             axios
-                .post("/approved-product", { prodPayload, editingProductId })
+                .post("/approved-product", {
+                    prodPayload,
+                    editingApprovedProduct: editingApprovedProduct.productId, // Include productId
+                })
                 .then(({ data }) => {
-                    prodPayload.approved_by = this.approved_by;
                     window.location.reload("Reloading");
                 });
         },
+
         getProducts() {
             axios.get("/get-products").then(({ data }) => {
                 this.products = data;
             });
         },
+
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;
@@ -145,6 +167,7 @@ export default {
     mounted() {
         this.getProducts();
         this.getCategories();
+        // this.approveProduct();
     },
 };
 </script>

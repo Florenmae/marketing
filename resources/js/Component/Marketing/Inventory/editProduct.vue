@@ -227,7 +227,7 @@ export default {
             axios
                 .post("/update-product", { prodPayload, editingProductId })
                 .then(({ data }) => {
-                    prodPayload.approved_by = this.approved_by;
+                    // prodPayload.approved_by = this.approved_by;
                     window.location.reload("Reloading");
                 })
                 .catch((error) => {
