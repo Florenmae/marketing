@@ -57,7 +57,6 @@ class ProductController extends Controller{
 
 
     public function updateProduct(Request $request){
-        dd($request->id);
         $product = Product :: findOrFail($request->editingProductId);
 
         $product->productName = $request->prodPayload["productName"];
@@ -110,7 +109,7 @@ class ProductController extends Controller{
     // }
 
     public function ApprovedProduct(Request $request){
-        dd($request->editingApprovedProduct);
+
         $product = Product::findOrFail($request->editingApprovedProduct);
 
         $product->productName = $request->prodPayload["productName"];
@@ -132,6 +131,35 @@ class ProductController extends Controller{
 
         $product->save();
     }
+
+//     public function ApprovedProduct(Request $request){
+//     $product = Product::findOrFail($request->editingApprovedProduct);
+
+//     // Check if the button was clicked
+//     if ($request->approve_button_clicked) {
+
+//         $product->status = 1;
+
+//         $product->save();
+
+//         $transaction = new Transaction();
+//         $transaction->productId = $product->productId;
+//         $transaction->supplierId = $product->supplierId;
+//         $transaction->description = $product->description;
+//         $transaction->qty = $product->qty;
+//         $transaction->approved_by = $request->prodPayload["approved_by"];
+//         $transaction->save();
+//     } else {
+//         $product->productName = $request->prodPayload["productName"];
+//         $product->supplierId = $request->prodPayload["supplierId"];
+//         $product->categoryId = $request->prodPayload["categoryId"];
+//         $product->qty = $request->prodPayload["qty"];
+//         $product->description = $request->prodPayload["description"];
+
+//         $product->save();
+//     }
+// }
+
 
 
     public function returnProduct(Request $request){

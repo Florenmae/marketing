@@ -66,9 +66,7 @@
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
                                 <editProduct :product="product" />
-                                <ApprovedProd
-                                    :approveProduct="approveProduct"
-                                />
+                                <ApprovedProd :approveProduct="product" />
                                 <addReturn :product="product" />
                             </td>
                         </tr>

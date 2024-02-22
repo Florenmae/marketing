@@ -115,24 +115,22 @@
 <script>
 import Modal1 from "@/Component/Modal.vue";
 export default {
-    props: ["approvedProduct"],
+    props: ["approveProduct"],
     components: {
         Modal1,
     },
     data() {
         return {
-            editingApprovedProduct: this.approvedProduct
-                ? this.approvedProduct.productId
-                : "",
+            editingApprovedProduct: this.approveProduct.productId,
+
             approveProduct: {
-                productId: this.approvedProduct
-                    ? this.approvedProduct.productId
-                    : "",
-                productName: "",
-                supplierId: "",
-                qty: "",
-                description: "",
+                productId: this.approveProduct.productId,
+                productName: this.approveProduct.productName,
+                supplierId: this.approveProduct.supplierId,
+                qty: this.approveProduct.qty,
+                description: this.approveProduct.description,
                 approved_by: "",
+                price: this.approveProduct.price,
             },
         };
     },
@@ -142,13 +140,16 @@ export default {
             const { approveProduct, editingApprovedProduct } = this;
             const prodPayload = { ...approveProduct };
 
+            prodPayload.status = 1;
+
             axios
                 .post("/approved-product", {
                     prodPayload,
-                    editingApprovedProduct: editingApprovedProduct.productId, // Include productId
+                    editingApprovedProduct: editingApprovedProduct,
                 })
                 .then(({ data }) => {
                     window.location.reload("Reloading");
+                    this.getProducts();
                 });
         },
 
@@ -168,6 +169,7 @@ export default {
         this.getProducts();
         this.getCategories();
         // this.approveProduct();
+        console.log(this.approveProduct);
     },
 };
 </script>
