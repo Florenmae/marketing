@@ -1,5 +1,5 @@
 <template>
-    <Modal
+    <Modal2
         :modalContent="{
             title: 'Return product',
             content: 'Please enter the product to be returned',
@@ -128,15 +128,15 @@
                 ></textarea>
             </div>
         </div>
-    </Modal>
+    </Modal2>
 </template>
 
 <script>
-import Modal from "@/Component/Modal.vue";
+import Modal2 from "@/Component/Modal2.vue";
 export default {
     props: ["product"],
     components: {
-        Modal,
+        Modal2,
     },
     data() {
         return {
@@ -171,6 +171,7 @@ export default {
             axios
                 .post("/return-product", { prodPayload, editingProductId })
                 .then(({ data }) => {
+                    prodPayload.description = this.description;
                     window.location.reload("Reloading");
                 })
                 .catch((error) => {

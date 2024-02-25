@@ -210,10 +210,10 @@ class ProductController extends Controller{
     }
 
         ReturnedProduct::create([
-            'name' => $returnedProduct->productId,
-            'supplier' => $returnedProduct->supplierId,
+            'productId' => $returnedProduct->productId,
+            'supplierId' => $returnedProduct->supplierId,
             'qty' => $returnedQty,
-            'description' => $returnedProduct->description,
+            'description' => $request->prodPayload["description"]
 
         ]);
 

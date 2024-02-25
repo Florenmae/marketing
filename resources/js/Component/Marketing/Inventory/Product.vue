@@ -145,7 +145,6 @@
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
                                 <editProduct :product="product" />
-                                <Approve :product="product" />
                                 <Return :product="product" />
                             </td>
                         </tr>
@@ -159,7 +158,6 @@
 <script>
 import Modal from "@/Component/Modal.vue";
 import editProduct from "@/Component/Marketing/inventory/editProduct.vue";
-//import ApprovedProd from "@/Component/Marketing/inventory/ApprovedProd.vue";
 import Approve from "@/Component/Marketing/inventory/Approve.vue";
 import Return from "@/Component/Marketing/inventory/Return.vue";
 

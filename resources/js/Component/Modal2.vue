@@ -3,7 +3,7 @@
         <div class="flex items-center justify-center">
             <button
                 @click="isOpen = true"
-                class="bg-green-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
+                class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-red-600"
                 type="button"
                 :class="{ 'cursor-not-allowed': modalContent.disablebtn }"
             >
