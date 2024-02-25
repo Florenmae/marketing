@@ -1,33 +1,17 @@
 <template>
     <Modal
         :modalContent="{
-            title: 'Check product',
-            content: 'Please check the product details',
+            title: 'Return product',
+            content: 'Please enter the product to be returned',
             disablebtn: false,
         }"
-        :buttonLabel="'Check'"
+        :buttonLabel="'Return'"
         :cancelLabel="'Close'"
-        :saveLabel="'Check'"
-        @save="updateProduct"
+        :saveLabel="'Return'"
+        @save="returnProduct"
         :save-option="true"
     >
         <div class="grid gap-4 mb-4 grid-cols-4">
-            <div class="col-span-2">
-                <label
-                    for="categoryId"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Category</label
-                >
-                <input
-                    v-model="editProduct.cat_code"
-                    type="text"
-                    name="categoryId"
-                    id="categoryId"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type the product code"
-                    required=""
-                />
-            </div>
             <div class="col-span-2">
                 <label
                     for="description"
@@ -87,7 +71,7 @@
                 >
                 <input
                     v-model="editProduct.price"
-                    type="number"
+                    type="text"
                     id="price"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type the product price"
@@ -111,7 +95,7 @@
                     required=""
                 />
             </div>
-            <div class="col-span-4">
+            <div class="col-span-2">
                 <label
                     for="qty"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -119,7 +103,7 @@
                 >
                 <input
                     v-model="editProduct.qty"
-                    type="number"
+                    type="text"
                     name="qty"
                     id="qty"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -180,12 +164,12 @@ export default {
         },
     },
     methods: {
-        updateProduct() {
+        returnProduct() {
             const { editProduct, editingProductId } = this;
             const prodPayload = { ...editProduct };
 
             axios
-                .post("/update-product", { prodPayload, editingProductId })
+                .post("/return-product", { prodPayload, editingProductId })
                 .then(({ data }) => {
                     window.location.reload("Reloading");
                 })
@@ -193,6 +177,7 @@ export default {
                     console.error("Error updating product:", error);
                 });
         },
+
         getProducts() {
             axios.get("/get-products").then(({ data }) => {
                 this.products = data;

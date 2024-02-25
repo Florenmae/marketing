@@ -66,8 +66,13 @@
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
                                 <editProduct :product="product" />
-                                <ApprovedProd :approveProduct="product" />
-                                <addReturn :product="product" />
+                                <Approve :product="product" />
+                                <button
+                                    class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
+                                    @click="returnAll(product)"
+                                >
+                                    Return
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -140,13 +145,8 @@
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
                                 <editProduct :product="product" />
-                                <button
-                                    class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
-                                    @click="promptDelete(product)"
-                                >
-                                    Delete
-                                </button>
-                                <addReturn :product="product" />
+                                <Approve :product="product" />
+                                <Return :product="product" />
                             </td>
                         </tr>
                     </tbody>
@@ -159,17 +159,18 @@
 <script>
 import Modal from "@/Component/Modal.vue";
 import editProduct from "@/Component/Marketing/inventory/editProduct.vue";
-import ApprovedProd from "@/Component/Marketing/inventory/ApprovedProd.vue";
-
-// import addReturn from "@/Component/ProdComp/addReturn.vue";
+//import ApprovedProd from "@/Component/Marketing/inventory/ApprovedProd.vue";
+import Approve from "@/Component/Marketing/inventory/Approve.vue";
+import Return from "@/Component/Marketing/inventory/Return.vue";
 
 import axios from "axios";
 export default {
-    props: ["approveProduct"],
+    props: ["product"],
     components: {
         Modal,
         editProduct,
-        ApprovedProd,
+        Approve,
+        Return,
     },
     data() {
         return {
@@ -246,50 +247,23 @@ export default {
                 });
         },
 
-        approveProduct(productId) {
+        // deleteProduct(productId) {
+        //     axios.post("/delete-product", { productId }).then(({ data }) => {
+        //         this.getProducts();
+        //     });
+        // },
+
+        returnAll(product) {
             axios
-                .get(`/get-product/${productId}`)
+                .post("/returnAll-product", { product })
                 .then(({ data }) => {
-                    console.log("Product for approval:", data);
-                    this.approveProduct = data;
+                    window.location.reload("Reloading");
                 })
                 .catch((error) => {
-                    console.error(
-                        "Error fetching product for approval:",
-                        error
-                    );
+                    console.error("Error returning all products:", error);
                 });
         },
 
-        promptDelete(product) {
-            const confirmed = confirm(
-                "Are you sure you want to delete this user?"
-            );
-            if (confirmed) {
-                this.deleteProduct(product.productId);
-            }
-        },
-
-        deleteProduct(productId) {
-            axios.post("/delete-product", { productId }).then(({ data }) => {
-                this.getProducts();
-            });
-        },
-
-        returnProduct(data) {
-            const { editProduct, editingProductId } = this;
-            const prodPayload = { ...editProduct };
-
-            axios
-                .post("/return-product", { prodPayload, editingProductId })
-                .then(({ data }) => {
-                    this.getProducts();
-                    this.changeModalStatus();
-                })
-                .catch((error) => {
-                    console.error("Error updating product:", error);
-                });
-        },
         getCategoryName(categoryId) {
             const category = this.categories.find(
                 (c) => c.categoryId === categoryId

@@ -11,7 +11,7 @@ import EditUser from "@/Component/Marketing/UserAdmin/EditUser.vue";
 import Product from "@/Component/Marketing/Inventory/Product.vue";
 // import ProductList from "@/Component/ProdComp/ProductList.vue";
 import editProduct from "@/Component/Marketing/Inventory/editProduct.vue";
-import ApprovedProd from "@/Component/Marketing/Inventory/ApprovedProd.vue";
+//import ApprovedProd from "@/Component/Marketing/Inventory/ApprovedProd.vue";
 
 // import Transaction from "@/Component/ProdComp/Transaction.vue";
 // import OrderList from "@/Component/ProdComp/OrderList.vue";
@@ -58,7 +58,6 @@ app.component("addUser", addUser);
 app.component("product", Product);
 // app.component("productlist", ProductList);
 app.component("editproduct", editProduct);
-app.component("ApprovedProd", ApprovedProd);
 
 // app.component("transaction", Transaction);
 // app.component("orderlist", OrderList);
