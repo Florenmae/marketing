@@ -36,14 +36,16 @@
                             >
                                 {{ category.categoryName }}
                             </th>
-                            <td class="px-16 py-4">{{ category.categoryId }}</td>
+                            <td class="px-16 py-4">
+                                {{ category.categoryId }}
+                            </td>
                             <td class="px-16 py-4">
                                 {{ category.product_count }}
                             </td>
                             <td class="flex space-x-4">
                                 <editCategory :category="category" />
                                 <button
-                                    class="bg-red-500 px-4 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
+                                    class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-red-600"
                                     @click="deleteCategory(category.categoryId)"
                                 >
                                     Delete

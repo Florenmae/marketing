@@ -1,13 +1,13 @@
 <template>
     <Modal
         :modalContent="{
-            title: 'Check product',
+            title: 'Edit product',
             content: 'Please check the product details',
             disablebtn: false,
         }"
-        :buttonLabel="'Check'"
+        :buttonLabel="'Edit'"
         :cancelLabel="'Close'"
-        :saveLabel="'Check'"
+        :saveLabel="'Save'"
         @save="updateProduct"
         :save-option="true"
     >

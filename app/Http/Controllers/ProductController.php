@@ -100,7 +100,6 @@ class ProductController extends Controller{
         $product->qty = $request->prodPayload["qty"];
         $product->description = $request->prodPayload["description"];
         $product->status = $request->prodPayload["status"];
-        //$product->approved_by = $request->prodPayload["approved_by"];
 
        if ($product->status == 1) {
 
@@ -131,66 +130,6 @@ class ProductController extends Controller{
         return Supplier::all();
 
     }
-
-    // public function deleteProduct(Request $request){
-    //     // dd($request->id);
-    //     $deleteProduct = Product::find($request->productId);
-
-    //     $res = $deleteProduct->delete();
-    //     return $res;
-    // }
-
-    // public function ApprovedProduct(Request $request){
-
-    //     $product = Product::findOrFail($request->editingApprovedProduct);
-
-    //     $product->productName = $request->prodPayload["productName"];
-    //     $product->supplierId = $request->prodPayload["supplierId"];
-    //     $product->categoryId = $request->prodPayload["categoryId"];
-    //     $product->qty = $request->prodPayload["qty"];
-    //     $product->description = $request->prodPayload["description"];
-
-    //     if ($product->status == 1) {
-    //         $transaction = new Transaction();
-    //         $transaction->productId = $product->productId;
-    //         $transaction->supplierId = $product->supplierId;
-    //         $transaction->description = $product->description;
-    //         $transaction->qty = $product->qty;
-    //         $transaction->approved_by = $request->prodPayload["approved_by"];
-
-    //         $transaction->save();
-    //     }
-
-    //     $product->save();
-    // }
-
-//     public function ApprovedProduct(Request $request){
-//     $product = Product::findOrFail($request->editingApprovedProduct);
-
-//     // Check if the button was clicked
-//     if ($request->approve_button_clicked) {
-
-//         $product->status = 1;
-
-//         $product->save();
-
-//         $transaction = new Transaction();
-//         $transaction->productId = $product->productId;
-//         $transaction->supplierId = $product->supplierId;
-//         $transaction->description = $product->description;
-//         $transaction->qty = $product->qty;
-//         $transaction->approved_by = $request->prodPayload["approved_by"];
-//         $transaction->save();
-//     } else {
-//         $product->productName = $request->prodPayload["productName"];
-//         $product->supplierId = $request->prodPayload["supplierId"];
-//         $product->categoryId = $request->prodPayload["categoryId"];
-//         $product->qty = $request->prodPayload["qty"];
-//         $product->description = $request->prodPayload["description"];
-
-//         $product->save();
-//     }
-// }
 
 
 

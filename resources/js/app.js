@@ -9,25 +9,20 @@ import addUser from "@/Component/Marketing/UserAdmin/addUser.vue";
 import EditUser from "@/Component/Marketing/UserAdmin/EditUser.vue";
 
 import Product from "@/Component/Marketing/Inventory/Product.vue";
-// import ProductList from "@/Component/ProdComp/ProductList.vue";
+import ProductList from "@/Component/Marketing/Inventory/ProductList.vue";
 import editProduct from "@/Component/Marketing/Inventory/editProduct.vue";
-//import ApprovedProd from "@/Component/Marketing/Inventory/ApprovedProd.vue";
 
-// import Transaction from "@/Component/ProdComp/Transaction.vue";
-// import OrderList from "@/Component/ProdComp/OrderList.vue";
+
+import Transaction from "@/Component/Marketing/Inventory/Transaction.vue";
+import OrderList from "@/Component/Marketing/Inventory/OrderList.vue";
 
 import Category from "@/Component/Marketing/Inventory/Category.vue";
 import editCategory from "@/Component/Marketing/Inventory/editCategory.vue";
 import addCategory from "@/Component/Marketing/Inventory/addCategory.vue";
 
-// import Return from "@/Component/ProdComp/Return.vue";
-// import editReturn from "@/Component/ProdComp/editReturn.vue";
-// import addReturn from "@/Component/ProdComp/addReturn.vue";
-// import returnForm from "@/Component/ProdComp/returnForm.vue";
-
-// import Pos from "@/Component/PosComp/Pos.vue";
-// import Orders from "@/Component/PosComp/Orders.vue";
-// import ViewOrder from "@/Component/PosComp/ViewOrder.vue";
+import Pos from "@/Component/PosComp/Pos.vue";
+import Orders from "@/Component/PosComp/Orders.vue";
+//import ViewOrder from "@/Component/PosComp/ViewOrder.vue";
 // import View from "@/Component/PosComp/View.vue";
 
 import userHome from "@/Component/userHome.vue";
@@ -56,11 +51,11 @@ app.component("EditUser", EditUser);
 app.component("addUser", addUser);
 
 app.component("product", Product);
-// app.component("productlist", ProductList);
+app.component("productlist", ProductList);
 app.component("editproduct", editProduct);
 
-// app.component("transaction", Transaction);
-// app.component("orderlist", OrderList);
+app.component("transaction", Transaction);
+app.component("orderlist", OrderList);
 
 app.component("category", Category);
 app.component("editcategory", editCategory);
@@ -74,8 +69,8 @@ app.component("addcategory", addCategory);
 app.component("modal", Modal);
 app.component("modal1", Modal1);
 
-// app.component("pos", Pos);
-// app.component("orders", Orders);
+app.component("pos", Pos);
+app.component("orders", Orders);
 // app.component("viewOrder", ViewOrder);
 // app.component("view", View);
 

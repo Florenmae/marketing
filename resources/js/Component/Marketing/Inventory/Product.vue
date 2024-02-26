@@ -232,18 +232,18 @@ export default {
             this.modalStatus = true;
         },
 
-        updateProduct() {
-            const { editProduct, editingProductId } = this;
-            const prodPayload = { ...editProduct };
+        // updateProduct() {
+        //     const { editProduct, editingProductId } = this;
+        //     const prodPayload = { ...editProduct };
 
-            axios
-                .post("/update-product", { prodPayload, editingProductId })
-                .then(({ data }) => {
-                    if (prodPayload.status === 1) {
-                        this.getProducts();
-                    }
-                });
-        },
+        //     axios
+        //         .post("/update-product", { prodPayload, editingProductId })
+        //         .then(({ data }) => {
+        //             if (prodPayload.status === 1) {
+        //                 this.getProducts();
+        //             }
+        //         });
+        // },
 
         // deleteProduct(productId) {
         //     axios.post("/delete-product", { productId }).then(({ data }) => {
