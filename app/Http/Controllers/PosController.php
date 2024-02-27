@@ -27,7 +27,9 @@ class PosController extends Controller
     $productId = $request->input('productId');
     $qty = $request->input('qty', 1);
 
-    $cartItem = Cart::where('productId', $productId)->first();
+    $cartItem = Cart::where('productName', $request->input('productName'))
+                    ->where('price', $request->input('price'))
+                    ->first();
 
     if ($cartItem) {
         $cartItem->qty += $qty;
@@ -42,7 +44,7 @@ class PosController extends Controller
             'price' => $request->input('price'),
             'unit' => $request->input('unit'),
             'description' => $request->input('description'),
-            'total' => $request->input('price') * $quantity,
+            'total' => $request->input('price') * $qty,
             'qty' => $qty,
         ]);
     }
@@ -66,7 +68,7 @@ class PosController extends Controller
     }
 
     public function deleteItem(Request $request){
-        $deleteItem = Cart::find($request->productId);
+        $deleteItem = Cart::find($request->id);
 
         $res = $deleteItem->delete();
         return $res;

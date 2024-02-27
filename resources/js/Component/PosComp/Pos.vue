@@ -115,7 +115,7 @@
                                 -
                             </button>
                             <span class="px-4 py-1 border-t border-b">{{
-                                product.quantity
+                                product.qty
                             }}</span>
                             <button
                                 @click="incrementQuantity(product)"
@@ -130,7 +130,7 @@
                         <span class="text-gray-600"
                             >Total: Php {{ product.total.toFixed(2) }}</span
                         >
-                        <button @click="deleteItem(product.productId)">
+                        <button @click="deleteItem(product.id)">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
@@ -268,27 +268,28 @@ export default {
                     productName: product.productName,
                     image: product.image,
                     price: product.price,
-                    quantity: product.quantity,
+                    qty: 1,
                     description: product.description,
-                    total: product.total,
+                    total: product.price * 1,
                 })
                 .then((data) => {
                     this.showCartItem();
                 });
         },
+
         calculateTotal() {
             return this.cart.reduce((total, product) => {
                 return total + product.total;
             }, 0);
         },
         incrementQuantity(product) {
-            product.quantity = Math.max(1, product.quantity + 1);
-            product.total = product.price * product.quantity;
+            product.qty = Math.max(1, product.qty + 1);
+            product.total = product.price * product.qty;
         },
 
         decrementQuantity(product) {
-            product.quantity = Math.max(1, product.quantity - 1);
-            product.total = product.price * product.quantity;
+            product.qty = Math.max(1, product.qty - 1);
+            product.total = product.price * product.qty;
         },
 
         showCartItem() {
@@ -304,7 +305,7 @@ export default {
                 amountGiven: this.amountGiven,
                 items: this.cart.map((product) => ({
                     productId: product.id,
-                    quantity: product.quantity,
+                    qty: product.qty,
                     price: product.price,
                     total: product.total,
                 })),
