@@ -1,14 +1,14 @@
 <template>
     <Modal
         :modalContent="{
-            title: 'Edit product',
+            title: 'Submit product',
             content: 'Please check the product details',
             disablebtn: false,
         }"
-        :buttonLabel="'Edit'"
+        :buttonLabel="'Submit'"
         :cancelLabel="'Close'"
-        :saveLabel="'Save'"
-        @save="updateProduct"
+        :saveLabel="'Submit'"
+        @save="submitToAdmin"
         :save-option="true"
     >
         <div class="grid gap-4 mb-4 grid-cols-4">
@@ -125,7 +125,7 @@
                     >Quantity</label
                 >
                 <input
-                    v-model="editProduct.qty"
+                    v-model="editProduct.stocks"
                     type="number"
                     name="qty"
                     id="qty"
@@ -188,12 +188,12 @@ export default {
         },
     },
     methods: {
-        updateProduct() {
+        submitToAdmin() {
             const { editProduct, editingProductId } = this;
             const prodPayload = { ...editProduct };
 
             axios
-                .post("/update-product", { prodPayload, editingProductId })
+                .post("/submitToAdmin", { prodPayload, editingProductId })
                 .then(({ data }) => {
                     window.location.reload("Reloading");
                 })

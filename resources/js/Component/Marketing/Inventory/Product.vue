@@ -25,7 +25,9 @@
                                 Product Supplier
                             </th>
                             <th scope="col" class="px-6 py-3">Price</th>
-                            <th scope="col" class="px-6 py-3">Quantity</th>
+                            <th scope="col" class="px-6 py-3">
+                                Stocks Available
+                            </th>
                             <th scope="col" class="px-6 py-3">Description</th>
                             <th scope="col" class="px-6 py-3">Status</th>
                             <th scope="col" class="px-20 py-3">Action</th>
@@ -34,7 +36,7 @@
                     <tbody>
                         <tr
                             v-for="product in pendingProducts"
-                            :key="product.productId"
+                            :key="product.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
                             <td class="px-6 py-4">
@@ -48,7 +50,7 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ product.productName }}
+                                {{ product.name }}
                             </th>
                             <td class="px-6 py-4">
                                 <p>{{ getCategoryName(product.categoryId) }}</p>
@@ -56,10 +58,10 @@
                             <td class="px-6 py-4">{{ product.item_code }}</td>
 
                             <td class="px-6 py-4">
-                                <p>{{ product.supplierId }}</p>
+                                <p>{{ getSupplierName(product.userId) }}</p>
                             </td>
                             <td class="px-6 py-4">{{ product.price }}</td>
-                            <td class="px-6 py-4">{{ product.qty }}</td>
+                            <td class="px-6 py-4">{{ product.stocks }}</td>
                             <td class="px-6 py-4">{{ product.description }}</td>
                             <td class="px-6 py-4">{{ product.status }}</td>
                             <td
@@ -104,7 +106,9 @@
                                 Product Supplier
                             </th>
                             <th scope="col" class="px-6 py-3">Price</th>
-                            <th scope="col" class="px-6 py-3">Quantity</th>
+                            <th scope="col" class="px-6 py-3">
+                                Stocks Availabel
+                            </th>
                             <th scope="col" class="px-6 py-3">Description</th>
                             <th scope="col" class="px-6 py-3">Status</th>
                             <th scope="col" class="px-20 py-3">Action</th>
@@ -113,7 +117,7 @@
                     <tbody>
                         <tr
                             v-for="product in approvedProducts"
-                            :key="product.productId"
+                            :key="product.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
                             <td class="px-6 py-4">
@@ -127,7 +131,7 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ product.productName }}
+                                {{ product.name }}
                             </th>
                             <td class="px-6 py-4">
                                 <p>{{ getCategoryName(product.categoryId) }}</p>
@@ -135,10 +139,10 @@
                             <td class="px-6 py-4">{{ product.item_code }}</td>
 
                             <td class="px-6 py-4">
-                                <p>{{ product.supplierId }}</p>
+                                <p>{{ getSupplierName(product.userId) }}</p>
                             </td>
                             <td class="px-6 py-4">{{ product.price }}</td>
-                            <td class="px-6 py-4">{{ product.qty }}</td>
+                            <td class="px-6 py-4">{{ product.stocks }}</td>
                             <td class="px-6 py-4">{{ product.description }}</td>
                             <td class="px-6 py-4">{{ product.status }}</td>
                             <td
@@ -176,19 +180,19 @@ export default {
             approvedProducts: [],
             editProduct: {
                 item_code: "",
-                productId: "",
                 name: "",
-                supplierId: "",
+                userId: "",
                 price: "",
-                qty: "",
+                stocks: "",
                 description: "",
                 status: 0,
             },
-            suppliers: [],
+            users: [],
             products: [],
             categories: [],
             editingProductId: null,
             modalStatus: false,
+            roles: [],
         };
     },
     methods: {
@@ -219,9 +223,9 @@ export default {
             });
         },
 
-        getSuppliers() {
-            axios.get("/get-suppliers").then(({ data }) => {
-                this.suppliers = data;
+        getUsers() {
+            axios.get("/get-users").then(({ data }) => {
+                this.users = data;
             });
         },
 
@@ -231,25 +235,6 @@ export default {
             this.modalContent.title = "Edit Product";
             this.modalStatus = true;
         },
-
-        // updateProduct() {
-        //     const { editProduct, editingProductId } = this;
-        //     const prodPayload = { ...editProduct };
-
-        //     axios
-        //         .post("/update-product", { prodPayload, editingProductId })
-        //         .then(({ data }) => {
-        //             if (prodPayload.status === 1) {
-        //                 this.getProducts();
-        //             }
-        //         });
-        // },
-
-        // deleteProduct(productId) {
-        //     axios.post("/delete-product", { productId }).then(({ data }) => {
-        //         this.getProducts();
-        //     });
-        // },
 
         returnAll(product) {
             axios
@@ -263,25 +248,22 @@ export default {
         },
 
         getCategoryName(categoryId) {
-            const category = this.categories.find(
-                (c) => c.categoryId === categoryId
-            );
-            return category.categoryName;
+            const category = this.categories.find((c) => c.id === categoryId);
+            return category ? category.name : "Unknown Category";
         },
 
-        // getSupplierName(supplierId) {
-        //     const supplier = this.suppliers.find(
-        //         (c) => c.supplierId === supplierId
-        //     );
-        //     return supplier.supplierName;
-        // },
+        getSupplierName(userId) {
+            userId = Number(userId);
+            const user = this.users.find((user) => user.id === userId);
+            return user ? user.name : "Unknown User";
+        },
     },
     computed: {
         pendingProducts() {
-            return this.products.filter((product) => product.status === 0);
+            return this.products.filter((product) => product.status === 2);
         },
         approvedProducts() {
-            return this.products.filter((product) => product.status === 1);
+            return this.products.filter((product) => product.status === 3);
         },
     },
     mounted() {
@@ -289,7 +271,7 @@ export default {
         this.getApprovedProducts();
         this.getPendingProducts();
         this.getCategories();
-        this.getSuppliers();
+        this.getUsers();
     },
 };
 </script>

@@ -39,12 +39,12 @@ export default {
     },
     data() {
         return {
-            editingProductId: this.product.productId,
+            editingProductId: this.product.id,
             editProduct: {
                 item_code: "",
                 categoryId: "",
                 name: "",
-                supplierId: "",
+                userId: "",
                 price: "",
                 unit: "",
                 qty: "",
@@ -66,7 +66,7 @@ export default {
     methods: {
         updateProduct() {
             const { editProduct, editingProductId } = this;
-            const prodPayload = { ...editProduct, status: 1 };
+            const prodPayload = { ...editProduct, status: 3 };
 
             axios
                 .post("/update-product", { prodPayload, editingProductId })

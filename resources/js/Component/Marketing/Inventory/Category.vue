@@ -27,17 +27,17 @@
                     <tbody>
                         <tr
                             v-for="category in categories"
-                            :key="category.categoryId"
+                            :key="category.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
                             <th
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ category.categoryName }}
+                                {{ category.name }}
                             </th>
                             <td class="px-16 py-4">
-                                {{ category.categoryId }}
+                                {{ category.id }}
                             </td>
                             <td class="px-16 py-4">
                                 {{ category.product_count }}
@@ -46,7 +46,7 @@
                                 <editCategory :category="category" />
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-red-600"
-                                    @click="deleteCategory(category.categoryId)"
+                                    @click="deleteCategory(category.id)"
                                 >
                                     Delete
                                 </button>
@@ -72,7 +72,7 @@ export default {
     data() {
         return {
             editCategory: {
-                categoryId: "",
+                id: "",
                 categoryName: "",
                 product_count: "",
             },

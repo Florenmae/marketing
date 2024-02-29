@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             // $table->bigInteger('trans_id')->nullable();
             $table->string('productId')->nullable();
-            $table->string('supplierId')->nullable();
-            $table->longText('description')->nullable();
+            $table->string('userId')->nullable();
+            $table->boolean('paymentType')->default('1');
             $table->float('qty')->nullable();
-            $table->string('approved_by')->nullable();
+            $table->float('stocks')->nullable();
+            // $table->string('approved_by')->nullable();
             $table->timestamps();
         });
     }

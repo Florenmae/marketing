@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->string('customerName')->nullable();
+            $table->string('customerId')->nullable();
             $table->string('productId')->nullable();
             $table->string('productName')->nullable();
             $table->string('image')->nullable();

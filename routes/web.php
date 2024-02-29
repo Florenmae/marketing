@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReturnedProductController;
+use App\Http\Controllers\ProductUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,8 +55,12 @@ Route::post("/upload-image", [ProductController::class, 'uploadImage']);
 Route::post("/return-product", [ProductController::class, 'returnProduct'])->name("returnProduct");
 Route::post("/returnAll-product", [ProductController::class, 'ReturnAll'])->name("ReturnAll");
 Route::get("/get-categories", [ProductController::class, 'getCategories']);
-Route::get("/get-suppliers", [ProductController::class, 'getSuppliers']);
-//Route::post("/approved-product", [ProductController::class, 'ApprovedProduct']);
+Route::get("/get-users", [ProductController::class, 'getUsers']);
+Route::get("/get-role", [ProductController::class, 'getRoles']);
+
+Route::get("/get-productsUser", [ProductUserController::class, 'getProductsUser']);
+Route::post("/submitToAdmin", [ProductUserController::class, 'SubmitAdmin']);
+
 
 // // Route for fetching pending products
 // Route::get('/get-pending-products', [ProductController::class, 'getPendingProducts']);

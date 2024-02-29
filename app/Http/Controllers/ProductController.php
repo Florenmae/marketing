@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Supplier;
+use App\Models\User;
+use App\Models\Role;
 use App\Models\Categories;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -14,13 +15,13 @@ class ProductController extends Controller{
     public function createProduct(Request $request) {
 
     $categories = Categories::all();
-    $categoryId = $request->input('categoryId');
+    $categoryId = $request->input('id');
 
     $newProduct = new Product();
     $newProduct->categoryId = $categoryId;
     $newProduct->productName = $request->input('productName');
     $newProduct->image = $request->input('image');
-    $newProduct->supplierId = $request->input('supplierId');
+    $newProduct->userId = $request->input('userId');
     $newProduct->item_code = $request->input('item_code');
     $newProduct->price = $request->input('price');
     $newProduct->unit = $request->input('unit');
@@ -45,69 +46,48 @@ class ProductController extends Controller{
 
 
 
+//     public function getProducts($status = null) {
+//     if ($status === 'pending') {
+//         return Product::where('status', 0)->get();
+//     } elseif ($status === 'approved') {
+//         return Product::where('status', 1)->get();
+//     } else {
+//         return Product::all();
+//     }
+// }
+
     public function getProducts($status = null) {
-    if ($status === 'pending') {
-        return Product::where('status', 0)->get();
-    } elseif ($status === 'approved') {
-        return Product::where('status', 1)->get();
-    } else {
-        return Product::all();
+        if ($status === 'pending') {
+            return Product::where('status', 2)->get();
+        } elseif ($status === 'approved') {
+            return Product::where('status', 3)->get();
+        } elseif ($status === 'returned') {
+            return Product::where('status', 4)->get();
+        } 
     }
-}
-
-
-    // public function updateProduct(Request $request){
-    //     $product = Product :: findOrFail($request->editingProductId);
-
-    //     $product->productName = $request->prodPayload["productName"];
-    //     $product->supplierId = $request->prodPayload["supplierId"];
-    //     $product->categoryId = $request->prodPayload["categoryId"];
-    //     $product->item_code = $request->prodPayload["item_code"];
-    //     $product->price = $request->prodPayload["price"];
-    //     $product->unit = $request->prodPayload["unit"];
-    //     $product->qty = $request->prodPayload["qty"];
-    //     $product->description = $request->prodPayload["description"];
-
-
-
-    // //    if ($product->status == 1) {
-
-    // //         $transaction = new Transaction();
-    // //         $transaction->productId = $product->productId;
-    // //         $transaction->supplierId = $product->supplierId;
-    // //         $transaction->description = $product->description;
-    // //         $transaction->qty = $product->qty;
-    // //         $transaction->approved_by = $request->prodPayload["approved_by"];
-
-    // //         $transaction->save();
-    // //     }
-
-    //     $product->save();
-
-    //     return $product;
-
-    // }
 
     public function updateProduct(Request $request){
         $product = Product :: findOrFail($request->editingProductId);
 
-        $product->productName = $request->prodPayload["productName"];
-        $product->supplierId = $request->prodPayload["supplierId"];
+        $product->name = $request->prodPayload["name"];
+        $product->userId = $request->prodPayload["userId"];
         $product->categoryId = $request->prodPayload["categoryId"];
         $product->item_code = $request->prodPayload["item_code"];
         $product->price = $request->prodPayload["price"];
         $product->unit = $request->prodPayload["unit"];
-        $product->qty = $request->prodPayload["qty"];
+        $product->stocks = $request->prodPayload["stocks"];
         $product->description = $request->prodPayload["description"];
         $product->status = $request->prodPayload["status"];
+        $product->approved_by = $request->prodPayload["approved_by"];
 
-       if ($product->status == 1) {
+       if ($product->status == 3) {
 
             $transaction = new Transaction();
-            $transaction->productId = $product->productId;
-            $transaction->supplierId = $product->supplierId;
-            $transaction->description = $product->description;
-            $transaction->qty = $product->qty;
+            $transaction->productId = $product->id;
+            $transaction->userId = $product->userId;
+            $transaction->type= $product->type;
+            $transaction->qty = $product->stocks;
+            $transaction->stocks = $product->stocks;
             $transaction->approved_by = $request->prodPayload["approved_by"];
 
             $transaction->save();
@@ -125,13 +105,11 @@ class ProductController extends Controller{
 
     }
 
-    public function getSuppliers()
+    public function getUsers()
     {
-        return Supplier::all();
+         return User::where('id', '!=', '1')->get();
 
     }
-
-
 
     public function returnProduct(Request $request){
         $returnedProduct = Product::find($request->editingProductId);

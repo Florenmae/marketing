@@ -54,7 +54,7 @@
                                 {{ product.productName }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ (product.categoryId) }}
+                                {{ product.categoryId }}
                             </td>
                             <td class="px-6 py-4">{{ product.item_code }}</td>
                             <td class="px-6 py-4">
@@ -62,12 +62,13 @@
                             </td>
                             <td class="px-6 py-4">{{ product.price }}</td>
                             <td class="px-6 py-4">{{ product.unit }}</td>
-                            <td class="px-6 py-4">{{ product.qty }}</td>
+                            <td class="px-6 py-4">{{ product.stocks }}</td>
                             <td class="px-6 py-4">{{ product.description }}</td>
                             <td class="px-6 py-4">{{ product.status }}</td>
                             <td
-                                class="px-6 py-4 flex justify-center items-center"
+                                class="space-x-2 px-6 py-4 flex justify-center items-center"
                             >
+                                <SendToAdmin :product="product" />
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
                                     @click="promptDelete(product)"
@@ -86,6 +87,7 @@
 <script>
 import Modal from "@/Component/Modal.vue";
 import addProduct from "@/Component/User/UserInventory/addProduct.vue";
+import SendToAdmin from "@/Component/User/UserInventory/SendToAdmin.vue";
 
 import axios from "axios";
 import UserLayout from "../../../Layout/userLayout.vue";
@@ -94,6 +96,7 @@ export default {
         Modal,
         addProduct,
         UserLayout,
+        SendToAdmin,
     },
     data() {
         return {
@@ -119,7 +122,7 @@ export default {
         },
 
         getProducts() {
-            axios.get("/get-products").then(({ data }) => {
+            axios.get("/get-productsUser").then(({ data }) => {
                 this.products = data;
             });
         },

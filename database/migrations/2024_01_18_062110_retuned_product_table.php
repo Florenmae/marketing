@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('returned_Products', function(Blueprint $table){
             $table->id();
             $table->string('productId')->nullable();
-            $table->string('supplierId')->nullable();
+            $table->string('userId')->nullable();
             $table->float('qty')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();

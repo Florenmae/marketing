@@ -13,8 +13,8 @@ class CategoryController extends Controller
     public function createCategory(Request $request){
         $newCategory = new Categories();
 
-        $newCategory->categoryId = $request->categoryId;
-        $newCategory->categoryName = $request->categoryName;
+        $newCategory->id = $request->id;
+        $newCategory->name = $request->name;
 
         $res = $newCategory->save();
 
@@ -26,7 +26,7 @@ class CategoryController extends Controller
             'products as product_count' => function (Builder $query) {
                 $query->select(DB::raw('count(*)'))
                       ->from('products')
-                      ->whereColumn('products.categoryId', '=', 'categories.categoryId');
+                      ->whereColumn('products.id', '=', 'categories.id');
             }
         ])->get();
 
@@ -36,8 +36,7 @@ class CategoryController extends Controller
     public function updateCategory(Request $request){
         $category = Categories :: findOrFail($request->editingCategoryId);
 
-        $category->categoryId = $request->catPayload["categoryId"];
-        $category->categoryName = $request->catPayload["categoryName"];
+        $category->name = $request->catPayload["name"];
 
         $category->save();
 
@@ -47,7 +46,7 @@ class CategoryController extends Controller
 
     public function deleteCategory(Request $request){
         // dd($request->id);
-        $deleteCategory = Categories::find($request->categoryId);
+        $deleteCategory = Categories::find($request->id);
 
         $res = $deleteCategory->delete();
         return $res;

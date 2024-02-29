@@ -9,7 +9,6 @@ use App\Models\Product;
 class Categories extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'categoryId';
 
     protected  $fillable=[
         'categoryId',

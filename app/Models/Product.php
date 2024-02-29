@@ -9,34 +9,34 @@ use App\Models\Categories;
 class Product extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'productId';
 
     protected $fillable = [
         'categoryId',
         'item_code',
         'productName',
         'image',
-        'supplierId',
+        'userId',
         'price',
         'unit',
         'qty',
         'status',
         'description',
+        'approved_by'
     ];
 
-    public function scopeRecent($query, $limit = 5)
-    {
-        return $query->orderBy('created_at', 'description')->limit($limit);
-    }
+    // public function scopeRecent($query, $limit = 5)
+    // {
+    //     return $query->orderBy('created_at', 'description')->limit($limit);
+    // }
 
     public function category()
     {
-        return $this->belongsTo(Categories::class, 'categoryId');
+        return $this->belongsTo(Categories::class, 'id');
     }
 
-    public function supplier()
+    public function user()
     {
-        return $this->belongsTo(Supplier::class, 'supplierId');
+        return $this->belongsTo(User::class, 'id');
     }
 
     public function returnedProduct()

@@ -9,7 +9,11 @@ class Role extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'roleId',
-        'roleName',
+        'name',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'userId');
+    }
 }

@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('order_cart', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('ordernumber')->nullable();
-            $table->float('total')->nullable();
-            $table->string('customername')->nullable();
-            $table->string('customerphone')->nullable();
+            $table->bigInteger('orderId')->nullable();
+            $table->string('productId')->nullable();
+            $table->float('qty')->nullable();
             $table->timestamps();
         });
     }

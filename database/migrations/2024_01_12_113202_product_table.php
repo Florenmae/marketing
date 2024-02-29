@@ -15,15 +15,16 @@ return new class extends Migration
         Schema::create('products', function(Blueprint $table){
             $table->id();
             $table->integer('categoryId')->nullable();
+            $table->string('user_id')->nullable();
             $table->string('item_code')->nullable();
-            $table->string('productName')->nullable();
+            $table->string('name')->nullable();
             $table->string('image')->nullable();
-            $table->string('supplierId')->nullable();
             $table->float('price')->nullable();
             $table->string('unit')->nullable();
             $table->float('qty')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('status')->default('0'); //0 pending 1 accept  2 reject
+            $table->boolean('status')->default('1'); //0 pending 1 accept  2 reject
+            $table->string('approved_by'); 
             $table->timestamps();
         });
     }
