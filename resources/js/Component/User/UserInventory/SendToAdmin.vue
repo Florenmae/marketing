@@ -176,6 +176,7 @@ export default {
                 status: 0,
             },
             categories: [],
+            submittedProducts: [],
         };
     },
     watch: {

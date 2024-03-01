@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+      Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            $table->string('customerName')->nullable();
-            $table->string('contactNum')->nullable();
+            $table->string('userId')->nullable();
+            $table->string('transactionId')->nullable();
+            $table->string('deliverTo')->nullable();
+            $table->text('remarks')->nullable();
+            $table->boolean('status')->default('1'); 
             $table->timestamps();
-        });
+        });  
     }
 
     /**

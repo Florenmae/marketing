@@ -23,12 +23,9 @@
                             <th scope="col" class="px-6 py-3">Product Name</th>
                             <th scope="col" class="px-6 py-3">Category</th>
                             <th scope="col" class="px-6 py-3">Item Code</th>
-                            <th scope="col" class="px-6 py-3">
-                                Product Supplier
-                            </th>
                             <th scope="col" class="px-6 py-3">Price</th>
                             <th scope="col" class="px-6 py-3">Unit</th>
-                            <th scope="col" class="px-6 py-3">Quantity</th>
+                            <th scope="col" class="px-6 py-3">Stocks</th>
                             <th scope="col" class="px-6 py-3">Description</th>
                             <th scope="col" class="px-6 py-3">Status</th>
                             <th scope="col" class="px-20 py-3">Action</th>
@@ -44,33 +41,62 @@
                                 <img
                                     :src="product.image"
                                     alt="Product Image"
-                                    class="w-34 h-auto rounded-lg"
+                                    class="w-20 h-20 rounded-lg"
                                 />
                             </td>
                             <th
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ product.productName }}
+                                {{ product.name }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ product.categoryId }}
+                                {{ getCategoryName(product.categoryId) }}
                             </td>
                             <td class="px-6 py-4">{{ product.item_code }}</td>
-                            <td class="px-6 py-4">
-                                {{ product.supplierId }}
-                            </td>
                             <td class="px-6 py-4">{{ product.price }}</td>
                             <td class="px-6 py-4">{{ product.unit }}</td>
                             <td class="px-6 py-4">{{ product.stocks }}</td>
                             <td class="px-6 py-4">{{ product.description }}</td>
-                            <td class="px-6 py-4">{{ product.status }}</td>
-                            <td
-                                class="space-x-2 px-6 py-4 flex justify-center items-center"
-                            >
-                                <SendToAdmin :product="product" />
+                            <td class="px-6 py-4">
+                                <p
+                                    v-if="product.status === 1"
+                                    class="px-2 py-2 font-medium text-gray-500 my-2 text-sm"
+                                >
+                                    Unlisted
+                                </p>
+                                <p
+                                    v-if="product.status === 2"
+                                    class="px-2 py-2 font-medium text-blue-500 my-2 text-sm"
+                                >
+                                    Pending
+                                </p>
                                 <button
-                                    class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
+                                    v-if="product.status === 3"
+                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                >
+                                    Approved
+                                </button>
+                            </td>
+                            <td
+                                class="space-x-2 px-6 py-6 flex justify-center items-center"
+                            >
+                                <button
+                                    v-if="
+                                        product.status !== 2 &&
+                                        product.status !== 3 &&
+                                        product.status !== 4
+                                    "
+                                >
+                                    <SendToAdmin
+                                        :product="product"
+                                        @productSubmitted="
+                                            productSubmittedHandler
+                                        "
+                                    />
+                                </button>
+                                <button
+                                    class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-red-600"
                                     @click="promptDelete(product)"
                                 >
                                     Delete
@@ -112,6 +138,7 @@ export default {
                 status: "",
             },
             products: [],
+            categories: [],
             editingProductId: null,
             modalStatus: false,
         };
@@ -163,15 +190,20 @@ export default {
                 this.getProducts();
             });
         },
-        // getCategoryName(categoryId) {
-        //     const category = this.categories.find(
-        //         (c) => c.categoryId === categoryId
-        //     );
-        //     return category.categoryName;
-        // },
+        getCategories() {
+            axios.get("/get-categories").then(({ data }) => {
+                this.categories = data;
+            });
+        },
+        getCategoryName(categoryId) {
+            const category = this.categories.find((c) => c.id === categoryId);
+            return category ? category.name : "Unknown Category";
+        },
     },
+
     mounted() {
         this.getProducts();
+        this.getCategories();
     },
 };
 </script>

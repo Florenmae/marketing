@@ -29,8 +29,9 @@ class ProductUserController extends Controller
     $product->unit = $request->prodPayload["unit"];
     $product->stocks = $request->prodPayload["stocks"];
     $product->description = $request->prodPayload["description"];
-    $product->status = 2; // Set the status to 'pending' (status code 2)
+    $product->status = 2; 
     $product->approved_by = $request->prodPayload["approved_by"];
+
 
     if ($product->status == 3) {
 
@@ -49,6 +50,12 @@ class ProductUserController extends Controller
 
     return $product;
 }
+
+    public function getCategories()
+        {
+            return Categories::all();
+
+        }
 
 
 }
