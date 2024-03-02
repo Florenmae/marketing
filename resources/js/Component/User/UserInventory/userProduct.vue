@@ -71,12 +71,30 @@
                                 >
                                     Pending
                                 </p>
-                                <button
+                                <p
                                     v-if="product.status === 3"
                                     class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
                                 >
                                     Approved
-                                </button>
+                                </p>
+                                <p
+                                    v-if="product.status === 4"
+                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                >
+                                    Out for Delivery
+                                </p>
+                                <p
+                                    v-if="product.status === 5"
+                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                >
+                                    Delivered
+                                </p>
+                                <p
+                                    v-if="product.status === 6"
+                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                >
+                                    Returned
+                                </p>
                             </td>
                             <td
                                 class="space-x-2 px-6 py-6 flex justify-center items-center"
@@ -85,7 +103,9 @@
                                     v-if="
                                         product.status !== 2 &&
                                         product.status !== 3 &&
-                                        product.status !== 4
+                                        product.status !== 4 &&
+                                        product.status !== 5 &&
+                                        product.status !== 6
                                     "
                                 >
                                     <SendToAdmin
@@ -94,6 +114,21 @@
                                             productSubmittedHandler
                                         "
                                     />
+                                </button>
+                                <!-- <button
+                                    v-if="product.status === 3"
+                                    class="bg-blue-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-blue-600"
+                                    @click="deliverProduct(product)"
+                                >
+                                    Deliver
+                                </button> -->
+                                <button v-if="product.status === 3">
+                                    <Deliver
+                                        :product="product"
+                                        @productSubmitted="
+                                            productSubmittedHandler
+                                        "
+                                    ></Deliver>
                                 </button>
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-red-600"
@@ -114,6 +149,7 @@
 import Modal from "@/Component/Modal.vue";
 import addProduct from "@/Component/User/UserInventory/addProduct.vue";
 import SendToAdmin from "@/Component/User/UserInventory/SendToAdmin.vue";
+import Deliver from "@/Component/User/UserInventory/Deliver.vue";
 
 import axios from "axios";
 import UserLayout from "../../../Layout/userLayout.vue";
@@ -123,6 +159,7 @@ export default {
         addProduct,
         UserLayout,
         SendToAdmin,
+        Deliver,
     },
     data() {
         return {
@@ -183,6 +220,12 @@ export default {
             if (confirmed) {
                 this.deleteProduct(product.productId);
             }
+        },
+
+        deliverProduct(product) {
+            axios.post("/deliver", { id: product.id }).then(({ data }) => {
+                this.getProducts();
+            });
         },
 
         deleteProduct(productId) {

@@ -88,7 +88,6 @@ class ProductController extends Controller{
             $transaction->type= $product->type;
             $transaction->qty = $product->stocks;
             $transaction->stocks = $product->stocks;
-            $transaction->approved_by = $request->prodPayload["approved_by"];
 
             $transaction->save();
         }
@@ -110,6 +109,13 @@ class ProductController extends Controller{
          return User::where('id', '!=', '1')->get();
 
     }
+
+    // public function Received(Product $product)
+    // {
+    //     $product->status = 5;
+    //     $product->save();
+    //     return $product;
+    // }
 
     public function returnProduct(Request $request){
         $returnedProduct = Product::find($request->editingProductId);

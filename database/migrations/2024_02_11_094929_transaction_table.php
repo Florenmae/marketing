@@ -16,7 +16,7 @@ return new class extends Migration
             // $table->bigInteger('trans_id')->nullable();
             $table->string('productId')->nullable();
             $table->string('userId')->nullable();
-            $table->boolean('paymentType')->default('1');
+            $table->boolean('paymentType')->nullable();
             $table->float('qty')->nullable();
             $table->float('stocks')->nullable();
             // $table->string('approved_by')->nullable();

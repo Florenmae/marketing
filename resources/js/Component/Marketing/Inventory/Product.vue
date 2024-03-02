@@ -85,7 +85,7 @@
                 <div class="mt-6 mb-6">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
-                        >Product List</span
+                        >Out For Delivery</span
                     >
                 </div>
             </div>
@@ -116,7 +116,7 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="product in approvedProducts"
+                            v-for="product in outForDelivery"
                             :key="product.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
@@ -148,7 +148,14 @@
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
-                                <editProduct :product="product" />
+                                <!-- <editProduct :product="product" /> -->
+                                <!-- <button
+                                    class="bg-blue-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-blue-600"
+                                    @click="updateProduct"
+                                >
+                                    Receive
+                                </button> -->
+                                <Receive :product="product" />
                                 <Return :product="product" />
                             </td>
                         </tr>
@@ -164,8 +171,10 @@ import Modal from "@/Component/Modal.vue";
 import editProduct from "@/Component/Marketing/inventory/editProduct.vue";
 import Approve from "@/Component/Marketing/inventory/Approve.vue";
 import Return from "@/Component/Marketing/inventory/Return.vue";
+import Receive from "@/Component/Marketing/inventory/Receive.vue";
 
 import axios from "axios";
+
 export default {
     props: ["product"],
     components: {
@@ -173,11 +182,13 @@ export default {
         editProduct,
         Approve,
         Return,
+        Receive,
     },
     data() {
         return {
             pendingProducts: [],
             approvedProducts: [],
+            outForDelivery: [],
             editProduct: {
                 item_code: "",
                 name: "",
@@ -206,16 +217,16 @@ export default {
             });
         },
 
-        getPendingProducts() {
-            axios.get("/get-products?status=0").then(({ data }) => {
-                this.pendingProducts = data;
-            });
-        },
-        getApprovedProducts() {
-            axios.get("/get-products?status=1").then(({ data }) => {
-                this.approvedProducts = data;
-            });
-        },
+        // getPendingProducts() {
+        //     axios.get("/get-products?status=0").then(({ data }) => {
+        //         this.pendingProducts = data;
+        //     });
+        // },
+        // getApprovedProducts() {
+        //     axios.get("/get-products?status=1").then(({ data }) => {
+        //         this.approvedProducts = data;
+        //     });
+        // },
 
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
@@ -265,11 +276,17 @@ export default {
         approvedProducts() {
             return this.products.filter((product) => product.status === 3);
         },
+        outForDelivery() {
+            return this.products.filter((product) => product.status === 4);
+        },
+        receivedProduct() {
+            return this.products.filter((product) => product.status === 5);
+        },
     },
     mounted() {
         this.getProducts();
-        this.getApprovedProducts();
-        this.getPendingProducts();
+        // this.getApprovedProducts();
+        // this.getPendingProducts();
         this.getCategories();
         this.getUsers();
     },

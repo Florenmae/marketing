@@ -191,7 +191,7 @@ export default {
     methods: {
         submitToAdmin() {
             const { editProduct, editingProductId } = this;
-            const prodPayload = { ...editProduct };
+            const prodPayload = { ...editProduct, status: 2 };
 
             axios
                 .post("/submitToAdmin", { prodPayload, editingProductId })
