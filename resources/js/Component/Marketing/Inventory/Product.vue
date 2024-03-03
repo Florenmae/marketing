@@ -144,7 +144,14 @@
                             <td class="px-6 py-4">{{ product.price }}</td>
                             <td class="px-6 py-4">{{ product.stocks }}</td>
                             <td class="px-6 py-4">{{ product.description }}</td>
-                            <td class="px-6 py-4">{{ product.status }}</td>
+                            <td class="px-6 py-4">
+                                <p
+                                    v-if="product.status === 4"
+                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                >
+                                    Out for Delivery
+                                </p>
+                            </td>
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >

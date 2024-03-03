@@ -63,6 +63,9 @@ Route::post("/submitToAdmin", [ProductUserController::class, 'SubmitAdmin']);
 Route::get("/get-categories", [ProductUserController::class, 'getCategories']);
 Route::post("/deliver", [ProductUserController::class, 'Deliver']);
 
+//Route::get('/get-transaction-id/{productId}', [ProductUserController::class, 'getTransactionId']);
+
+
 
 // // Route for fetching pending products
 // Route::get('/get-pending-products', [ProductController::class, 'getPendingProducts']);

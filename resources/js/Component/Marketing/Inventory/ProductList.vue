@@ -1,11 +1,15 @@
 <template>
     <Layout>
         <div class="justify-center w-full">
-            <div class="justify self-start mt-10 mb-4">
-                <span class="text-xl font-bold text-gray-700 dark:text-gray-300"
-                    >Product List</span
-                >
+            <div class="flex justify-between items-end mt-6">
+                <div class="mt-6 mb-6">
+                    <span
+                        class="text-xl font-bold text-gray-700 dark:text-gray-300"
+                        >Product List</span
+                    >
+                </div>
             </div>
+
             <div class="overflow-x-auto border border-gray-300">
                 <table
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
@@ -22,35 +26,65 @@
                                 Product Supplier
                             </th>
                             <th scope="col" class="px-6 py-3">Price</th>
-                            <th scope="col" class="px-6 py-3">Quantity</th>
+                            <th scope="col" class="px-6 py-3">
+                                Stocks Available
+                            </th>
                             <th scope="col" class="px-6 py-3">Description</th>
                             <th scope="col" class="px-6 py-3">Status</th>
+                            <th scope="col" class="px-20 py-3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr
-                            v-for="product in products"
+                            v-for="product in receivedProduct"
                             :key="product.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
-                            <img
-                                :src="product.image"
-                                alt="Product Image"
-                                class="w-36 h-auto mb-2 rounded-lg"
-                            />
+                            <td class="px-6 py-4">
+                                <img
+                                    :src="product.image"
+                                    alt="Product Image"
+                                    class="w-34 h-auto rounded-lg"
+                                />
+                            </td>
                             <th
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
                                 {{ product.name }}
                             </th>
-                            <td class="px-6 py-4">{{ product.cat_code }}</td>
+                            <td class="px-6 py-4">
+                                <p>{{ getCategoryName(product.categoryId) }}</p>
+                            </td>
                             <td class="px-6 py-4">{{ product.item_code }}</td>
-                            <td class="px-6 py-4">{{ product.supplier }}</td>
+
+                            <td class="px-6 py-4">
+                                <p>{{ getSupplierName(product.userId) }}</p>
+                            </td>
                             <td class="px-6 py-4">{{ product.price }}</td>
-                            <td class="px-6 py-4">{{ product.qty }}</td>
+                            <td class="px-6 py-4">{{ product.stocks }}</td>
                             <td class="px-6 py-4">{{ product.description }}</td>
-                            <td class="px-6 py-4">{{ product.status }}</td>
+                            <td class="px-6 py-4">
+                                <p
+                                    v-if="product.status === 5"
+                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                >
+                                    Received
+                                </p>
+                            </td>
+                            <td
+                                class="px-6 py-4 flex justify-center items-center space-x-2"
+                            >
+                                <editProduct :product="product" />
+                                <!-- <button
+                                    class="bg-blue-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-blue-600"
+                                    @click="updateProduct"
+                                >
+                                    Receive
+                                </button> -->
+
+                                <Return :product="product" />
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -60,34 +94,43 @@
 </template>
 
 <script>
-import Layout from "@/Layout/Layout.vue";
 import Modal from "@/Component/Modal.vue";
-import editProduct from "@/Component/Marketing/Inventory/editProduct.vue";
-import addReturn from "@/Component/Marketing/Inventory/Return.vue";
+import editProduct from "@/Component/Marketing/inventory/editProduct.vue";
+import Approve from "@/Component/Marketing/inventory/Approve.vue";
+import Return from "@/Component/Marketing/inventory/Return.vue";
+import Receive from "@/Component/Marketing/inventory/Receive.vue";
+
 import axios from "axios";
 
 export default {
+    props: ["product"],
     components: {
-        Layout,
         Modal,
         editProduct,
-        addReturn,
+        Approve,
+        Return,
+        Receive,
     },
     data() {
         return {
+            pendingProducts: [],
+            approvedProducts: [],
+            outForDelivery: [],
             editProduct: {
                 item_code: "",
-                product_code: "",
                 name: "",
-                supplier: "",
+                userId: "",
                 price: "",
-                qty: "",
+                stocks: "",
                 description: "",
-                status: "",
+                status: 0,
             },
+            users: [],
             products: [],
+            categories: [],
             editingProductId: null,
             modalStatus: false,
+            roles: [],
         };
     },
     methods: {
@@ -100,9 +143,70 @@ export default {
                 this.products = data;
             });
         },
+
+        // getPendingProducts() {
+        //     axios.get("/get-products?status=0").then(({ data }) => {
+        //         this.pendingProducts = data;
+        //     });
+        // },
+        // getApprovedProducts() {
+        //     axios.get("/get-products?status=1").then(({ data }) => {
+        //         this.approvedProducts = data;
+        //     });
+        // },
+
+        getCategories() {
+            axios.get("/get-categories").then(({ data }) => {
+                this.categories = data;
+            });
+        },
+
+        getUsers() {
+            axios.get("/get-users").then(({ data }) => {
+                this.users = data;
+            });
+        },
+
+        editProduct(product) {
+            this.editProduct = { ...product };
+            this.editingProductId = product.id;
+            this.modalContent.title = "Edit Product";
+            this.modalStatus = true;
+        },
+
+        returnAll(product) {
+            axios
+                .post("/returnAll-product", { product })
+                .then(({ data }) => {
+                    window.location.reload("Reloading");
+                })
+                .catch((error) => {
+                    console.error("Error returning all products:", error);
+                });
+        },
+
+        getCategoryName(categoryId) {
+            const category = this.categories.find((c) => c.id === categoryId);
+            return category ? category.name : "Unknown Category";
+        },
+
+        getSupplierName(userId) {
+            userId = Number(userId);
+            const user = this.users.find((user) => user.id === userId);
+            return user ? user.name : "Unknown User";
+        },
+    },
+    computed: {
+        receivedProduct() {
+            return this.products.filter((product) => product.status === 5);
+        },
     },
     mounted() {
         this.getProducts();
+        // this.getApprovedProducts();
+        // this.getPendingProducts();
+        this.getCategories();
+        this.getUsers();
     },
 };
 </script>

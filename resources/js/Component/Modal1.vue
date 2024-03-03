@@ -25,13 +25,13 @@
                         <slot />
                         <button
                             @click="isOpen = false"
-                            class="px-4 py-2 text-green-800 border border-green-600 rounded-md text-sm"
+                            class="px-4 py-2 text-blue-800 border border-blue-600 rounded-md text-sm"
                         >
                             {{ cancelLabel }}
                         </button>
                         <button
                             @click="saveData"
-                            class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
+                            class="px-4 py-2 ml-2 text-white bg-blue-600 rounded-md text-sm"
                         >
                             {{ saveLabel }}
                         </button>

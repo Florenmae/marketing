@@ -14,6 +14,20 @@
         <div class="grid gap-4 mb-4 grid-cols-4">
             <div class="col-span-4">
                 <label
+                    for="type"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Transaction Type:</label
+                >
+                <input
+                    v-model="editProduct.type"
+                    type="text"
+                    name="type"
+                    id="type"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                />
+            </div>
+            <div class="col-span-4">
+                <label
                     for="approved_by"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Approved By:</label
@@ -51,6 +65,7 @@ export default {
                 description: "",
                 status: 0,
                 approved_by: "",
+                type: "",
             },
         };
     },
@@ -71,6 +86,7 @@ export default {
             axios
                 .post("/update-product", { prodPayload, editingProductId })
                 .then(({ data }) => {
+                    prodPayload.type = this.type;
                     prodPayload.approved_by = this.approved_by;
                     window.location.reload("Reloading");
                 })

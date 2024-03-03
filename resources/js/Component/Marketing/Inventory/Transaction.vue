@@ -34,13 +34,13 @@
                                 scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                                Quantity
+                                Type
                             </th>
                             <th
                                 scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                                Description
+                                Quantity
                             </th>
                             <th
                                 scope="col"
@@ -65,22 +65,22 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{ transaction.supplier }}
+                                    {{ transaction.userId }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{ transaction.name }}
+                                    {{ transaction.productId }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    {{ transaction.type }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
                                     {{ transaction.qty }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">
-                                    {{ transaction.description }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -125,9 +125,9 @@ export default {
             transactionDetails: this.transaction,
             transaction: {
                 id: "",
-                name: "",
-                supplier: "",
-                description: "",
+                productId: "",
+                supplierId: "",
+                type: "",
                 qty: "",
             },
         };

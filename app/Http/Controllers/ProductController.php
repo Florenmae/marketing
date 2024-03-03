@@ -85,7 +85,7 @@ class ProductController extends Controller{
             $transaction = new Transaction();
             $transaction->productId = $product->id;
             $transaction->userId = $product->userId;
-            $transaction->type= $product->type;
+            $transaction->type= $request->prodPayload["type"];
             $transaction->qty = $product->stocks;
             $transaction->stocks = $product->stocks;
 

@@ -17,4 +17,11 @@ class Transaction extends Model
         'approved_by',
 
     ];
+
+     public function delivery()
+    {
+        return $this->hasMany(Delivery::class, 'transactionId');
+    }
+
+    
 }

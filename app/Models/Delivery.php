@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Delivery extends Model
 {
     use HasFactory;
-    protected $fillabele = [
-        'userId',
-        'transactionId',
-        'deliverTo',
-        'remarks',
-    ];
+    protected $fillable = [
+    'userId',
+    'transactionId',
+    'remarks',
+    'status',
+];
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class, 'id');
+    }
 }
