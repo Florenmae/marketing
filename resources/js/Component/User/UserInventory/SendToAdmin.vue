@@ -1,13 +1,13 @@
 <template>
     <Modal
         :modalContent="{
-            title: 'Submit product',
+            title: 'Deliver product',
             content: 'Please check the product details',
             disablebtn: false,
         }"
-        :buttonLabel="'Submit'"
+        :buttonLabel="'Deliver'"
         :cancelLabel="'Close'"
-        :saveLabel="'Submit'"
+        :saveLabel="'Deliver'"
         @save="submitToAdmin"
         :save-option="true"
     >
@@ -19,7 +19,7 @@
                     >Category</label
                 >
                 <select
-                    v-model="product.categoryId"
+                    v-model="editInventory.categoryId"
                     id="categoryId"
                     name="categoryId"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -42,7 +42,7 @@
                     >Item Code</label
                 >
                 <input
-                    v-model="editProduct.item_code"
+                    v-model="editInventory.item_code"
                     type="text"
                     name="item_code"
                     id="item_code"
@@ -58,7 +58,7 @@
                     >Product Name</label
                 >
                 <input
-                    v-model="editProduct.name"
+                    v-model="editInventory.name"
                     type="text"
                     name="name"
                     id="name"
@@ -67,14 +67,14 @@
                     required=""
                 />
             </div>
-            <div class="col-span-2 border-red-500">
+            <!-- <div class="col-span-2 border-red-500">
                 <label
                     for="userId"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Product supplier</label
                 >
                 <select
-                    v-model="editProduct.userId"
+                    v-model="editInventory.userId"
                     type="text"
                     name="userId"
                     id="userId"
@@ -85,7 +85,7 @@
                     <option value="2">IGP</option>
                     <option value="3">Project</option>
                 </select>
-            </div>
+            </div> -->
             <div class="col-span-2">
                 <label
                     for="price"
@@ -93,7 +93,7 @@
                     >Price</label
                 >
                 <input
-                    v-model="editProduct.price"
+                    v-model="editInventory.price"
                     type="number"
                     id="price"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -109,7 +109,7 @@
                     >unit</label
                 >
                 <input
-                    v-model="editProduct.unit"
+                    v-model="editInventory.unit"
                     type="text"
                     id="unit"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -118,14 +118,14 @@
                     required=""
                 />
             </div>
-            <div class="col-span-4">
+            <div class="col-span-2">
                 <label
-                    for="qty"
+                    for="stocks"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Quantity</label
                 >
                 <input
-                    v-model="editProduct.stocks"
+                    v-model="editInventory.stocks"
                     type="number"
                     name="qty"
                     id="qty"
@@ -141,13 +141,27 @@
                     >Description</label
                 >
                 <textarea
-                    v-model="editProduct.description"
+                    v-model="editInventory.description"
                     type="text"
                     name="description"
                     id="description"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Product Description"
                     required=""
+                ></textarea>
+            </div>
+            <div class="col-span-4">
+                <label
+                    for="remarks"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Remarks:</label
+                >
+                <textarea
+                    v-model="editInventory.remarks"
+                    type="text"
+                    name="remarks"
+                    id="remarks"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 ></textarea>
             </div>
         </div>
@@ -157,32 +171,35 @@
 <script>
 import Modal from "@/Component/Modal.vue";
 export default {
-    props: ["product"],
+    props: ["inventory"],
     components: {
         Modal,
     },
     data() {
         return {
-            editingProductId: this.product.id,
-            editProduct: {
-                item_code: "",
+            editingInventoryId: this.inventory.id,
+            editInventory: {
                 categoryId: "",
+                item_code: "",
+                productId: "",
                 name: "",
                 userId: "",
                 price: "",
-                unit: "",
-                qty: "",
+                stocks: "",
                 description: "",
+                approved_by: "",
                 status: 0,
+                remarks: "",
+                transactionId: "",
             },
             categories: [],
             submittedProducts: [],
         };
     },
     watch: {
-        product: {
+        inventory: {
             handler(newVal) {
-                this.editProduct = { ...newVal };
+                this.editInventory = { ...newVal };
             },
             deep: true,
             immediate: true,
@@ -190,21 +207,36 @@ export default {
     },
     methods: {
         submitToAdmin() {
-            const { editProduct, editingProductId } = this;
-            const prodPayload = { ...editProduct, status: 2 };
+            const { editInventory, editingInventoryId } = this;
+            const prodPayload = { ...editInventory, status: 2 };
 
             axios
-                .post("/submitToAdmin", { prodPayload, editingProductId })
+                .get(`/get-transaction-id/${editingInventoryId}`)
                 .then(({ data }) => {
-                    window.location.reload("Reloading");
-                })
-                .catch((error) => {
-                    console.error("Error updating product:", error);
+                    const transactionId = data;
+                    prodPayload.transactionId = transactionId;
+
+                    axios
+                        .post("/submitToAdmin", {
+                            prodPayload,
+                            editingInventoryId,
+                        })
+                        .then(({ data }) => {
+                            //prodPayload.deliverTo = this.deliverTo;
+                            prodPayload.remarks = this.remarks;
+                            window.location.reload("Reloading");
+                        });
                 });
         },
-        getProducts() {
-            axios.get("/get-products").then(({ data }) => {
-                this.products = data;
+        // getProducts() {
+        //     axios.get("/get-products").then(({ data }) => {
+        //         this.products = data;
+        //     });
+        // },
+
+        getInventories() {
+            axios.get("/get-inventory").then(({ data }) => {
+                this.inventories = data;
             });
         },
 
@@ -215,7 +247,8 @@ export default {
         },
     },
     mounted() {
-        this.getProducts();
+        //this.getProducts();
+        this.getInventories();
         this.getCategories();
     },
 };

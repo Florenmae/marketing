@@ -5,11 +5,10 @@
                 <div class="mt-6 mb-6">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
-                        >Product List</span
+                        >Pending Products</span
                     >
                 </div>
             </div>
-
             <div class="overflow-x-auto border border-gray-300">
                 <table
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
@@ -36,7 +35,7 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="product in receivedProduct"
+                            v-for="product in pendingProducts"
                             :key="product.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
@@ -66,23 +65,134 @@
                             <td class="px-6 py-4">{{ product.description }}</td>
                             <td class="px-6 py-4">
                                 <p
+                                    v-if="product.status === 2"
+                                    class="px-2 py-2 font-medium text-blue-500 my-2 text-sm"
+                                >
+                                    Pending
+                                </p>
+                                <p
+                                    v-if="product.status === 3"
+                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                >
+                                    Approved
+                                </p>
+                                <p
+                                    v-if="product.status === 4"
+                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                >
+                                    Out for Delivery
+                                </p>
+                                <p
                                     v-if="product.status === 5"
                                     class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
                                 >
-                                    Received
+                                    Delivered
+                                </p>
+                                <p
+                                    v-if="product.status === 6"
+                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                >
+                                    Returned
                                 </p>
                             </td>
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
                                 <editProduct :product="product" />
+                                <Approve :product="product" />
+                                <button
+                                    class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
+                                    @click="returnAll(product)"
+                                >
+                                    Return
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex justify-between items-end mt-6">
+                <div class="mt-6 mb-6">
+                    <span
+                        class="text-xl font-bold text-gray-700 dark:text-gray-300"
+                        >Approved Products</span
+                    >
+                </div>
+            </div>
+
+            <div class="overflow-x-auto border border-gray-300">
+                <table
+                    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                >
+                    <thead
+                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                    >
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Image</th>
+                            <th scope="col" class="px-6 py-3">Product Name</th>
+                            <th scope="col" class="px-6 py-3">Category</th>
+                            <th scope="col" class="px-6 py-3">Item Code</th>
+                            <th scope="col" class="px-6 py-3">
+                                Product Supplier
+                            </th>
+                            <th scope="col" class="px-6 py-3">Price</th>
+                            <th scope="col" class="px-6 py-3">
+                                Stocks Availabel
+                            </th>
+                            <th scope="col" class="px-6 py-3">Description</th>
+                            <th scope="col" class="px-6 py-3">Status</th>
+                            <th scope="col" class="px-20 py-3">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="product in approvedProducts"
+                            :key="product.id"
+                            class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                        >
+                            <td class="px-6 py-4">
+                                <img
+                                    :src="product.image"
+                                    alt="Product Image"
+                                    class="w-34 h-auto rounded-lg"
+                                />
+                            </td>
+                            <th
+                                scope="row"
+                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                                {{ product.name }}
+                            </th>
+                            <td class="px-6 py-4">
+                                <p>{{ getCategoryName(product.categoryId) }}</p>
+                            </td>
+                            <td class="px-6 py-4">{{ product.item_code }}</td>
+
+                            <td class="px-6 py-4">
+                                <p>{{ getSupplierName(product.userId) }}</p>
+                            </td>
+                            <td class="px-6 py-4">{{ product.price }}</td>
+                            <td class="px-6 py-4">{{ product.stocks }}</td>
+                            <td class="px-6 py-4">{{ product.description }}</td>
+                            <td class="px-6 py-4">
+                                <p
+                                    v-if="product.status === 4"
+                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                >
+                                    Out for Delivery
+                                </p>
+                            </td>
+                            <td
+                                class="px-6 py-4 flex justify-center items-center space-x-2"
+                            >
+                                <!-- <editProduct :product="product" /> -->
                                 <!-- <button
                                     class="bg-blue-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-blue-600"
                                     @click="updateProduct"
                                 >
                                     Receive
                                 </button> -->
-
                                 <Return :product="product" />
                             </td>
                         </tr>
@@ -195,8 +305,11 @@ export default {
         },
     },
     computed: {
-        receivedProduct() {
-            return this.products.filter((product) => product.status === 5);
+        pendingProducts() {
+            return this.products.filter((product) => product.status === 2);
+        },
+        approvedProducts() {
+            return this.products.filter((product) => product.status === 3);
         },
     },
     mounted() {

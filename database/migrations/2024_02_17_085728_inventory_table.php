@@ -13,12 +13,17 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
+            $table->integer('categoryId')->nullable();
             $table->string('productId')->nullable();
             $table->string('productName')->nullable();
-            $table->string('supplierId')->nullable();
+            $table->string('userId')->nullable();
+            $table->float('price')->nullable();
+            $table->string('unit')->nullable();
+            $table->float('stocks')->nullable();
             $table->float('qty')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('status')->default('1'); //1 accept 2 reject
+            $table->string('approved_by'); 
+            $table->boolean('status')->default('1'); 
             $table->timestamps();
         });
     }

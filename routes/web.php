@@ -48,7 +48,7 @@ Route::post("/delete-user", [UserController::class, "deleteUser"]);
 
 //Product
 Route::post("/submit-product", [ProductController::class, 'createProduct'])->name("createProduct");
-Route::get("/get-products", [ProductController::class, 'getProducts']);
+Route::get("/get-inventories", [ProductController::class, 'getInventories']);
 Route::post("/update-product", [ProductController::class, 'updateProduct']);
 Route::post("/delete-product", [ProductController::class, 'deleteProduct']);
 Route::post("/upload-image", [ProductController::class, 'uploadImage']);
@@ -56,15 +56,14 @@ Route::post("/return-product", [ProductController::class, 'returnProduct'])->nam
 Route::post("/returnAll-product", [ProductController::class, 'ReturnAll'])->name("ReturnAll");
 Route::get("/get-categories", [ProductController::class, 'getCategories']);
 Route::get("/get-users", [ProductController::class, 'getUsers']);
-Route::post("/receive", [ProductController::class, 'updateProduct']);
+
 
 Route::get("/get-productsUser", [ProductUserController::class, 'getProductsUser']);
 Route::post("/submitToAdmin", [ProductUserController::class, 'SubmitAdmin']);
 Route::get("/get-categories", [ProductUserController::class, 'getCategories']);
-Route::post("/deliver", [ProductUserController::class, 'Deliver']);
+Route::get("/get-inventory", [ProductUserController::class, 'getInventories']);
 
 //Route::get('/get-transaction-id/{productId}', [ProductUserController::class, 'getTransactionId']);
-
 
 
 // // Route for fetching pending products

@@ -35,13 +35,13 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="product in pendingProducts"
-                            :key="product.id"
+                            v-for="inventory in pendingProducts"
+                            :key="inventory.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
                             <td class="px-6 py-4">
                                 <img
-                                    :src="product.image"
+                                    :src="inventory.image"
                                     alt="Product Image"
                                     class="w-34 h-auto rounded-lg"
                                 />
@@ -50,28 +50,51 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ product.name }}
+                                {{ inventory.name }}
                             </th>
                             <td class="px-6 py-4">
-                                <p>{{ getCategoryName(product.categoryId) }}</p>
+                                <p>
+                                    {{ getCategoryName(inventory.categoryId) }}
+                                </p>
                             </td>
-                            <td class="px-6 py-4">{{ product.item_code }}</td>
+                            <td class="px-6 py-4">{{ inventory.item_code }}</td>
 
                             <td class="px-6 py-4">
-                                <p>{{ getSupplierName(product.userId) }}</p>
+                                <p>{{ getSupplierName(inventory.userId) }}</p>
                             </td>
-                            <td class="px-6 py-4">{{ product.price }}</td>
-                            <td class="px-6 py-4">{{ product.stocks }}</td>
-                            <td class="px-6 py-4">{{ product.description }}</td>
-                            <td class="px-6 py-4">{{ product.status }}</td>
+                            <td class="px-6 py-4">{{ inventory.price }}</td>
+                            <td class="px-6 py-4">{{ inventory.stocks }}</td>
+                            <td class="px-6 py-4">
+                                {{ inventory.description }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <p
+                                    v-if="inventory.status === 2"
+                                    class="px-2 py-2 font-medium text-blue-500 my-2 text-sm"
+                                >
+                                    Pending
+                                </p>
+                                <p
+                                    v-if="inventory.status === 3"
+                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                >
+                                    Approved
+                                </p>
+                                <p
+                                    v-if="inventory.status === 4"
+                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                >
+                                    Returned
+                                </p>
+                            </td>
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
-                                <editProduct :product="product" />
-                                <Approve :product="product" />
+                                <editProduct :inventory="inventory" />
+                                <Approve :inventory="inventory" />
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
-                                    @click="returnAll(product)"
+                                    @click="returnAll(inventory)"
                                 >
                                     Return
                                 </button>
@@ -85,7 +108,7 @@
                 <div class="mt-6 mb-6">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
-                        >Out For Delivery</span
+                        >Approved Products</span
                     >
                 </div>
             </div>
@@ -116,13 +139,13 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="product in outForDelivery"
-                            :key="product.id"
+                            v-for="inventory in approvedProducts"
+                            :key="inventory.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
                             <td class="px-6 py-4">
                                 <img
-                                    :src="product.image"
+                                    :src="inventory.image"
                                     alt="Product Image"
                                     class="w-34 h-auto rounded-lg"
                                 />
@@ -131,22 +154,26 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ product.name }}
+                                {{ inventory.name }}
                             </th>
                             <td class="px-6 py-4">
-                                <p>{{ getCategoryName(product.categoryId) }}</p>
+                                <p>
+                                    {{ getCategoryName(inventory.categoryId) }}
+                                </p>
                             </td>
-                            <td class="px-6 py-4">{{ product.item_code }}</td>
+                            <td class="px-6 py-4">{{ inventory.item_code }}</td>
 
                             <td class="px-6 py-4">
-                                <p>{{ getSupplierName(product.userId) }}</p>
+                                <p>{{ getSupplierName(inventory.userId) }}</p>
                             </td>
-                            <td class="px-6 py-4">{{ product.price }}</td>
-                            <td class="px-6 py-4">{{ product.stocks }}</td>
-                            <td class="px-6 py-4">{{ product.description }}</td>
+                            <td class="px-6 py-4">{{ inventory.price }}</td>
+                            <td class="px-6 py-4">{{ inventory.stocks }}</td>
+                            <td class="px-6 py-4">
+                                {{ inventory.description }}
+                            </td>
                             <td class="px-6 py-4">
                                 <p
-                                    v-if="product.status === 4"
+                                    v-if="inventory.status === 4"
                                     class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
                                 >
                                     Out for Delivery
@@ -162,8 +189,7 @@
                                 >
                                     Receive
                                 </button> -->
-                                <Receive :product="product" />
-                                <Return :product="product" />
+                                <Return :inventory="inventory" />
                             </td>
                         </tr>
                     </tbody>
@@ -178,25 +204,22 @@ import Modal from "@/Component/Modal.vue";
 import editProduct from "@/Component/Marketing/inventory/editProduct.vue";
 import Approve from "@/Component/Marketing/inventory/Approve.vue";
 import Return from "@/Component/Marketing/inventory/Return.vue";
-import Receive from "@/Component/Marketing/inventory/Receive.vue";
 
 import axios from "axios";
 
 export default {
-    props: ["product"],
+    props: ["inventory"],
     components: {
         Modal,
         editProduct,
         Approve,
         Return,
-        Receive,
     },
     data() {
         return {
             pendingProducts: [],
             approvedProducts: [],
-            outForDelivery: [],
-            editProduct: {
+            editInventory: {
                 item_code: "",
                 name: "",
                 userId: "",
@@ -208,6 +231,7 @@ export default {
             users: [],
             products: [],
             categories: [],
+            inventories: [],
             editingProductId: null,
             modalStatus: false,
             roles: [],
@@ -218,11 +242,11 @@ export default {
             this.modalStatus = !this.modalStatus;
         },
 
-        getProducts() {
-            axios.get("/get-products").then(({ data }) => {
-                this.products = data;
-            });
-        },
+        // getProducts() {
+        //     axios.get("/get-products").then(({ data }) => {
+        //         this.products = data;
+        //     });
+        // },
 
         // getPendingProducts() {
         //     axios.get("/get-products?status=0").then(({ data }) => {
@@ -234,6 +258,12 @@ export default {
         //         this.approvedProducts = data;
         //     });
         // },
+
+        getInventories() {
+            axios.get("/get-inventories").then(({ data }) => {
+                this.inventories = data;
+            });
+        },
 
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
@@ -247,16 +277,16 @@ export default {
             });
         },
 
-        editProduct(product) {
-            this.editProduct = { ...product };
-            this.editingProductId = product.id;
+        editProduct(inventory) {
+            this.editInventory = { ...inventory };
+            this.editingInventoryId = inventory.id;
             this.modalContent.title = "Edit Product";
             this.modalStatus = true;
         },
 
-        returnAll(product) {
+        returnAll(inventory) {
             axios
-                .post("/returnAll-product", { product })
+                .post("/returnAll-product", { inventory })
                 .then(({ data }) => {
                     window.location.reload("Reloading");
                 })
@@ -278,22 +308,21 @@ export default {
     },
     computed: {
         pendingProducts() {
-            return this.products.filter((product) => product.status === 2);
+            return this.inventories.filter(
+                (inventory) => inventory.status === 2
+            );
         },
         approvedProducts() {
-            return this.products.filter((product) => product.status === 3);
-        },
-        outForDelivery() {
-            return this.products.filter((product) => product.status === 4);
-        },
-        receivedProduct() {
-            return this.products.filter((product) => product.status === 5);
+            return this.inventories.filter(
+                (inventory) => inventory.status === 3
+            );
         },
     },
     mounted() {
-        this.getProducts();
+        //this.getProducts();
         // this.getApprovedProducts();
         // this.getPendingProducts();
+        this.getInventories();
         this.getCategories();
         this.getUsers();
     },

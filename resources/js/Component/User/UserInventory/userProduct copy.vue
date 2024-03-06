@@ -33,13 +33,13 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="inventory in inventories"
-                            :key="inventory.id"
+                            v-for="product in products"
+                            :key="product.productId"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
                             <td class="px-6 py-4">
                                 <img
-                                    :src="inventory.image"
+                                    :src="product.image"
                                     alt="Product Image"
                                     class="w-20 h-20 rounded-lg"
                                 />
@@ -48,39 +48,37 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ inventory.name }}
+                                {{ product.name }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ getCategoryName(inventory.categoryId) }}
+                                {{ getCategoryName(product.categoryId) }}
                             </td>
-                            <td class="px-6 py-4">{{ inventory.item_code }}</td>
-                            <td class="px-6 py-4">{{ inventory.price }}</td>
-                            <td class="px-6 py-4">{{ inventory.unit }}</td>
-                            <td class="px-6 py-4">{{ inventory.stocks }}</td>
-                            <td class="px-6 py-4">
-                                {{ inventory.description }}
-                            </td>
+                            <td class="px-6 py-4">{{ product.item_code }}</td>
+                            <td class="px-6 py-4">{{ product.price }}</td>
+                            <td class="px-6 py-4">{{ product.unit }}</td>
+                            <td class="px-6 py-4">{{ product.stocks }}</td>
+                            <td class="px-6 py-4">{{ product.description }}</td>
                             <td class="px-6 py-4">
                                 <p
-                                    v-if="inventory.status === 1"
+                                    v-if="product.status === 1"
                                     class="px-2 py-2 font-medium text-gray-500 my-2 text-sm"
                                 >
                                     Unlisted
                                 </p>
                                 <p
-                                    v-if="inventory.status === 2"
+                                    v-if="product.status === 2"
                                     class="px-2 py-2 font-medium text-blue-500 my-2 text-sm"
                                 >
                                     Pending
                                 </p>
                                 <p
-                                    v-if="inventory.status === 3"
+                                    v-if="product.status === 3"
                                     class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
                                 >
                                     Approved
                                 </p>
                                 <p
-                                    v-if="inventory.status === 4"
+                                    v-if="product.status === 4"
                                     class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
                                 >
                                     Returned
@@ -91,15 +89,15 @@
                             >
                                 <button
                                     v-if="
-                                        inventory.status !== 2 &&
-                                        inventory.status !== 3 &&
-                                        inventory.status !== 4 &&
-                                        inventory.status !== 5 &&
-                                        inventory.status !== 6
+                                        product.status !== 2 &&
+                                        product.status !== 3 &&
+                                        product.status !== 4 &&
+                                        product.status !== 5 &&
+                                        product.status !== 6
                                     "
                                 >
                                     <SendToAdmin
-                                        :inventory="inventory"
+                                        :product="product"
                                         @productSubmitted="
                                             productSubmittedHandler
                                         "
@@ -112,9 +110,9 @@
                                 >
                                     Deliver
                                 </button> -->
-                                <button v-if="inventory.status === 3">
+                                <button v-if="product.status === 3">
                                     <Deliver
-                                        :inventory="inventory"
+                                        :product="product"
                                         @productSubmitted="
                                             productSubmittedHandler
                                         "
@@ -122,7 +120,7 @@
                                 </button>
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-red-600"
-                                    @click="promptDelete(inventory)"
+                                    @click="promptDelete(product)"
                                 >
                                     Delete
                                 </button>
@@ -153,17 +151,16 @@ export default {
     },
     data() {
         return {
-            inventory: {
-                categoryId: "",
+            product: {
+                categoryName: "",
                 item_code: "",
                 productId: "",
                 name: "",
-                userId: "",
+                supplier: "",
                 price: "",
-                stocks: "",
+                qty: "",
                 description: "",
-                approved_by: "",
-                status: 1,
+                status: "",
             },
             products: [],
             inventories: [],
@@ -177,16 +174,14 @@ export default {
             this.modalStatus = !this.modalStatus;
         },
 
-        // getProducts() {
-        //     axios.get("/get-productsUser").then(({ data }) => {
-        //         this.products = data;
-        //     });
-        // },
-
+        getProducts() {
+            axios.get("/get-productsUser").then(({ data }) => {
+                this.products = data;
+            });
+        },
         getInventories() {
             axios.get("/get-inventory").then(({ data }) => {
                 this.inventories = data;
-                console.log(data);
             });
         },
         editProduct(product) {
@@ -244,7 +239,7 @@ export default {
     },
 
     mounted() {
-        //this.getProducts();
+        this.getProducts();
         this.getCategories();
         this.getInventories();
     },

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Inventory;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Categories;
@@ -56,7 +57,7 @@ class ProductController extends Controller{
 //     }
 // }
 
-    public function getProducts($status = null) {
+    public function getInventories($status = null) {
         if ($status === 'pending') {
             return Product::where('status', 2)->get();
         } elseif ($status === 'approved') {
@@ -67,7 +68,7 @@ class ProductController extends Controller{
     }
 
     public function updateProduct(Request $request){
-        $product = Product :: findOrFail($request->editingProductId);
+        $product = Product :: findOrFail($request->editingInventoryId);
 
         $product->name = $request->prodPayload["name"];
         $product->userId = $request->prodPayload["userId"];
@@ -86,7 +87,7 @@ class ProductController extends Controller{
             $transaction->productId = $product->id;
             $transaction->userId = $product->userId;
             $transaction->type= $request->prodPayload["type"];
-            $transaction->qty = $product->stocks;
+            $transaction->qty= $request->prodPayload["qty"];
             $transaction->stocks = $product->stocks;
 
             $transaction->save();
@@ -118,7 +119,7 @@ class ProductController extends Controller{
     // }
 
     public function returnProduct(Request $request){
-        $returnedProduct = Product::find($request->editingProductId);
+        $returnedProduct = Product::find($request->editingInventoryId);
 
         if (!$returnedProduct) {
             return response()->json(['message' => 'Product not found'], 404);

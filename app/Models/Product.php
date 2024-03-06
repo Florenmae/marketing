@@ -29,6 +29,10 @@ class Product extends Model
     //     return $query->orderBy('created_at', 'description')->limit($limit);
     // }
 
+    public function products()
+    {
+        return $this->belongsTo(Product::class, 'id');
+    }
     public function category()
     {
         return $this->belongsTo(Categories::class, 'id');

@@ -229,11 +229,11 @@ export default {
             });
         },
 
-        getCategories() {
-            axios.get("/get-categories").then(({ data }) => {
-                this.categories = data;
-            });
-        },
+        // getCategories() {
+        //     axios.get("/get-categories").then(({ data }) => {
+        //         this.categories = data;
+        //     });
+        // },
 
         submitProduct() {
             const { product } = this;
@@ -264,7 +264,7 @@ export default {
     },
     mounted() {
         this.getProducts();
-        this.getCategories();
+        //this.getCategories();
     },
 };
 </script>

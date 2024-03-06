@@ -41,7 +41,7 @@
                             <td class="flex space-x-4 >">
                                 <EditUser :user="user" />
                                 <button
-                                    class="bg-red-500 px-4 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
+                                    class="bg-red-500 px-4 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
                                     @click="promptDeleteUser(user)"
                                 >
                                     Delete
@@ -154,7 +154,7 @@ export default {
                 "Are you sure you want to delete this user?"
             );
             if (confirmed) {
-                this.deleteUser(user.id); 
+                this.deleteUser(user.id);
             }
         },
 

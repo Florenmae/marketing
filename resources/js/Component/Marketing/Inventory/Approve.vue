@@ -1,30 +1,51 @@
 <template>
     <Modal1
         :modalContent="{
-            title: 'Approve product',
+            title: 'Receive product',
             content: 'Please edit the product details',
             disablebtn: false,
         }"
-        :buttonLabel="'Approve'"
+        :buttonLabel="'Receive'"
         :cancelLabel="'Close'"
-        :saveLabel="'Approve'"
+        :saveLabel="'Receive'"
         @save="updateProduct"
         :save-option="true"
     >
         <div class="grid gap-4 mb-4 grid-cols-4">
-            <div class="col-span-4">
+            <div class="col-span-2">
+                <label
+                    for="qty"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Actual Quantity:</label
+                >
+                <input
+                    v-model="editProduct.qty"
+                    type="number"
+                    name="qty"
+                    id="qty"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                />
+            </div>
+            <div class="col-span-2">
                 <label
                     for="type"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Transaction Type:</label
                 >
-                <input
-                    v-model="editProduct.type"
+                <select
+                    v-model="product.type"
                     type="text"
                     name="type"
                     id="type"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                />
+                    placeholder="Choose Transaction Type"
+                >
+                    <option value="1">Beginning Inventory</option>
+                    <option value="2">?</option>
+                    <option value="3">Delivery</option>
+                    <option value="4">Sales</option>
+                    <option value="5">?</option>
+                </select>
             </div>
             <div class="col-span-4">
                 <label
