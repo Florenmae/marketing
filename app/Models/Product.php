@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Categories;
+use App\Models\Productlist;
 
 class Product extends Model
 {
@@ -13,7 +14,7 @@ class Product extends Model
     protected $fillable = [
         'categoryId',
         'item_code',
-        'productName',
+        'name',
         'image',
         'userId',
         'price',
@@ -29,10 +30,11 @@ class Product extends Model
     //     return $query->orderBy('created_at', 'description')->limit($limit);
     // }
 
-    public function products()
+    public function productlists()
     {
-        return $this->belongsTo(Product::class, 'id');
+        return $this->belongsTo(ProductList::class, 'id');
     }
+
     public function category()
     {
         return $this->belongsTo(Categories::class, 'id');

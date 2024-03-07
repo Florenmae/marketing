@@ -19,12 +19,12 @@ return new class extends Migration
             $table->string('item_code')->nullable();
             $table->string('name')->nullable();
             $table->string('image')->nullable();
-            // $table->float('price')->nullable();
-            // $table->string('unit')->nullable();
-            // $table->float('stocks')->nullable();
-            // $table->text('description')->nullable();
+            $table->float('price')->nullable();
+            $table->string('unit')->nullable();
+            $table->float('qty')->nullable();
+            $table->text('description')->nullable();
             $table->boolean('status')->default('1'); 
-            //$table->string('approved_by'); 
+            $table->string('approved_by'); 
             $table->timestamps();
         });
     }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Inventory;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Categories;
@@ -20,7 +19,7 @@ class ProductController extends Controller{
 
     $newProduct = new Product();
     $newProduct->categoryId = $categoryId;
-    $newProduct->productName = $request->input('productName');
+    $newProduct->productId = $request->input('productId');
     $newProduct->image = $request->input('image');
     $newProduct->userId = $request->input('userId');
     $newProduct->item_code = $request->input('item_code');
@@ -45,19 +44,7 @@ class ProductController extends Controller{
     return response()->json(['imagePath' => $imageName]);
 }
 
-
-
-//     public function getProducts($status = null) {
-//     if ($status === 'pending') {
-//         return Product::where('status', 0)->get();
-//     } elseif ($status === 'approved') {
-//         return Product::where('status', 1)->get();
-//     } else {
-//         return Product::all();
-//     }
-// }
-
-    public function getInventories($status = null) {
+    public function getProducts($status = null) {
         if ($status === 'pending') {
             return Product::where('status', 2)->get();
         } elseif ($status === 'approved') {
@@ -68,7 +55,7 @@ class ProductController extends Controller{
     }
 
     public function updateProduct(Request $request){
-        $product = Product :: findOrFail($request->editingInventoryId);
+        $product = Product :: findOrFail($request->editingProductId);
 
         $product->name = $request->prodPayload["name"];
         $product->userId = $request->prodPayload["userId"];
@@ -87,7 +74,7 @@ class ProductController extends Controller{
             $transaction->productId = $product->id;
             $transaction->userId = $product->userId;
             $transaction->type= $request->prodPayload["type"];
-            $transaction->qty= $request->prodPayload["qty"];
+            $transaction->qty = $product->stocks;
             $transaction->stocks = $product->stocks;
 
             $transaction->save();
@@ -111,15 +98,8 @@ class ProductController extends Controller{
 
     }
 
-    // public function Received(Product $product)
-    // {
-    //     $product->status = 5;
-    //     $product->save();
-    //     return $product;
-    // }
-
     public function returnProduct(Request $request){
-        $returnedProduct = Product::find($request->editingInventoryId);
+        $returnedProduct = Product::find($request->editingProductId);
 
         if (!$returnedProduct) {
             return response()->json(['message' => 'Product not found'], 404);

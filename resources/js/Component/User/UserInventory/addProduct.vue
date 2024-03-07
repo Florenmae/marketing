@@ -52,7 +52,7 @@
                             :key="category.categoryId"
                             :value="category.categoryId"
                         >
-                            {{ category.categoryName }}
+                            {{ category.name }}
                         </option>
                     </select>
                 </div>
@@ -73,33 +73,40 @@
                         required=""
                     />
                 </div>
-                <div class="col-span-2 border-red-500">
+                <div class="col-span-2">
                     <label
-                        for="productName"
+                        for="productId"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >Product Name</label
                     >
-                    <input
-                        v-model="product.productName"
-                        type="text"
-                        name="productName"
-                        id="productName"
+                    <select
+                        v-model="product.productId"
+                        id="productId"
+                        name="productId"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Type product name"
-                        required=""
-                    />
+                        required
+                    >
+                        <option value="">Select a product</option>
+                        <option
+                            v-for="productList in productLists"
+                            :key="productList.productId"
+                            :value="productList.productId"
+                        >
+                            {{ productList.name }}
+                        </option>
+                    </select>
                 </div>
                 <div class="col-span-2 border-red-500">
                     <label
-                        for="supplierId"
+                        for="userId"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >Product supplier</label
                     >
                     <select
-                        v-model="product.supplierId"
+                        v-model="product.userId"
                         type="text"
-                        name="supplierId"
-                        id="supplierId"
+                        name="userId"
+                        id="userId"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Choose Supplier"
                     >
@@ -206,13 +213,14 @@ export default {
                 image: null,
                 item_code: "",
                 categoryId: "",
-                productName: "",
-                supplierId: "",
+                productId: "",
+                userId: "",
                 price: "",
                 unit: "",
                 qty: "",
                 description: "",
             },
+            productLists: [],
             categories: [],
             selectedCategoryId: null,
             modalContent: {
@@ -229,11 +237,17 @@ export default {
             });
         },
 
-        // getCategories() {
-        //     axios.get("/get-categories").then(({ data }) => {
-        //         this.categories = data;
-        //     });
-        // },
+        getCategories() {
+            axios.get("/get-categories").then(({ data }) => {
+                this.categories = data;
+            });
+        },
+
+        getProductList() {
+            axios.get("/get-product-lists").then(({ data }) => {
+                this.productLists = data;
+            });
+        },
 
         submitProduct() {
             const { product } = this;
@@ -264,7 +278,8 @@ export default {
     },
     mounted() {
         this.getProducts();
-        //this.getCategories();
+        this.getCategories();
+        this.getProductList();
     },
 };
 </script>

@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
-use App\Models\Inventory;
 
 class Categories extends Model
 {
@@ -22,10 +21,4 @@ class Categories extends Model
     {
         return $this->hasMany(Product::class, 'categoryId');
     }
-
-    public function inventories()
-    {
-        return $this->hasMany(Inventory::class, 'categoryId');
-    }
-    
 }

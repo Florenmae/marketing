@@ -56,8 +56,6 @@
                         <option value="1">admin</option>
                         <option value="2">IGP</option>
                         <option value="3">Project</option>
-                        <option value="4">Employee</option>
-                        <option value="5">Customer</option>
                     </select>
                 </div>
                 <div class="col-span-2 border-red-500">
@@ -116,10 +114,12 @@ export default {
             );
 
             if (confirmed) {
-                axios.post("/submit-user", userPayload).then(({ data }) => {
-                    this.$router.push("/user");
-                    window.location.reload("Reloading");
-                });
+                axios
+                    .post("/submit-user", userPayload)
+                    .then(({ data }) => {
+                        this.$router.push("/user");
+                        window.location.reload("Reloading");
+                    });
             }
         },
     },

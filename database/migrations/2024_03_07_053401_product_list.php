@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deliveryCarts', function (Blueprint $table) {
+        Schema::create('productLists', function (Blueprint $table) {
             $table->id();
-            $table->string('deliveryId')->nullable();
-            $table->string('productId')->nullable();
-            $table->float('qty')->nullable();
+            $table->string('categoryId')->nullable();
+            $table->string('item_code')->nullable();
+            $table->string('name')->nullable();
+            $table->string('image')->nullable();
             $table->float('price')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
-        });  
+        });
     }
 
     /**

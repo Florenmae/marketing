@@ -154,7 +154,7 @@ export default {
                 "Are you sure you want to delete this user?"
             );
             if (confirmed) {
-                this.deleteUser(user.id);
+                this.deleteUser(user.id); 
             }
         },
 

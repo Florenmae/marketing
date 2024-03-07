@@ -12,6 +12,7 @@ import Product from "@/Component/Marketing/Inventory/Product.vue";
 import ProductList from "@/Component/Marketing/Inventory/ProductList.vue";
 import editProduct from "@/Component/Marketing/Inventory/editProduct.vue";
 
+
 import Transaction from "@/Component/Marketing/Inventory/Transaction.vue";
 import OrderList from "@/Component/Marketing/Inventory/OrderList.vue";
 
