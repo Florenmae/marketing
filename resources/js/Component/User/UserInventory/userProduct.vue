@@ -48,7 +48,7 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ product.name }}
+                                {{ getProductName(product.productId) }}
                             </th>
                             <td class="px-6 py-4">
                                 {{ getCategoryName(product.categoryId) }}
@@ -81,18 +81,6 @@
                                     v-if="product.status === 4"
                                     class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
                                 >
-                                    Out for Delivery
-                                </p>
-                                <p
-                                    v-if="product.status === 5"
-                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
-                                >
-                                    Delivered
-                                </p>
-                                <p
-                                    v-if="product.status === 6"
-                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
-                                >
                                     Returned
                                 </p>
                             </td>
@@ -103,9 +91,7 @@
                                     v-if="
                                         product.status !== 2 &&
                                         product.status !== 3 &&
-                                        product.status !== 4 &&
-                                        product.status !== 5 &&
-                                        product.status !== 6
+                                        product.status !== 4
                                     "
                                 >
                                     <SendToAdmin
@@ -175,6 +161,7 @@ export default {
                 status: "",
             },
             products: [],
+            productlists: [],
             categories: [],
             editingProductId: null,
             modalStatus: false,
@@ -185,7 +172,7 @@ export default {
             this.modalStatus = !this.modalStatus;
         },
 
-        getProducts() {
+        getProductUsers() {
             axios.get("/get-productsUser").then(({ data }) => {
                 this.products = data;
             });
@@ -222,12 +209,6 @@ export default {
             }
         },
 
-        deliverProduct(product) {
-            axios.post("/deliver", { id: product.id }).then(({ data }) => {
-                this.getProducts();
-            });
-        },
-
         deleteProduct(productId) {
             axios.post("/delete-product", { productId }).then(({ data }) => {
                 this.getProducts();
@@ -238,15 +219,27 @@ export default {
                 this.categories = data;
             });
         },
+        getProductList() {
+            axios.get("/get-product-lists").then(({ data }) => {
+                this.productLists = data;
+            });
+        },
         getCategoryName(categoryId) {
             const category = this.categories.find((c) => c.id === categoryId);
             return category ? category.name : "Unknown Category";
         },
+        getProductName(productId) {
+            const productList = this.productlists.find(
+                (d) => d.id === productId
+            );
+            return productList ? productList.name : "Unknown Name";
+        },
     },
 
     mounted() {
-        this.getProducts();
+        this.getProductUsers();
         this.getCategories();
+        this.getProductList();
     },
 };
 </script>

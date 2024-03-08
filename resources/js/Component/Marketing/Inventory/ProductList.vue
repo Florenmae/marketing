@@ -22,27 +22,20 @@
                             <th scope="col" class="px-6 py-3">Product Name</th>
                             <th scope="col" class="px-6 py-3">Category</th>
                             <th scope="col" class="px-6 py-3">Item Code</th>
-                            <th scope="col" class="px-6 py-3">
-                                Product Supplier
-                            </th>
                             <th scope="col" class="px-6 py-3">Price</th>
-                            <th scope="col" class="px-6 py-3">
-                                Stocks Available
-                            </th>
                             <th scope="col" class="px-6 py-3">Description</th>
-                            <th scope="col" class="px-6 py-3">Status</th>
                             <th scope="col" class="px-20 py-3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr
-                            v-for="product in receivedProduct"
-                            :key="product.id"
+                            v-for="productlist in productlists"
+                            :key="productlist.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
                             <td class="px-6 py-4">
                                 <img
-                                    :src="product.image"
+                                    :src="productlist.image"
                                     alt="Product Image"
                                     class="w-34 h-auto rounded-lg"
                                 />
@@ -51,39 +44,36 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ product.name }}
+                                {{ productlist.name }}
                             </th>
                             <td class="px-6 py-4">
-                                <p>{{ getCategoryName(product.categoryId) }}</p>
-                            </td>
-                            <td class="px-6 py-4">{{ product.item_code }}</td>
-
-                            <td class="px-6 py-4">
-                                <p>{{ getSupplierName(product.userId) }}</p>
-                            </td>
-                            <td class="px-6 py-4">{{ product.price }}</td>
-                            <td class="px-6 py-4">{{ product.stocks }}</td>
-                            <td class="px-6 py-4">{{ product.description }}</td>
-                            <td class="px-6 py-4">
-                                <p
-                                    v-if="product.status === 5"
-                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
-                                >
-                                    Received
+                                <p>
+                                    {{
+                                        getCategoryName(productlist.categoryId)
+                                    }}
                                 </p>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ productlist.item_code }}
+                            </td>
+
+                            <!-- <td class="px-6 py-4">
+                                <p>{{ getSupplierName(productlist.userId) }}</p>
+                            </td> -->
+                            <td class="px-6 py-4">{{ productlist.price }}</td>
+                            <td class="px-6 py-4">
+                                {{ productlist.description }}
                             </td>
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
-                                <editProduct :product="product" />
+                                <!-- <editProduct :product="product" /> -->
                                 <!-- <button
                                     class="bg-blue-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-blue-600"
                                     @click="updateProduct"
                                 >
                                     Receive
                                 </button> -->
-
-                                <Return :product="product" />
                             </td>
                         </tr>
                     </tbody>
@@ -96,41 +86,32 @@
 <script>
 import Modal from "@/Component/Modal.vue";
 import editProduct from "@/Component/Marketing/inventory/editProduct.vue";
-import Approve from "@/Component/Marketing/inventory/Approve.vue";
-import Return from "@/Component/Marketing/inventory/Return.vue";
-import Receive from "@/Component/Marketing/inventory/Receive.vue";
 
 import axios from "axios";
 
 export default {
-    props: ["product"],
+    props: ["productlist"],
     components: {
         Modal,
         editProduct,
-        Approve,
-        Return,
-        Receive,
     },
     data() {
         return {
-            pendingProducts: [],
-            approvedProducts: [],
-            outForDelivery: [],
             editProduct: {
                 item_code: "",
+                categoryId: "",
                 name: "",
+                image: "",
                 userId: "",
                 price: "",
-                stocks: "",
                 description: "",
-                status: 0,
+                status: 1,
             },
-            users: [],
-            products: [],
             categories: [],
-            editingProductId: null,
+            //users: [],
+            productlists: [],
+            editingProductListId: this.productlist.id,
             modalStatus: false,
-            roles: [],
         };
     },
     methods: {
@@ -138,9 +119,9 @@ export default {
             this.modalStatus = !this.modalStatus;
         },
 
-        getProducts() {
-            axios.get("/get-products").then(({ data }) => {
-                this.products = data;
+        getProductlists() {
+            axios.get("/get-product-lists").then(({ data }) => {
+                this.productlists = data;
             });
         },
 
@@ -167,46 +148,33 @@ export default {
             });
         },
 
-        editProduct(product) {
-            this.editProduct = { ...product };
-            this.editingProductId = product.id;
-            this.modalContent.title = "Edit Product";
-            this.modalStatus = true;
-        },
-
-        returnAll(product) {
-            axios
-                .post("/returnAll-product", { product })
-                .then(({ data }) => {
-                    window.location.reload("Reloading");
-                })
-                .catch((error) => {
-                    console.error("Error returning all products:", error);
-                });
-        },
+        // editProduct(product) {
+        //     this.editProduct = { ...product };
+        //     this.editingProductId = product.id;
+        //     this.modalContent.title = "Edit Product";
+        //     this.modalStatus = true;
+        // },
 
         getCategoryName(categoryId) {
             const category = this.categories.find((c) => c.id === categoryId);
             return category ? category.name : "Unknown Category";
         },
 
-        getSupplierName(userId) {
-            userId = Number(userId);
-            const user = this.users.find((user) => user.id === userId);
-            return user ? user.name : "Unknown User";
-        },
+        // getSupplierName(userId) {
+        //     userId = Number(userId);
+        //     const user = this.users.find((user) => user.id === userId);
+        //     return user ? user.name : "Unknown User";
+        // },
     },
-    computed: {
-        receivedProduct() {
-            return this.products.filter((product) => product.status === 5);
-        },
-    },
+    // computed: {
+    //     receivedProduct() {
+    //         return this.products.filter((product) => product.status === 5);
+    //     },
+    // },
     mounted() {
-        this.getProducts();
-        // this.getApprovedProducts();
-        // this.getPendingProducts();
+        this.getProductlists();
         this.getCategories();
-        this.getUsers();
+        //this.getUsers();
     },
 };
 </script>

@@ -23,7 +23,7 @@ class ProductUserController extends Controller
     public function SubmitAdmin(Request $request){
     $product = Product :: findOrFail($request->editingProductId);
 
-    $product->name = $request->prodPayload["name"];
+    // $product->productId = $request->prodPayload["name"];
     $product->userId = $request->prodPayload["userId"];
     $product->categoryId = $request->prodPayload["categoryId"];
     $product->item_code = $request->prodPayload["item_code"];

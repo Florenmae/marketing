@@ -85,7 +85,7 @@
                 <div class="mt-6 mb-6">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
-                        >Out For Delivery</span
+                        >Approved Products</span
                     >
                 </div>
             </div>
@@ -116,7 +116,7 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="product in outForDelivery"
+                            v-for="product in approvedProducts"
                             :key="product.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
@@ -224,17 +224,6 @@ export default {
             });
         },
 
-        // getPendingProducts() {
-        //     axios.get("/get-products?status=0").then(({ data }) => {
-        //         this.pendingProducts = data;
-        //     });
-        // },
-        // getApprovedProducts() {
-        //     axios.get("/get-products?status=1").then(({ data }) => {
-        //         this.approvedProducts = data;
-        //     });
-        // },
-
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;
@@ -282,12 +271,6 @@ export default {
         },
         approvedProducts() {
             return this.products.filter((product) => product.status === 3);
-        },
-        outForDelivery() {
-            return this.products.filter((product) => product.status === 4);
-        },
-        receivedProduct() {
-            return this.products.filter((product) => product.status === 5);
         },
     },
     mounted() {

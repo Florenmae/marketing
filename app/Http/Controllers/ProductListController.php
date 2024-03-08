@@ -21,7 +21,9 @@ class ProductListController extends Controller
     // }
 
     public function getProductLists()
-    {   return ProductList::all();
+    {   
+        return ProductList::all();
+        // dd(ProductList::all());
         
     }
 }

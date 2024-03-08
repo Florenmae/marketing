@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductList;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Categories;
@@ -12,26 +13,68 @@ use App\Models\ReturnedProduct;
 
 class ProductController extends Controller{
 
-    public function createProduct(Request $request) {
+//     public function createProduct(Request $request) {
 
-    $categories = Categories::all();
-    $categoryId = $request->input('id');
+//     $categories = Categories::all();
+//     $categoryId = $request->input('id');
 
+//     $newProduct = new Product();
+//     $newProduct->categoryId = $categoryId;
+//     $newProduct->productId = $request->input('productId');
+//     $newProduct->image = $request->input('image');
+//     $newProduct->userId = $request->input('userId');
+//     $newProduct->item_code = $request->input('item_code');
+//     $newProduct->price = $request->input('price');
+//     $newProduct->unit = $request->input('unit');
+//     $newProduct->qty = $request->input('qty');
+//     $newProduct->description = $request->input('description');
+
+//     $newProduct->status= 0;
+
+//     $productSaved = $newProduct->save();
+// }
+
+public function createProduct(Request $request) {
+    // Validate incoming request data
+    $validatedData = $request->validate([
+        'categoryId' => 'required|exists:categories,id',
+        'productName' => 'required', // Assuming this is the name of the product received from the form
+        'image' => 'required',
+        'userId' => 'required',
+        'item_code' => 'required',
+        'price' => 'required|numeric',
+        'unit' => 'required',
+        'qty' => 'required|integer',
+        'description' => 'required',
+    ]);
+
+    // Find the product ID based on the received product name
+    $productId = Product::where('name', $validatedData['productName'])->value('productId');
+
+    // Create a new product instance
     $newProduct = new Product();
-    $newProduct->categoryId = $categoryId;
-    $newProduct->productId = $request->input('productId');
-    $newProduct->image = $request->input('image');
-    $newProduct->userId = $request->input('userId');
-    $newProduct->item_code = $request->input('item_code');
-    $newProduct->price = $request->input('price');
-    $newProduct->unit = $request->input('unit');
-    $newProduct->qty = $request->input('qty');
-    $newProduct->description = $request->input('description');
+    $newProduct->categoryId = $validatedData['categoryId'];
+    $newProduct->productId = $productId; // Save the retrieved product ID
+    $newProduct->image = $validatedData['image'];
+    $newProduct->userId = $validatedData['userId'];
+    $newProduct->item_code = $validatedData['item_code'];
+    $newProduct->price = $validatedData['price'];
+    $newProduct->unit = $validatedData['unit'];
+    $newProduct->qty = $validatedData['qty'];
+    $newProduct->description = $validatedData['description'];
+    $newProduct->status = 0;
 
-    $newProduct->status= 0;
-
+    // Save the product
     $productSaved = $newProduct->save();
+
+    if ($productSaved) {
+        return response()->json(['message' => 'Product created successfully'], 201);
+    } else {
+        return response()->json(['message' => 'Failed to create product'], 500);
+    }
 }
+
+
 
     public function uploadImage(Request $request) {
     $request->validate([
@@ -57,7 +100,7 @@ class ProductController extends Controller{
     public function updateProduct(Request $request){
         $product = Product :: findOrFail($request->editingProductId);
 
-        $product->name = $request->prodPayload["name"];
+        // $product->name = $request->prodPayload["name"];
         $product->userId = $request->prodPayload["userId"];
         $product->categoryId = $request->prodPayload["categoryId"];
         $product->item_code = $request->prodPayload["item_code"];
