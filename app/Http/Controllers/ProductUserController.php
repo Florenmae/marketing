@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Delivery;
+use App\Models\DeliveryCart;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,24 +21,59 @@ class ProductUserController extends Controller
         return $products;
     }
 
-    public function SubmitAdmin(Request $request){
-    $product = Product :: findOrFail($request->editingProductId);
+//     public function SubmitAdmin(Request $request){
+//     $product = Product :: findOrFail($request->editingProductId);
 
-    // $product->productId = $request->prodPayload["name"];
-    $product->userId = $request->prodPayload["userId"];
-    $product->categoryId = $request->prodPayload["categoryId"];
-    $product->item_code = $request->prodPayload["item_code"];
-    $product->price = $request->prodPayload["price"];
-    $product->unit = $request->prodPayload["unit"];
-    $product->stocks = $request->prodPayload["stocks"];
-    $product->status = 2; 
-    $product->description = $request->prodPayload["description"]; 
-    $product->approved_by = $request->prodPayload["approved_by"];
+//     $product->productId = $request->prodPayload["name"];
+//     $product->userId = $request->prodPayload["userId"];
+//     $product->categoryId = $request->prodPayload["categoryId"];
+//     $product->item_code = $request->prodPayload["item_code"];
+//     $product->price = $request->prodPayload["price"];
+//     $product->unit = $request->prodPayload["unit"];
+//     $product->stocks = $request->prodPayload["stocks"];
+//     $product->status = 2; 
+//     $product->description = $request->prodPayload["description"]; 
+//     $product->approved_by = $request->prodPayload["approved_by"];
 
-    $product->save();
+//     $product->save();
 
-    return $product;
+//     return $product;
+// }
+public function submitAdmin(Request $request)
+{
+        // Assuming 'products' is the key used to send the array of products from the frontend
+        $products = $request->input('products');
+
+        // Loop through each product in the array
+        foreach ($products as $productData) {
+            // Assuming 'productId' is the key used to send the product ID from the frontend
+            $productId = $productData['productId'];
+
+            // Find the product by ID
+            $product = Product::findOrFail($productId);
+
+             $product->stocks -= $productData['qty'];
+
+            // Ensure that the available stock doesn't go below 0
+            if ($product->stocks < 0) {
+                $product->stocks = 0;
+            }
+
+            // Update the product attributes
+            // $product->productId = $productData['productId']; // No need to update productId
+            // $product->categoryId = $productData['categoryId']; // Assuming categoryId remains the same
+            // $product->userId = $productData['userId']; // Assuming userId remains the same
+            // $product->image = $productData['image']; // Assuming image remains the same
+            $product->price = $productData['price'];
+            $product->qty = $productData['qty'];
+            // $product->description = $productData['description']; // Assuming description remains the same
+            $product->status = 2; // Change the status to 2
+
+            // Save the updated product
+            $product->save();
+        }
 }
+
 
 public function Deliver(Request $request) {
     $product = Product::findOrFail($request->editingProductId);
@@ -79,23 +115,22 @@ public function Deliver(Request $request) {
 
         }
 
-     public function addToCart(Request $request)
+     public function addToDevCart(Request $request)
 {
     $productId = $request->input('productId');
     $qty = $request->input('qty', 1);
 
-    $cartItem = DeliveryCart::where('name', $request->input('name'))
+    $cartItem = DeliveryCart::where('productId', $request->input('productId'))
                     ->where('price', $request->input('price'))
                     ->first();
 
     if ($cartItem) {
         $cartItem->qty += $qty;
-        $cartItem->total = $cartItem->qty * $cartItem->price;
+        $cartItem->price = $cartItem->qty * $cartItem->price;
         $cartItem->save();
     } else {
         DeliveryCart::create([
             'productId' => $productId,
-            // 'price' => $request->input('price'),
             'price' => $request->input('price') * $qty,
             'qty' => $qty,
         ]);

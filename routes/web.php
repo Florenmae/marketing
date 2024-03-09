@@ -60,11 +60,11 @@ Route::get("/get-users", [ProductController::class, 'getUsers']);
 Route::post("/receive", [ProductController::class, 'updateProduct']);
 
 Route::get("/get-productsUser", [ProductUserController::class, 'getProductsUser']);
-Route::post("/submitToAdmin", [ProductUserController::class, 'SubmitAdmin']);
+Route::post("/submit-to-admin", [ProductUserController::class, 'SubmitAdmin']);
 Route::get("/get-categories", [ProductUserController::class, 'getCategories']);
 Route::post("/deliver", [ProductUserController::class, 'Deliver']);
 
-Route::post('/addToCart', [ProductUserController::class, 'addToCart'])->name("addToCart");
+Route::post('/add-Cart', [ProductUserController::class, 'addToDevCart'])->name("addToDevCart");
 Route::get('/showCartItem', [ProductUserController::class, 'showCartItem']);
 Route::post('/delete-item', [ProductUserController::class, 'deleteItem']);
 Route::post('/checkout', [ProductUserController::class, 'checkout']);
@@ -96,10 +96,10 @@ Route::post("/delete-category", [CategoryController::class, 'deleteCategory']);
 Route::get("/get-products", [PosController::class, 'fetchProducts']);
 Route::get('/fetch-categories', [PosController::class, 'fetchCategories']);
 
-Route::post('/addToCart', [PosController::class, 'addToCart'])->name("addToCart");
-Route::get('/showCartItem', [PosController::class, 'showCartItem']);
-Route::post('/delete-item', [PosController::class, 'deleteItem']);
-Route::post('/checkout', [PosController::class, 'checkout']);
+// Route::post('/addToCart', [PosController::class, 'addToCart'])->name("addToCart");
+// Route::get('/showCartItem', [PosController::class, 'showCartItem']);
+// Route::post('/delete-item', [PosController::class, 'deleteItem']);
+// Route::post('/checkout', [PosController::class, 'checkout']);
 
 Route::get('/fetch-orders', [OrderController::class, 'fetchOrders']);
 Route::get('/view-order', [OrderController::class, 'viewOrder']);

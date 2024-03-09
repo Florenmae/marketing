@@ -89,12 +89,12 @@
 
             <div class="flex-1 p-4">
                 <h2 class="text-2xl font-semibold mb-4">Delivery Cart</h2>
-                <div v-if="deliverycart.length === 0" class="text-gray-600">
+                <div v-if="deliveryCart.length === 0" class="text-gray-600">
                     Your cart is empty.
                 </div>
                 <div v-else>
                     <div
-                        v-for="product in deliverycart"
+                        v-for="product in deliveryCart"
                         :key="product.id"
                         class="flex items-center justify-between p-2 border-b"
                     >
@@ -127,9 +127,9 @@
                         <span class="font-semibold"
                             >Php {{ product.price.toFixed(2) }}</span
                         >
-                        <span class="text-gray-600"
+                        <!-- <span class="text-gray-600"
                             >Total: Php {{ product.total.toFixed(2) }}</span
-                        >
+                        > -->
                         <button @click="deleteItem(product.id)">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -154,11 +154,12 @@
                             >Total: Php {{ calculateTotal().toFixed(2) }}</span
                         >
                         <button
-                            @click="checkout"
+                            @click="submitToAdmin"
                             class="bg-green-500 text-white px-4 py-1 rounded-md"
                         >
                             Deliver
                         </button>
+                        <!-- <SendToAdmin :product="product" /> -->
                     </div>
                 </div>
             </div>
@@ -167,10 +168,20 @@
 </template>
 
 <script>
+import Modal from "@/Component/Modal.vue";
+import addProduct from "@/Component/User/UserInventory/addProduct.vue";
+import SendToAdmin from "@/Component/User/UserInventory/SendToAdmin.vue";
+
 export default {
+    components: {
+        Modal,
+        addProduct,
+        SendToAdmin,
+    },
     data() {
         return {
             products: [],
+            deliveryCart: [],
             cart: [],
             categories: [],
             currentPage: 0,
@@ -183,9 +194,11 @@ export default {
         addToCart(product) {
             console.log("Adding to Cart:", product);
             axios
-                .post("/addToCart", {
+                .post("/add-Cart", {
                     productId: product.productId,
                     name: product.name,
+                    categoryId: product.categoryId,
+                    userId: product.userId,
                     image: product.image,
                     price: product.price,
                     qty: 1,
@@ -196,10 +209,65 @@ export default {
                     this.showCartItem();
                 });
         },
+        // submitToAdmin() {
+        //     const productIds = this.deliveryCart.map((product) => product.id); // Assuming 'id' is the product ID
+        //     axios
+        //         .post("/submit-to-admin", {
+        //             productIds,
+        //             prodPayload: this.deliveryCart,
+        //         })
+        //         .then((response) => {
+        //             // Handle successful submission
+        //             console.log("Cart submitted to admin:", response.data);
+        //             // Optionally, reset the delivery cart after submission
+        //             this.deliveryCart = [];
+        //         })
+        //         .catch((error) => {
+        //             // Handle errors
+        //             console.error("Error submitting cart to admin:", error);
+        //         });
+        // },
+
+        // submitToAdmin() {
+        //     const productIds = this.deliveryCart.map((product) => product.id); // Assuming 'id' is the product ID
+        //     axios
+        //         .post("/submit-to-admin", {
+        //             productIds,
+        //             prodPayload: this.deliveryCart,
+        //         })
+        //         .then((response) => {
+        //             // Handle successful submission
+        //             console.log("Cart submitted to admin:", response.data);
+        //             // Optionally, reset the delivery cart after submission
+        //             this.deliveryCart = [];
+        //         })
+        //         .catch((error) => {
+        //             // Handle errors
+        //             console.error("Error submitting cart to admin:", error);
+        //         });
+        // },
+
+        submitToAdmin() {
+            axios
+                .post("/submit-to-admin", {
+                    products: this.deliveryCart,
+                    status: 2,
+                })
+                .then((response) => {
+                    // Handle successful submission
+                    console.log("Cart submitted to admin:", response.data);
+                    // Optionally, reset the delivery cart after submission
+                    this.deliveryCart = [];
+                })
+                .catch((error) => {
+                    // Handle errors
+                    console.error("Error submitting cart to admin:", error);
+                });
+        },
 
         calculateTotal() {
-            return this.cart.reduce((total, product) => {
-                return total + product.total;
+            return this.deliveryCart.reduce((price, product) => {
+                return price + product.price;
             }, 0);
         },
         incrementQuantity(product) {
@@ -214,7 +282,7 @@ export default {
 
         showCartItem() {
             axios.get("/showCartItem").then(({ data }) => {
-                this.cart = data;
+                this.deliveryCart = data;
             });
         },
 
@@ -223,11 +291,10 @@ export default {
             const orderPayload = {
                 paymentMethod: this.paymentMethod,
                 amountGiven: this.amountGiven,
-                items: this.cart.map((product) => ({
+                items: this.deliveryCart.map((product) => ({
                     productId: product.id,
                     qty: product.qty,
                     price: product.price,
-                    total: product.total,
                 })),
             };
 
@@ -235,14 +302,14 @@ export default {
                 .post("/checkout", orderPayload)
                 .then((response) => {
                     const { status, remainingBalance } = response.data;
-                    this.cart = [];
+                    this.deliveryCart = [];
                     this.amountGiven = 0;
                     this.receipt = response.data.receipt;
                     this.showReceiptModal = true;
                 })
                 .catch((error) => {
                     console.error("Error during checkout:", error);
-                    this.cart = originalCart;
+                    this.deliveryCart = originalCart;
                 });
         },
 
@@ -279,7 +346,7 @@ export default {
             return this.categories.slice(start, end);
         },
         totalAmount() {
-            return this.cart.reduce(
+            return this.deliveryCart.reduce(
                 (total, product) => total + product.total,
                 0
             );

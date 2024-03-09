@@ -14,6 +14,45 @@
         <div class="grid gap-4 mb-4 grid-cols-4">
             <div class="col-span-2">
                 <label
+                    for="categoryId"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Category</label
+                >
+                <select
+                    v-model="editProduct.categoryId"
+                    id="categoryId"
+                    name="categoryId"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    required
+                >
+                    <option value="">Select a category</option>
+                    <option
+                        v-for="category in categories"
+                        :key="category.id"
+                        :value="category.id"
+                    >
+                        {{ category.name }}
+                    </option>
+                </select>
+            </div>
+            <div class="col-span-2">
+                <label
+                    for="description"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Item Code</label
+                >
+                <input
+                    v-model="editProduct.item_code"
+                    type="text"
+                    name="item_code"
+                    id="item_code"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Type the item code"
+                    required=""
+                />
+            </div>
+            <div class="col-span-2">
+                <label
                     for="productId"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Product Name</label
@@ -135,8 +174,6 @@ export default {
             editProduct: {
                 item_code: "",
                 categoryId: "",
-                productId: "",
-                stocks: "",
                 name: "",
                 userId: "",
                 price: "",
@@ -147,8 +184,6 @@ export default {
             },
             categories: [],
             submittedProducts: [],
-            productLists: [],
-            deliveryCart: [],
         };
     },
     watch: {
@@ -174,7 +209,11 @@ export default {
         //             console.error("Error updating product:", error);
         //         });
         // },
-        submitToAdmin(productIds) {
+        submitToAdmin() {
+            // Extract product IDs from delivery cart
+            const productIds = this.deliveryCart.map((product) => product.id);
+
+            // Other payload data
             const { editProduct, editingProductId } = this;
             const prodPayload = { ...editProduct, status: 2 };
 
