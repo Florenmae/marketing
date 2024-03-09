@@ -178,7 +178,6 @@ import Modal from "@/Component/Modal.vue";
 import editProduct from "@/Component/Marketing/inventory/editProduct.vue";
 import Approve from "@/Component/Marketing/inventory/Approve.vue";
 import Return from "@/Component/Marketing/inventory/Return.vue";
-import Receive from "@/Component/Marketing/inventory/Receive.vue";
 
 import axios from "axios";
 
@@ -189,7 +188,6 @@ export default {
         editProduct,
         Approve,
         Return,
-        Receive,
     },
     data() {
         return {

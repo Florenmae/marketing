@@ -34,45 +34,66 @@ class ProductController extends Controller{
 //     $productSaved = $newProduct->save();
 // }
 
-public function createProduct(Request $request) {
-    // Validate incoming request data
-    $validatedData = $request->validate([
-        'categoryId' => 'required|exists:categories,id',
-        'productName' => 'required', // Assuming this is the name of the product received from the form
-        'image' => 'required',
-        'userId' => 'required',
-        'item_code' => 'required',
-        'price' => 'required|numeric',
-        'unit' => 'required',
-        'qty' => 'required|integer',
-        'description' => 'required',
-    ]);
+ public function createProduct(Request $request){
+        $newproduct = new Product();
 
-    // Find the product ID based on the received product name
-    $productId = Product::where('name', $validatedData['productName'])->value('productId');
+        $newproduct->id = $request->id;
+        $newproduct->categoryId = $request->categoryId;
+        $newproduct->userId = $request->userId;
+        $newproduct->item_code = $request->item_code;
+        $newproduct->productId = $request->productId;
+        $newproduct->image = $request->image;
+        $newproduct->price = $request->price;
+        $newproduct->unit = $request->unit;
+        $newproduct->stocks = $request->stocks;
+        $newproduct->description = $request->description;
+        $newproduct->status = 1;
+        $newproduct->approved_by = $request->approved_by;
 
-    // Create a new product instance
-    $newProduct = new Product();
-    $newProduct->categoryId = $validatedData['categoryId'];
-    $newProduct->productId = $productId; // Save the retrieved product ID
-    $newProduct->image = $validatedData['image'];
-    $newProduct->userId = $validatedData['userId'];
-    $newProduct->item_code = $validatedData['item_code'];
-    $newProduct->price = $validatedData['price'];
-    $newProduct->unit = $validatedData['unit'];
-    $newProduct->qty = $validatedData['qty'];
-    $newProduct->description = $validatedData['description'];
-    $newProduct->status = 0;
+        $res = $newproduct->save();
 
-    // Save the product
-    $productSaved = $newProduct->save();
-
-    if ($productSaved) {
-        return response()->json(['message' => 'Product created successfully'], 201);
-    } else {
-        return response()->json(['message' => 'Failed to create product'], 500);
+        return $res;
     }
-}
+
+// public function createProduct(Request $request) {
+//     // Validate incoming request data
+//     $validatedData = $request->validate([
+//         'categoryId' => 'required|exists:categories,id',
+//         'productName' => 'required', // Assuming this is the name of the product received from the form
+//         'image' => 'required',
+//         'userId' => 'required',
+//         'item_code' => 'required',
+//         'price' => 'required|numeric',
+//         'unit' => 'required',
+//         'qty' => 'required|integer',
+//         'description' => 'required',
+//     ]);
+
+//     // Find the product ID based on the received product name
+//     $productId = Product::where('name', $validatedData['productName'])->value('productId');
+
+//     // Create a new product instance
+//     $newProduct = new Product();
+//     $newProduct->categoryId = $validatedData['categoryId'];
+//     $newProduct->productId = $productId; // Save the retrieved product ID
+//     $newProduct->image = $validatedData['image'];
+//     $newProduct->userId = $validatedData['userId'];
+//     $newProduct->item_code = $validatedData['item_code'];
+//     $newProduct->price = $validatedData['price'];
+//     $newProduct->unit = $validatedData['unit'];
+//     $newProduct->qty = $validatedData['qty'];
+//     $newProduct->description = $validatedData['description'];
+//     $newProduct->status = 0;
+
+//     // Save the product
+//     $productSaved = $newProduct->save();
+
+//     if ($productSaved) {
+//         return response()->json(['message' => 'Product created successfully'], 201);
+//     } else {
+//         return response()->json(['message' => 'Failed to create product'], 500);
+//     }
+// }
 
 
 

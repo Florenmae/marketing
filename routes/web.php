@@ -64,10 +64,16 @@ Route::post("/submitToAdmin", [ProductUserController::class, 'SubmitAdmin']);
 Route::get("/get-categories", [ProductUserController::class, 'getCategories']);
 Route::post("/deliver", [ProductUserController::class, 'Deliver']);
 
+Route::post('/addToCart', [ProductUserController::class, 'addToCart'])->name("addToCart");
+Route::get('/showCartItem', [ProductUserController::class, 'showCartItem']);
+Route::post('/delete-item', [ProductUserController::class, 'deleteItem']);
+Route::post('/checkout', [ProductUserController::class, 'checkout']);
+
 //Route::get('/get-transaction-id/{productId}', [ProductUserController::class, 'getTransactionId']);
 
 
 Route::get("/get-product-lists", [ProductListController::class, 'getProductLists']);
+Route::post("/submit-productList", [ProductListController::class, 'createProductList']);
 // // Route for fetching pending products
 // Route::get('/get-pending-products', [ProductController::class, 'getPendingProducts']);
 

@@ -79,5 +79,101 @@ public function Deliver(Request $request) {
 
         }
 
+     public function addToCart(Request $request)
+{
+    $productId = $request->input('productId');
+    $qty = $request->input('qty', 1);
+
+    $cartItem = DeliveryCart::where('name', $request->input('name'))
+                    ->where('price', $request->input('price'))
+                    ->first();
+
+    if ($cartItem) {
+        $cartItem->qty += $qty;
+        $cartItem->total = $cartItem->qty * $cartItem->price;
+        $cartItem->save();
+    } else {
+        DeliveryCart::create([
+            'productId' => $productId,
+            // 'price' => $request->input('price'),
+            'price' => $request->input('price') * $qty,
+            'qty' => $qty,
+        ]);
+    }
+
+    return response()->json(['message' => 'Product added to cart']);
+}
+
+
+    // public function showCartItem(Request $request)
+    // {
+    //     if ($request->wantsJson()) {
+    //         return response(
+    //             $request->user()->cart()->get()
+    //         );
+    //     }
+    //     return view('cart.index');
+    // }
+
+    public function showCartItem(Request $request){
+        return DeliveryCart::all();
+    }
+
+    public function deleteItem(Request $request){
+        $deleteItem = DeliveryCart::find($request->id);
+
+        $res = $deleteItem->delete();
+        return $res;
+    }
+
+    public function checkout(Request $request)
+{
+    $cartItems = DeliveryCart::all();
+    $totalAmount = 0;
+
+    foreach ($cartItems as $cartItem) {
+        $totalAmount += $cartItem->total;
+    }
+
+    $paymentMethod = $request->input('paymentMethod');
+    $amountGiven = $request->input('amountGiven');
+
+
+    if ($amountGiven >= $totalAmount) {
+        $balance = 0;
+        $changeAmount = $amountGiven - $totalAmount;
+    } else {
+        $balance = $totalAmount - $amountGiven;
+        $changeAmount = 0;
+    }
+
+
+    $orderItems = [];
+    $now = now();
+
+    foreach ($cartItems as $cartItem) {
+        $orderItems[] = [
+            'productId' => $cartItem->productId,
+            'customerId' => $cartItem->customerId,
+            'price' => $cartItem->price,
+            'qty' => $cartItem->qty,
+            'total' => $cartItem->total,
+            'description' => $cartItem->description,
+            'image' => $cartItem->image,
+            'paymentMethod' => $paymentMethod,
+            'balance' => $balance,
+            'changeAmount' => $changeAmount,
+            'created_at' => $now,
+            'updated_at' => $now,
+        ];
+    }
+
+    $orderProduct = new OrderProduct();
+    $orderProduct->insert($orderItems);
+
+    DeliveryCart::truncate();
+
+    return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
+}
 
 }

@@ -8,6 +8,7 @@
                         >Product List</span
                     >
                 </div>
+                <div><addProductList></addProductList></div>
             </div>
 
             <div class="overflow-x-auto border border-gray-300">
@@ -68,12 +69,6 @@
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
                                 <!-- <editProduct :product="product" /> -->
-                                <!-- <button
-                                    class="bg-blue-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-blue-600"
-                                    @click="updateProduct"
-                                >
-                                    Receive
-                                </button> -->
                             </td>
                         </tr>
                     </tbody>
@@ -86,6 +81,7 @@
 <script>
 import Modal from "@/Component/Modal.vue";
 import editProduct from "@/Component/Marketing/inventory/editProduct.vue";
+import addProductList from "@/Component/Marketing/inventory/addProductList.vue";
 
 import axios from "axios";
 
@@ -94,6 +90,7 @@ export default {
     components: {
         Modal,
         editProduct,
+        addProductList,
     },
     data() {
         return {
@@ -110,7 +107,7 @@ export default {
             categories: [],
             //users: [],
             productlists: [],
-            editingProductListId: this.productlist.id,
+            editingProductListId: null,
             modalStatus: false,
         };
     },

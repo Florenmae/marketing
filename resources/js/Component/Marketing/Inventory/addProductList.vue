@@ -4,10 +4,10 @@
         :buttonLabel="'Add Product'"
         :cancelLabel="'Cancel'"
         :saveLabel="'Save'"
-        @save="submitProduct"
+        @save="submitProductlist"
         :save-option="true"
     >
-        <form @submit.prevent="submitProduct" class="p-4 md:p-5">
+        <form @submit.prevent="submitProductlist" class="p-4 md:p-5">
             <div class="grid gap-4 mb-4 grid-cols-4">
                 <div class="col-span-2">
                     <label
@@ -16,7 +16,7 @@
                         >Category</label
                     >
                     <select
-                        v-model="product.categoryId"
+                        v-model="editProductlist.categoryId"
                         id="categoryId"
                         name="categoryId"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -25,8 +25,8 @@
                         <option value="">Select a category</option>
                         <option
                             v-for="category in categories"
-                            :key="category.id"
-                            :value="category.id"
+                            :key="category.categoryId"
+                            :value="category.categoryId"
                         >
                             {{ category.name }}
                         </option>
@@ -40,7 +40,7 @@
                         >Item Code</label
                     >
                     <input
-                        v-model="product.item_code"
+                        v-model="editProductlist.item_code"
                         type="text"
                         name="item_code"
                         id="item_code"
@@ -51,46 +51,19 @@
                 </div>
                 <div class="col-span-2">
                     <label
-                        for="productId"
+                        for="name"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >Product Name</label
                     >
-                    <select
-                        v-model="product.productId"
-                        id="productId"
-                        name="productId"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        required
-                    >
-                        <option value="">Select a product</option>
-                        <option
-                            v-for="productList in productLists"
-                            :key="productList.id"
-                            :value="productList.id"
-                        >
-                            {{ productList.name }}
-                        </option>
-                    </select>
-                </div>
-                <!-- Other code -->
-
-                <div class="col-span-2 border-red-500">
-                    <label
-                        for="userId"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Product supplier</label
-                    >
-                    <select
-                        v-model="product.userId"
+                    <input
+                        v-model="editProductlist.name"
                         type="text"
-                        name="userId"
-                        id="userId"
+                        name="name"
+                        id="name"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Choose Supplier"
-                    >
-                        <option value="2">IGP</option>
-                        <option value="3">Project</option>
-                    </select>
+                        placeholder="Type the Product Name"
+                        required=""
+                    />
                 </div>
                 <div class="col-span-2">
                     <label
@@ -99,44 +72,12 @@
                         >Price</label
                     >
                     <input
-                        v-model="product.price"
+                        v-model="editProductlist.price"
                         type="number"
                         name="price"
                         id="price"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Type the product price"
-                        required=""
-                    />
-                </div>
-                <div class="col-span-2">
-                    <label
-                        for="unit"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Unit</label
-                    >
-                    <input
-                        v-model="product.unit"
-                        type="text"
-                        name="unit"
-                        id="unit"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Select Product Unit"
-                        required=""
-                    />
-                </div>
-                <div class="col-span-2">
-                    <label
-                        for="stocks"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Quantity</label
-                    >
-                    <input
-                        v-model="product.stocks"
-                        type="number"
-                        name="stocks"
-                        id="stocks"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Product Quantity"
                         required=""
                     />
                 </div>
@@ -163,7 +104,7 @@
                         >Description</label
                     >
                     <textarea
-                        v-model="product.description"
+                        v-model="editProductlist.description"
                         type="text"
                         name="description"
                         id="description"
@@ -180,27 +121,22 @@
 <script>
 import Modal from "@/Component/Modal.vue";
 export default {
-    props: ["product"],
+    props: ["productlist"],
     components: {
         Modal,
     },
     data() {
         return {
-            editingProductId: null,
-            product: {
-                image: null,
-                item_code: "",
-                categoryId: "",
+            editProductlist: {
                 productId: "",
-                userId: "",
+                categoryId: "",
+                name: "",
+                image: "",
+                item_code: "",
                 price: "",
-                unit: "",
-                stocks: "",
                 description: "",
             },
-            productLists: [],
-            categories: [],
-            selectedCategoryId: null,
+            editingProductlist: null,
             modalContent: {
                 title: "Create New Product",
                 content: "Please fill in the product details",
@@ -209,55 +145,29 @@ export default {
         };
     },
     methods: {
-        getProducts() {
-            axios.get("/get-products").then(({ data }) => {
-                this.products = data;
-            });
-        },
+        submitProductlist() {
+            const { editProductlist } = this;
+            const prodlistPayload = {
+                ...editProductlist,
+            };
 
+            axios
+                .post("/submit-productList", prodlistPayload)
+                .then(({ data }) => {
+                    this.changeModalStatus();
+                })
+                .catch((error) => {
+                    console.error("Error submitting category:", error);
+                });
+        },
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;
             });
         },
-
-        getProductList() {
-            axios.get("/get-product-lists").then(({ data }) => {
-                this.productLists = data;
-            });
-        },
-
-        submitProduct() {
-            const { product } = this;
-            const prodPayload = {
-                ...product,
-            };
-
-            axios.post("/submit-product", prodPayload).then(({ data }) => {
-                this.getProducts();
-                window.location.reload("Reloading");
-            });
-        },
-
-        handleImageUpload(event) {
-            const formData = new FormData();
-            formData.append("image", event.target.files[0]);
-
-            axios
-                .post("/upload-image", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then((response) => {
-                    this.product.image = response.data.imagePath;
-                });
-        },
     },
     mounted() {
-        this.getProducts();
         this.getCategories();
-        this.getProductList();
     },
 };
 </script>

@@ -20,6 +20,22 @@ class ProductListController extends Controller
     //     return $productLists;
     // }
 
+     public function createProductList(Request $request){
+        $newprod = new ProductList();
+
+        $newprod->id = $request->id;
+        $newprod->categoryId = $request->categoryId;
+        $newprod->item_code = $request->item_code;
+        $newprod->name = $request->name;
+        $newprod->image = $request->image;
+        $newprod->price = $request->price;
+        $newprod->description = $request->description;
+
+        $res = $newprod->save();
+
+        return $res;
+    }
+
     public function getProductLists()
     {   
         return ProductList::all();
