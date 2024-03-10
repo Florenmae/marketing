@@ -19,4 +19,9 @@ class Delivery extends Model
     {
         return $this->belongsTo(Transaction::class, 'id');
     }
+
+    public function products()
+    {
+        return $this->hasmany(Product::class, 'productId');
+    }
 }

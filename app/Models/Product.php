@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Categories;
 use App\Models\Productlist;
+use App\Models\Delivery;
 
 class Product extends Model
 {
@@ -43,6 +44,11 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'id');
+    }
+
+    public function deliveries()
+    {
+        return $this->hasMany(Delivery::class, 'id');
     }
 
     public function returnedProduct()

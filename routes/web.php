@@ -57,6 +57,7 @@ Route::post("/return-product", [ProductController::class, 'returnProduct'])->nam
 Route::post("/returnAll-product", [ProductController::class, 'ReturnAll'])->name("ReturnAll");
 Route::get("/get-categories", [ProductController::class, 'getCategories']);
 Route::get("/get-users", [ProductController::class, 'getUsers']);
+Route::get("/get-deliveries", [ProductController::class, 'fetchDeliveries']);
 Route::post("/receive", [ProductController::class, 'updateProduct']);
 
 Route::get("/get-productsUser", [ProductUserController::class, 'getProductsUser']);

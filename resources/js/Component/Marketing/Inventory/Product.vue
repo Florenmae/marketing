@@ -25,9 +25,7 @@
                                 Product Supplier
                             </th>
                             <th scope="col" class="px-6 py-3">Price</th>
-                            <th scope="col" class="px-6 py-3">
-                                Stocks Available
-                            </th>
+                            <th scope="col" class="px-6 py-3">Quantity</th>
                             <th scope="col" class="px-6 py-3">Description</th>
                             <th scope="col" class="px-6 py-3">Status</th>
                             <th scope="col" class="px-20 py-3">Action</th>
@@ -61,7 +59,9 @@
                                 <p>{{ getSupplierName(product.userId) }}</p>
                             </td>
                             <td class="px-6 py-4">{{ product.price }}</td>
-                            <td class="px-6 py-4">{{ product.stocks }}</td>
+                            <td class="px-6 py-4">
+                                {{ filteredDeliveries(product.id) }}
+                            </td>
                             <td class="px-6 py-4">{{ product.description }}</td>
                             <td class="px-6 py-4">{{ product.status }}</td>
                             <td
@@ -107,7 +107,7 @@
                             </th>
                             <th scope="col" class="px-6 py-3">Price</th>
                             <th scope="col" class="px-6 py-3">
-                                Stocks Availabel
+                                Stocks Available
                             </th>
                             <th scope="col" class="px-6 py-3">Description</th>
                             <th scope="col" class="px-6 py-3">Status</th>
@@ -143,13 +143,14 @@
                             </td>
                             <td class="px-6 py-4">{{ product.price }}</td>
                             <td class="px-6 py-4">{{ product.stocks }}</td>
+
                             <td class="px-6 py-4">{{ product.description }}</td>
                             <td class="px-6 py-4">
                                 <p
-                                    v-if="product.status === 4"
+                                    v-if="product.status === 3"
                                     class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
                                 >
-                                    Out for Delivery
+                                    Approve
                                 </p>
                             </td>
                             <td
@@ -209,6 +210,7 @@ export default {
             editingProductId: null,
             modalStatus: false,
             roles: [],
+            deliveries: [],
         };
     },
     methods: {
@@ -234,6 +236,17 @@ export default {
             });
         },
 
+        fetchDeliveries() {
+            axios
+                .get("/get-deliveries")
+                .then(({ data }) => {
+                    this.deliveries = data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching deliveries:", error);
+                });
+        },
+
         editProduct(product) {
             this.editProduct = { ...product };
             this.editingProductId = product.id;
@@ -250,6 +263,32 @@ export default {
                 .catch((error) => {
                     console.error("Error returning all products:", error);
                 });
+        },
+
+        // filteredDeliveries(productId) {
+        //     const delivery = this.deliveries.find((e) => e.id === productId);
+        //     return delivery ? delivery.qty : "Unknown delivery";
+        // },
+        // filteredDeliveries(productId) {
+        //     const deliveriesForProduct = this.deliveries.filter(
+        //         (delivery) => delivery.productId === productId
+        //     );
+        //     if (deliveriesForProduct.length === 0) {
+        //         return "No delivery information";
+        //     }
+        //     return deliveriesForProduct.reduce(
+        //         (total, delivery) => total + delivery.qty,
+        //         0
+        //     );
+        // },
+        filteredDeliveries(productId) {
+            const delivery = this.deliveries.find(
+                (delivery) => delivery.productId === productId
+            );
+            if (!delivery) {
+                return "No delivery information";
+            }
+            return delivery.qty;
         },
 
         getCategoryName(categoryId) {
@@ -277,6 +316,7 @@ export default {
         // this.getPendingProducts();
         this.getCategories();
         this.getUsers();
+        this.fetchDeliveries();
     },
 };
 </script>
