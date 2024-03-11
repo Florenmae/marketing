@@ -72,7 +72,6 @@
                         </option>
                     </select>
                 </div>
-                <!-- Other code -->
 
                 <div class="col-span-2 border-red-500">
                     <label

@@ -36,46 +36,6 @@ class ProductController extends Controller{
         return $res;
     }
 
-// public function createProduct(Request $request) {
-//     // Validate incoming request data
-//     $validatedData = $request->validate([
-//         'categoryId' => 'required|exists:categories,id',
-//         'productName' => 'required', // Assuming this is the name of the product received from the form
-//         'image' => 'required',
-//         'userId' => 'required',
-//         'item_code' => 'required',
-//         'price' => 'required|numeric',
-//         'unit' => 'required',
-//         'qty' => 'required|integer',
-//         'description' => 'required',
-//     ]);
-
-//     // Find the product ID based on the received product name
-//     $productId = Product::where('name', $validatedData['productName'])->value('productId');
-
-//     // Create a new product instance
-//     $newProduct = new Product();
-//     $newProduct->categoryId = $validatedData['categoryId'];
-//     $newProduct->productId = $productId; // Save the retrieved product ID
-//     $newProduct->image = $validatedData['image'];
-//     $newProduct->userId = $validatedData['userId'];
-//     $newProduct->item_code = $validatedData['item_code'];
-//     $newProduct->price = $validatedData['price'];
-//     $newProduct->unit = $validatedData['unit'];
-//     $newProduct->qty = $validatedData['qty'];
-//     $newProduct->description = $validatedData['description'];
-//     $newProduct->status = 0;
-
-//     // Save the product
-//     $productSaved = $newProduct->save();
-
-//     if ($productSaved) {
-//         return response()->json(['message' => 'Product created successfully'], 201);
-//     } else {
-//         return response()->json(['message' => 'Failed to create product'], 500);
-//     }
-// }
-
     public function uploadImage(Request $request) {
     $request->validate([
         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -148,18 +108,16 @@ class ProductController extends Controller{
     $product->approved_by = $request->prodPayload["approved_by"];
 
     if ($product->status == 3) {
-        // If status is 3 (approved as beginning inventory)
         $transaction = new Transaction();
         $transaction->productId = $product->id;
         $transaction->userId = Auth::id();
         $transaction->type = $request->prodPayload["type"];
-        $transaction->qty = $request->prodPayload["actualQty"]; // Use the actual quantity submitted to the admin
+        $transaction->qty = $request->prodPayload["actualQty"]; 
         $transaction->actualQty = $request->prodPayload["actualQty"];
 
-        // Update product stocks with the actual quantity submitted to the admin
         $product->stocks += $request->prodPayload["actualQty"];
 
-        $transaction->stocks = $product->stocks; // Update transaction stocks with the new product stocks
+        $transaction->stocks = $product->stocks;
 
         $transaction->save();
     }

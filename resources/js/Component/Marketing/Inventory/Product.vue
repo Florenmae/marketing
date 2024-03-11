@@ -265,22 +265,6 @@ export default {
                 });
         },
 
-        // filteredDeliveries(productId) {
-        //     const delivery = this.deliveries.find((e) => e.id === productId);
-        //     return delivery ? delivery.qty : "Unknown delivery";
-        // },
-        // filteredDeliveries(productId) {
-        //     const deliveriesForProduct = this.deliveries.filter(
-        //         (delivery) => delivery.productId === productId
-        //     );
-        //     if (deliveriesForProduct.length === 0) {
-        //         return "No delivery information";
-        //     }
-        //     return deliveriesForProduct.reduce(
-        //         (total, delivery) => total + delivery.qty,
-        //         0
-        //     );
-        // },
         filteredDeliveries(productId) {
             const delivery = this.deliveries.find(
                 (delivery) => delivery.productId === productId
