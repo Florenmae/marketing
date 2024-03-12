@@ -23,25 +23,6 @@ class ProductUserController extends Controller
         return $products;
     }
 
-//     public function SubmitAdmin(Request $request){
-//     $product = Product :: findOrFail($request->editingProductId);
-
-//     $product->productId = $request->prodPayload["name"];
-//     $product->userId = $request->prodPayload["userId"];
-//     $product->categoryId = $request->prodPayload["categoryId"];
-//     $product->item_code = $request->prodPayload["item_code"];
-//     $product->price = $request->prodPayload["price"];
-//     $product->unit = $request->prodPayload["unit"];
-//     $product->stocks = $request->prodPayload["stocks"];
-//     $product->status = 2; 
-//     $product->description = $request->prodPayload["description"]; 
-//     $product->approved_by = $request->prodPayload["approved_by"];
-
-//     $product->save();
-
-//     return $product;
-// }
-
 public function submitAdmin(Request $request)
 {
     try {
@@ -63,10 +44,36 @@ public function submitAdmin(Request $request)
                 $product->stocks = 0;
             }
 
-            $product->price = $productData['price'];
-            $product->status = 2; 
+            $product->price;
+            $product->status = 2;
 
             $product->save();
+
+            // $adminProduct = $product->replicate();
+            // $adminProduct->userId = 1;
+            // $adminProduct->stocks = $subtractedQty;
+            // $adminProduct->save();
+            
+            // if ($adminProduct->stocks < 0) {
+            //     $adminProduct->stocks = 0;
+            // }
+
+            // $adminProduct->save();
+
+            // $adminProduct = Product::where('userId', 1) // Assuming admin user ID is 1
+            //                         ->where('productId', $productId)
+            //                         ->first();
+
+            // if ($adminProduct) {
+            //     $adminProduct->stocks += $subtractedQty;
+            // } else {
+            //     $adminProduct = $product->replicate();
+            //     $adminProduct->userId = 1; 
+            //     $adminProduct->stocks = $subtractedQty;
+            // }
+
+            // $adminProduct->save();
+            
 
             $transaction = new Transaction();
             $transaction->productId = $product->id;
@@ -104,9 +111,11 @@ public function submitAdmin(Request $request)
      public function addToDevCart(Request $request)
 {
     $productId = $request->input('productId');
+    // $deliveryId = $request->input('deliveryId');
     $qty = $request->input('qty', 1);
 
     $cartItem = DeliveryCart::where('productId', $request->input('productId'))
+                    // ->where('deliveryId', $request->input('deliveryId'))
                     ->where('price', $request->input('price'))
                     ->first();
 
@@ -116,6 +125,7 @@ public function submitAdmin(Request $request)
         $cartItem->save();
     } else {
         DeliveryCart::create([
+            
             'productId' => $productId,
             'price' => $request->input('price') * $qty,
             'qty' => $qty,

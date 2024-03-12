@@ -12,6 +12,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Models\ReturnedProduct;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller{
 
@@ -93,38 +94,61 @@ class ProductController extends Controller{
     // }
 
     public function updateProduct(Request $request){
-    $product = Product::findOrFail($request->editingProductId);
+    try {
+        DB::beginTransaction();
 
-    $product->userId = $request->prodPayload["userId"];
-    $product->categoryId = $request->prodPayload["categoryId"];
-    $product->item_code = $request->prodPayload["item_code"];
-    $product->price = $request->prodPayload["price"];
-    $product->unit = $request->prodPayload["unit"];
+        $productId = $request->editingProductId;
+        $product = Product::findOrFail($productId);
 
-    $delivery = Delivery::where('productId', $product->id)->pluck('qty')->first();
-    
-    $product->description = $request->prodPayload["description"];
-    $product->status = $request->prodPayload["status"];
-    $product->approved_by = $request->prodPayload["approved_by"];
+        // Update product details
+        $product->userId = $request->prodPayload["userId"];
+        $product->categoryId = $request->prodPayload["categoryId"];
+        $product->item_code = $request->prodPayload["item_code"];
+        $product->price = $request->prodPayload["price"];
+        $product->unit = $request->prodPayload["unit"];
+        $product->description = $request->prodPayload["description"];
+        $product->status = $request->prodPayload["status"];
+        $product->approved_by = $request->prodPayload["approved_by"];
 
-    if ($product->status == 3) {
-        $transaction = new Transaction();
-        $transaction->productId = $product->id;
-        $transaction->userId = Auth::id();
-        $transaction->type = $request->prodPayload["type"];
-        $transaction->qty = $request->prodPayload["actualQty"]; 
-        $transaction->actualQty = $request->prodPayload["actualQty"];
+        if ($product->status == 3) {
+            // Create a transaction record if the product is approved
+            $transaction = new Transaction();
+            $transaction->productId = $product->id;
+            $transaction->userId = Auth::id();
+            $transaction->type = $request->prodPayload["type"];
+            $transaction->qty = $request->prodPayload["actualQty"]; 
+            $transaction->actualQty = $request->prodPayload["actualQty"];
 
-        $product->stocks += $request->prodPayload["actualQty"];
+            $product->stocks += $request->prodPayload["actualQty"];
+            $transaction->stocks = $product->stocks;
 
-        $transaction->stocks = $product->stocks;
+            $transaction->save();
+        }
 
-        $transaction->save();
+        $adminProduct = Product::where('userId', 1) 
+                                ->where('productId', $productId)
+                                ->first();
+
+        if ($adminProduct) {
+            $adminProduct->stocks += $request->prodPayload["actualQty"];
+            $adminProduct->save();
+        } else {
+            $adminProduct = $product->replicate();
+            $adminProduct->userId = 1; 
+            $adminProduct->stocks = $request->prodPayload["actualQty"];
+            $adminProduct->save();
+        }
+
+
+        $product->save();
+
+        DB::commit();
+
+        return $product;
+    } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json(['error' => 'Failed to update product', 'message' => $e->getMessage()], 500);
     }
-
-    $product->save();
-
-    return $product;
 }
 
     public function getCategories()

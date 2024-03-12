@@ -254,13 +254,10 @@ export default {
                     status: 2,
                 })
                 .then((response) => {
-                    // Handle successful submission
                     console.log("Cart submitted to admin:", response.data);
-                    // Optionally, reset the delivery cart after submission
                     this.deliveryCart = [];
                 })
                 .catch((error) => {
-                    // Handle errors
                     console.error("Error submitting cart to admin:", error);
                 });
         },
@@ -272,12 +269,12 @@ export default {
         },
         incrementQuantity(product) {
             product.qty = Math.max(1, product.qty + 1);
-            product.total = product.price * product.qty;
+            // product.total = product.price * product.qty;
         },
 
         decrementQuantity(product) {
             product.qty = Math.max(1, product.qty - 1);
-            product.total = product.price * product.qty;
+            // product.total = product.price * product.qty;
         },
 
         showCartItem() {
@@ -315,7 +312,7 @@ export default {
 
         async fetchProducts() {
             try {
-                const { data } = await axios.get("/get-products");
+                const { data } = await axios.get("/get-productsUser");
                 this.products = data;
             } catch (error) {
                 console.error("Error fetching products:", error);

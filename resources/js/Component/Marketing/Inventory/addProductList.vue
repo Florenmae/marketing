@@ -153,9 +153,7 @@ export default {
 
             axios
                 .post("/submit-productList", prodlistPayload)
-                .then(({ data }) => {
-                    this.changeModalStatus();
-                })
+                .then(({ data }) => {})
                 .catch((error) => {
                     console.error("Error submitting category:", error);
                 });
