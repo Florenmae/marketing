@@ -25,15 +25,14 @@ class ProductUserController extends Controller
 
 public function submitAdmin(Request $request)
 {
-    try {
         DB::beginTransaction();
 
         $products = $request->input('products');
 
         foreach ($products as $productData) {
-            $productId = $productData['productId'];
+            $id = $productData['id'];
 
-            $product = Product::findOrFail($productId);
+            $product = Product::findOrFail($id);
 
             $originalStock = $product->stocks;
 
@@ -48,31 +47,6 @@ public function submitAdmin(Request $request)
             $product->status = 2;
 
             $product->save();
-
-            // $adminProduct = $product->replicate();
-            // $adminProduct->userId = 1;
-            // $adminProduct->stocks = $subtractedQty;
-            // $adminProduct->save();
-            
-            // if ($adminProduct->stocks < 0) {
-            //     $adminProduct->stocks = 0;
-            // }
-
-            // $adminProduct->save();
-
-            // $adminProduct = Product::where('userId', 1) // Assuming admin user ID is 1
-            //                         ->where('productId', $productId)
-            //                         ->first();
-
-            // if ($adminProduct) {
-            //     $adminProduct->stocks += $subtractedQty;
-            // } else {
-            //     $adminProduct = $product->replicate();
-            //     $adminProduct->userId = 1; 
-            //     $adminProduct->stocks = $subtractedQty;
-            // }
-
-            // $adminProduct->save();
             
 
             $transaction = new Transaction();
@@ -94,11 +68,6 @@ public function submitAdmin(Request $request)
         DB::commit();
         DeliveryCart::truncate();
 
-        return response()->json(['message' => 'Products submitted successfully to admin'], 200);
-    } catch (\Exception $e) {
-        DB::rollback();
-        return response()->json(['error' => 'Failed to submit products to admin', 'message' => $e->getMessage()], 500);
-    }
 }
 
 
@@ -111,11 +80,11 @@ public function submitAdmin(Request $request)
      public function addToDevCart(Request $request)
 {
     $productId = $request->input('productId');
-    // $deliveryId = $request->input('deliveryId');
+    $deliveryId = $request->input('deliveryId');
     $qty = $request->input('qty', 1);
 
     $cartItem = DeliveryCart::where('productId', $request->input('productId'))
-                    // ->where('deliveryId', $request->input('deliveryId'))
+                    ->where('deliveryId', $request->input('deliveryId'))
                     ->where('price', $request->input('price'))
                     ->first();
 
@@ -134,17 +103,6 @@ public function submitAdmin(Request $request)
 
     return response()->json(['message' => 'Product added to cart']);
 }
-
-
-    // public function showCartItem(Request $request)
-    // {
-    //     if ($request->wantsJson()) {
-    //         return response(
-    //             $request->user()->cart()->get()
-    //         );
-    //     }
-    //     return view('cart.index');
-    // }
 
     public function showCartItem(Request $request){
         return DeliveryCart::all();
@@ -204,7 +162,7 @@ public function submitAdmin(Request $request)
 
     DeliveryCart::truncate();
 
-    return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
+   
 }
 
 }

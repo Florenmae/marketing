@@ -18,23 +18,29 @@
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Transaction Type:</label
                 >
-                <input
+                <select
                     v-model="editProduct.type"
-                    type="text"
-                    name="type"
                     id="type"
+                    name="type"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                />
+                    required
+                >
+                    <option value="">Select a Transaction Type</option>
+                    <option value="1">Beginning Inventory</option>
+                    <option value="2">Sales</option>
+                    <option value="3">Delivery</option>
+                    <option value="4">Return</option>
+                </select>
             </div>
             <div class="col-span-4">
                 <label
                     for="actualQty"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Transaction Type:</label
+                    >Actual Quantity:</label
                 >
                 <input
                     v-model="editProduct.actualQty"
-                    type="text"
+                    type="number"
                     name="actualQty"
                     id="actualQty"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"

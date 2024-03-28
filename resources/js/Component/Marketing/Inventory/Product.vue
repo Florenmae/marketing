@@ -67,7 +67,7 @@
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
-                                <editProduct :product="product" />
+                                <!-- <editProduct :product="product" /> -->
                                 <Approve :product="product" />
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
@@ -156,13 +156,6 @@
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
-                                <!-- <editProduct :product="product" /> -->
-                                <!-- <button
-                                    class="bg-blue-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-blue-600"
-                                    @click="updateProduct"
-                                >
-                                    Receive
-                                </button> -->
                                 <Receive :product="product" />
                                 <Return :product="product" />
                             </td>
@@ -296,8 +289,6 @@ export default {
     },
     mounted() {
         this.getProducts();
-        // this.getApprovedProducts();
-        // this.getPendingProducts();
         this.getCategories();
         this.getUsers();
         this.fetchDeliveries();

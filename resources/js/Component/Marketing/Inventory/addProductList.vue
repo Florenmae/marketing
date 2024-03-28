@@ -145,6 +145,30 @@ export default {
         };
     },
     methods: {
+        // submitProductlist() {
+        //     const { editProductlist } = this;
+        //     const prodlistPayload = {
+        //         ...editProductlist,
+        //     };
+
+        //     axios
+        //         .post("/submit-productList", prodlistPayload)
+        //         .then(({ data }) => {})
+        //         .catch((error) => {
+        //             console.error("Error submitting category:", error);
+        //         });
+        // },
+        // getCategories() {
+        //     axios.get("/get-categories").then(({ data }) => {
+        //         this.categories = data;
+        //     });
+        // },
+        handleImageUpload(event) {
+            const file = event.target.files[0];
+            const formData = new FormData();
+            formData.append("image", file);
+            this.editProductlist.image = formData;
+        },
         submitProductlist() {
             const { editProductlist } = this;
             const prodlistPayload = {

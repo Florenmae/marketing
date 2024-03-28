@@ -14,22 +14,22 @@
         <div class="grid gap-4 mb-4 grid-cols-4">
             <div class="col-span-2">
                 <label
-                    for="productId"
+                    for="id"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Product Name</label
                 >
                 <select
-                    v-model="editProduct.productId"
-                    id="productId"
-                    name="productId"
+                    v-model="editProduct.id"
+                    id="id"
+                    name="id"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     required
                 >
                     <option value="">Select a product</option>
                     <option
                         v-for="productList in productLists"
-                        :key="productList.productId"
-                        :value="productList.productId"
+                        :key="productList.id"
+                        :value="productList.id"
                     >
                         {{ productList.name }}
                     </option>
@@ -135,7 +135,6 @@ export default {
             editProduct: {
                 item_code: "",
                 categoryId: "",
-                productId: "",
                 stocks: "",
                 name: "",
                 userId: "",
@@ -143,7 +142,7 @@ export default {
                 unit: "",
                 qty: "",
                 description: "",
-                status: 0,
+                status: 2,
             },
             categories: [],
             submittedProducts: [],

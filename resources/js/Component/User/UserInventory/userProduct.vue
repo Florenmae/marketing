@@ -71,7 +71,9 @@
                         <h2 class="text-lg font-semibold">
                             {{ product.name }}
                         </h2>
-                        <p class="text-gray-600">{{ product.description }}</p>
+                        <p class="text-gray-600">
+                            {{ product.description }}
+                        </p>
                         <div class="mt-2">
                             <span class="text-lg font-bold text-blue-500">{{
                                 product.price

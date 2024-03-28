@@ -58,9 +58,6 @@
                                 {{ productlist.item_code }}
                             </td>
 
-                            <!-- <td class="px-6 py-4">
-                                <p>{{ getSupplierName(productlist.userId) }}</p>
-                            </td> -->
                             <td class="px-6 py-4">{{ productlist.price }}</td>
                             <td class="px-6 py-4">
                                 {{ productlist.description }}

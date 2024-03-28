@@ -15,6 +15,7 @@ import Transaction from "@/Component/Marketing/Inventory/Transaction.vue";
 // import addReturn from "@/Component/ProdComp/addReturn.vue";
 
 import userProduct from "@/Component/User/UserInventory/userProduct.vue";
+import userProductList from "@/Component/User/UserInventory/userProductList.vue";
 // import addProductUser from "@/Component/UserDashboard/addProductUser.vue";
 
 import Pos from "@/Component/PosComp/Pos.vue";
@@ -76,6 +77,11 @@ export const routes = [
         path: "/userProduct",
         name: "userProduct",
         component: userProduct,
+    },
+    {
+        path: "/userProductList",
+        name: "userProductList",
+        component: userProductList,
     },
 
     // {
