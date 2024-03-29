@@ -11,24 +11,33 @@ use App\Models\OrderProduct;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\ReturnedProduct;
+use Auth;
 
 class PosController extends Controller
 {
-    public function fetchProducts(){
-        return Product::all();
-    }
+   public function fetchProducts()
+{
+    $userId = Auth::id();
+
+    $products = Product::where('userId', $userId)
+                        ->where('status', 3)
+                        ->get();
+
+    return $products;
+}
 
     public function fetchCategories(){
         return Categories::all();
     }
 
-    public function addToCart(Request $request)
+   public function addToCart(Request $request)
 {
     $productId = $request->input('productId');
+    $customerId = $request->input('customerId');
     $qty = $request->input('qty', 1);
 
-    $cartItem = Cart::where('productName', $request->input('productName'))
-                    ->where('price', $request->input('price'))
+    $cartItem = Cart::where('productId', $productId)
+                    ->where('customerId', $customerId) // Ensure customerId is included in the query
                     ->first();
 
     if ($cartItem) {
@@ -38,8 +47,7 @@ class PosController extends Controller
     } else {
         Cart::create([
             'productId' => $productId,
-            'customerName' => $request->input('customerName'),
-            'productName' => $request->input('productName'),
+            'customerId' => $request->input('customerId'), // Save the customerId from the request
             'image' => $request->input('image'),
             'price' => $request->input('price'),
             'unit' => $request->input('unit'),
@@ -48,20 +56,7 @@ class PosController extends Controller
             'qty' => $qty,
         ]);
     }
-
-    return response()->json(['message' => 'Product added to cart']);
 }
-
-
-    // public function showCartItem(Request $request)
-    // {
-    //     if ($request->wantsJson()) {
-    //         return response(
-    //             $request->user()->cart()->get()
-    //         );
-    //     }
-    //     return view('cart.index');
-    // }
 
     public function showCartItem(Request $request){
         return Cart::all();
@@ -116,7 +111,7 @@ class PosController extends Controller
         ];
     }
 
-    $orderProduct = new OrderProduct();
+    $orderProduct = new Order();
     $orderProduct->insert($orderItems);
 
     Cart::truncate();

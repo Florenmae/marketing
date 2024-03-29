@@ -88,6 +88,11 @@
             </div>
 
             <div class="flex-1 p-4">
+                <div class="bg-gray-100 p-4 mb-4 rounded-md">
+                    <h2 class="text-xl font-semibold mb-2">Welcome Customer</h2>
+                    <p class="text-gray-600">MMSU POS</p>
+                </div>
+
                 <h2 class="text-2xl font-semibold mb-4">Shopping Cart</h2>
                 <div v-if="cart.length === 0" class="text-gray-600">
                     Your cart is empty.
@@ -257,6 +262,8 @@ export default {
             itemsPerPage: 4,
             paymentMethod: "cash",
             amountGiven: 0,
+            customerId: "",
+            selectedCustomerType: "",
         };
     },
     methods: {
@@ -265,7 +272,7 @@ export default {
             axios
                 .post("/addToCart", {
                     productId: product.productId,
-                    productName: product.productName,
+                    customerId: this.selectedCustomerType,
                     image: product.image,
                     price: product.price,
                     qty: 1,
@@ -303,8 +310,10 @@ export default {
             const orderPayload = {
                 paymentMethod: this.paymentMethod,
                 amountGiven: this.amountGiven,
+                customerId: this.selectedCustomerType,
                 items: this.cart.map((product) => ({
                     productId: product.id,
+                    customerId: this.selectedCustomerType,
                     qty: product.qty,
                     price: product.price,
                     total: product.total,

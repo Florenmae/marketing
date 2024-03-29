@@ -190,6 +190,7 @@ export default {
             itemsPerPage: 4,
             paymentMethod: "cash",
             amountGiven: 0,
+            status: 0,
         };
     },
     methods: {
@@ -211,24 +212,6 @@ export default {
                     this.showCartItem();
                 });
         },
-        // submitToAdmin() {
-        //     const productIds = this.deliveryCart.map((product) => product.id); // Assuming 'id' is the product ID
-        //     axios
-        //         .post("/submit-to-admin", {
-        //             productIds,
-        //             prodPayload: this.deliveryCart,
-        //         })
-        //         .then((response) => {
-        //             // Handle successful submission
-        //             console.log("Cart submitted to admin:", response.data);
-        //             // Optionally, reset the delivery cart after submission
-        //             this.deliveryCart = [];
-        //         })
-        //         .catch((error) => {
-        //             // Handle errors
-        //             console.error("Error submitting cart to admin:", error);
-        //         });
-        // },
 
         // submitToAdmin() {
         //     const productIds = this.deliveryCart.map((product) => product.id); // Assuming 'id' is the product ID
@@ -253,7 +236,6 @@ export default {
             axios
                 .post("/submit-to-admin", {
                     products: this.deliveryCart,
-                    status: 2,
                 })
                 .then((response) => {
                     console.log("Cart submitted to admin:", response.data);
@@ -285,32 +267,32 @@ export default {
             });
         },
 
-        checkout() {
-            const originalCart = [...this.cart];
-            const orderPayload = {
-                paymentMethod: this.paymentMethod,
-                amountGiven: this.amountGiven,
-                items: this.deliveryCart.map((product) => ({
-                    productId: product.id,
-                    qty: product.qty,
-                    price: product.price,
-                })),
-            };
+        // checkout() {
+        //     const originalCart = [...this.cart];
+        //     const orderPayload = {
+        //         paymentMethod: this.paymentMethod,
+        //         amountGiven: this.amountGiven,
+        //         items: this.deliveryCart.map((product) => ({
+        //             productId: product.id,
+        //             qty: product.qty,
+        //             price: product.price,
+        //         })),
+        //     };
 
-            axios
-                .post("/checkout", orderPayload)
-                .then((response) => {
-                    const { status, remainingBalance } = response.data;
-                    this.deliveryCart = [];
-                    this.amountGiven = 0;
-                    this.receipt = response.data.receipt;
-                    this.showReceiptModal = true;
-                })
-                .catch((error) => {
-                    console.error("Error during checkout:", error);
-                    this.deliveryCart = originalCart;
-                });
-        },
+        //     axios
+        //         .post("/checkout", orderPayload)
+        //         .then((response) => {
+        //             const { status, remainingBalance } = response.data;
+        //             this.deliveryCart = [];
+        //             this.amountGiven = 0;
+        //             this.receipt = response.data.receipt;
+        //             this.showReceiptModal = true;
+        //         })
+        //         .catch((error) => {
+        //             console.error("Error during checkout:", error);
+        //             this.deliveryCart = originalCart;
+        //         });
+        // },
 
         async fetchProducts() {
             try {

@@ -23,10 +23,58 @@ class ProductUserController extends Controller
         return $products;
     }
 
+// public function submitAdmin(Request $request)
+// {
+//         DB::beginTransaction();
+
+//         $products = $request->input('products');
+
+//         foreach ($products as $productData) {
+//             $id = $productData['id'];
+
+//             $product = Product::findOrFail($id);
+
+//             $originalStock = $product->stocks;
+
+//             $subtractedQty = $productData['qty'];
+//             $product->stocks -= $subtractedQty;
+
+//             if ($product->stocks < 0) {
+//                 $product->stocks = 0;
+//             }
+
+//             $product->price;
+//             $product->status = 2;
+
+//             $product->save();
+            
+
+//             $transaction = new Transaction();
+//             $transaction->productId = $product->id;
+//             $transaction->userId = Auth::id();
+//             $transaction->qty = $subtractedQty; 
+//             $transaction->save();
+
+           
+//             $delivery = new Delivery();
+//             $delivery->userId = Auth::id();
+//             $delivery->transactionId = $transaction->id;
+//             $delivery->productId = $product->id;
+//             $delivery->qty = $subtractedQty; 
+//             $delivery->status = 3;
+//             $delivery->save();
+//         }
+
+//         DB::commit();
+//         DeliveryCart::truncate();
+
+// }
+
 public function submitAdmin(Request $request)
 {
-        DB::beginTransaction();
+    DB::beginTransaction();
 
+    try {
         $products = $request->input('products');
 
         foreach ($products as $productData) {
@@ -47,7 +95,6 @@ public function submitAdmin(Request $request)
             $product->status = 2;
 
             $product->save();
-            
 
             $transaction = new Transaction();
             $transaction->productId = $product->id;
@@ -55,7 +102,6 @@ public function submitAdmin(Request $request)
             $transaction->qty = $subtractedQty; 
             $transaction->save();
 
-           
             $delivery = new Delivery();
             $delivery->userId = Auth::id();
             $delivery->transactionId = $transaction->id;
@@ -68,7 +114,13 @@ public function submitAdmin(Request $request)
         DB::commit();
         DeliveryCart::truncate();
 
+        return response()->json(['message' => 'Products submitted successfully'], 200);
+    } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
 }
+
 
 
     public function getCategories()
@@ -80,11 +132,11 @@ public function submitAdmin(Request $request)
      public function addToDevCart(Request $request)
 {
     $productId = $request->input('productId');
-    $deliveryId = $request->input('deliveryId');
+    // $deliveryId = $request->input('deliveryId');
     $qty = $request->input('qty', 1);
 
     $cartItem = DeliveryCart::where('productId', $request->input('productId'))
-                    ->where('deliveryId', $request->input('deliveryId'))
+                    // ->where('deliveryId', $request->input('deliveryId'))
                     ->where('price', $request->input('price'))
                     ->first();
 
@@ -148,7 +200,6 @@ public function submitAdmin(Request $request)
             'qty' => $cartItem->qty,
             'total' => $cartItem->total,
             'description' => $cartItem->description,
-            'image' => $cartItem->image,
             'paymentMethod' => $paymentMethod,
             'balance' => $balance,
             'changeAmount' => $changeAmount,
