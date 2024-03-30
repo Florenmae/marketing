@@ -131,7 +131,7 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ product.name }}
+                                <p>{{ getProductName(product.productId) }}</p>
                             </th>
                             <td class="px-6 py-4">
                                 <p>{{ getCategoryName(product.categoryId) }}</p>
@@ -204,6 +204,7 @@ export default {
             modalStatus: false,
             roles: [],
             deliveries: [],
+            productlists: [],
         };
     },
     methods: {
@@ -214,6 +215,12 @@ export default {
         getProducts() {
             axios.get("/get-products").then(({ data }) => {
                 this.products = data;
+            });
+        },
+
+        getProductlists() {
+            axios.get("/get-productlists").then(({ data }) => {
+                this.productlists = data;
             });
         },
 
@@ -268,6 +275,12 @@ export default {
             return delivery.qty;
         },
 
+        getProductName(productId) {
+            const productlist = this.productlists.find(
+                (b) => b.id === productId
+            );
+            return productlist ? productlist.name : "Unknown product";
+        },
         getCategoryName(categoryId) {
             const category = this.categories.find((c) => c.id === categoryId);
             return category ? category.name : "Unknown Category";
@@ -289,6 +302,7 @@ export default {
     },
     mounted() {
         this.getProducts();
+        this.getProductlists();
         this.getCategories();
         this.getUsers();
         this.fetchDeliveries();

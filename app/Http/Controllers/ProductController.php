@@ -194,6 +194,15 @@ class ProductController extends Controller{
 
     }
 
+    public function getProductLists()
+    {
+        // $user = Auth::user();
+        // $productLists = $user->productLists;
+
+        // return $productLists;
+        return ProductList::all();
+    }
+
     public function getUsers()
     {
          return User::where('id', '!=', '1')->get();

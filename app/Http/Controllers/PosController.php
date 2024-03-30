@@ -37,7 +37,7 @@ class PosController extends Controller
     $qty = $request->input('qty', 1);
 
     $cartItem = Cart::where('productId', $productId)
-                    ->where('customerId', $customerId) // Ensure customerId is included in the query
+                    ->where('customerId', $customerId) 
                     ->first();
 
     if ($cartItem) {
@@ -45,9 +45,10 @@ class PosController extends Controller
         $cartItem->total = $cartItem->qty * $cartItem->price;
         $cartItem->save();
     } else {
+        
         Cart::create([
             'productId' => $productId,
-            'customerId' => $request->input('customerId'), // Save the customerId from the request
+            'customerId' => $customerId, 
             'image' => $request->input('image'),
             'price' => $request->input('price'),
             'unit' => $request->input('unit'),
@@ -68,8 +69,9 @@ class PosController extends Controller
         $res = $deleteItem->delete();
         return $res;
     }
+use App\Models\Product;
 
-    public function checkout(Request $request)
+public function checkout(Request $request)
 {
     $cartItems = Cart::all();
     $totalAmount = 0;
@@ -81,7 +83,6 @@ class PosController extends Controller
     $paymentMethod = $request->input('paymentMethod');
     $amountGiven = $request->input('amountGiven');
 
-
     if ($amountGiven >= $totalAmount) {
         $balance = 0;
         $changeAmount = $amountGiven - $totalAmount;
@@ -90,6 +91,16 @@ class PosController extends Controller
         $changeAmount = 0;
     }
 
+    // Update product stocks and deduct quantities
+    foreach ($cartItems as $cartItem) {
+        $product = Product::find($cartItem->productId);
+        if ($product) {
+            $newStock = $product->stocks - $cartItem->qty;
+            // Make sure stock doesn't go negative
+            $product->stocks = max(0, $newStock);
+            $product->save();
+        }
+    }
 
     $orderItems = [];
     $now = now();
@@ -118,4 +129,5 @@ class PosController extends Controller
 
     return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
 }
+
 }

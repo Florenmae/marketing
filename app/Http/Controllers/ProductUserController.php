@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Delivery;
 use App\Models\DeliveryCart;
 use App\Models\Transaction;
+use App\Models\ProductList;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +23,14 @@ class ProductUserController extends Controller
 
         return $products;
     }
+
+    //  public function getProductLists()
+    // {
+    //     $user = Auth::user();
+    //     $productLists = $user->productLists;
+
+    //     return $productLists;
+    // }
 
 // public function submitAdmin(Request $request)
 // {

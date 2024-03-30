@@ -1,7 +1,7 @@
 <template>
     <posLayout>
-        <div class="flex">
-            <div class="flex-3 p-4 relative">
+        <div class="h-screen flex">
+            <div class="flex-1 p-4 relative">
                 <h2 class="text-2xl font-semibold mb-4">Categories</h2>
                 <div class="absolute top-10 right-3 mt-2 mr-2">
                     <button @click="prevPage" class="text-gray-500">
@@ -41,27 +41,29 @@
                         </svg>
                     </button>
                 </div>
+
                 <div class="flex flex-wrap">
                     <div
                         v-for="category in visibleCategories"
-                        :key="category.categoryId"
-                        class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
+                        :key="category.id"
+                        class="space-x-2 p-2"
                     >
                         <div
-                            class="bg-white shadow-md mb-4 category-item hover:bg-gray-100 cursor-pointer p-2 rounded-md"
+                            class="bg-white shadow-md mb-3 category-item hover:bg-gray-100 cursor-pointer p-2 rounded-md"
+                            @click="filterByCategory(category.id)"
+                            style="width: 200px"
                         >
-                            <p class="">{{ category.categoryName }}</p>
+                            <p>{{ category.name }}</p>
                         </div>
                     </div>
                 </div>
 
-                <div
-                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-                >
+                <div class="grid grid-cols-5 space-x-2 p-2">
                     <div
-                        v-for="product in products"
+                        v-for="product in filteredProducts"
                         :key="product.productId"
                         class="p-4 border rounded-md text-center"
+                        :style="{ width: categoryWidth + 'px' }"
                     >
                         <img
                             :src="product.image"
@@ -72,6 +74,9 @@
                             {{ product.name }}
                         </h2>
                         <p class="text-gray-600">{{ product.description }}</p>
+                        <p class="text-gray-600">
+                            Available Stock: {{ product.stocks }}
+                        </p>
                         <div class="mt-2">
                             <span class="text-lg font-bold text-blue-500">{{
                                 product.price
@@ -87,10 +92,27 @@
                 </div>
             </div>
 
-            <div class="flex-1 p-4">
+            <div class="flex-2 p-4">
                 <div class="bg-gray-100 p-4 mb-4 rounded-md">
-                    <h2 class="text-xl font-semibold mb-2">Welcome Customer</h2>
+                    <h2 class="text-xl font-semibold mb-2">
+                        Welcome Customer!
+                    </h2>
                     <p class="text-gray-600">MMSU POS</p>
+                </div>
+
+                <div class="mb-2 space-x-2 flex flex-col">
+                    <label for="customerId" class="mb-1">Customer Type:</label>
+
+                    <div class="flex items-center">
+                        <select
+                            v-model="selectedCustomerType"
+                            id="customerId"
+                            class="px-4 py-2 border border-gray-300 rounded-md w-full md:w-50"
+                        >
+                            <option value="1">Employee</option>
+                            <option value="2">Walk-in Customer</option>
+                        </select>
+                    </div>
                 </div>
 
                 <h2 class="text-2xl font-semibold mb-4">Shopping Cart</h2>
@@ -246,6 +268,21 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="mb-4 mt-4">
+                    <button
+                        @click="printReceipt"
+                        class="bg-green-600 text-white px-4 py-2 rounded-md flex items-center justify-between w-full md:w-50"
+                    >
+                        <span>Print Receipt</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path
+                                d="M4 5h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm14 10V8H6v7h12zm-3-4h-2v-2h2v2z"
+                            />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </posLayout>
@@ -264,24 +301,25 @@ export default {
             amountGiven: 0,
             customerId: "",
             selectedCustomerType: "",
+            selectedCategory: null,
         };
     },
     methods: {
         addToCart(product) {
             console.log("Adding to Cart:", product);
-            axios
-                .post("/addToCart", {
-                    productId: product.productId,
-                    customerId: this.selectedCustomerType,
-                    image: product.image,
-                    price: product.price,
-                    qty: 1,
-                    description: product.description,
-                    total: product.price * 1,
-                })
-                .then((data) => {
-                    this.showCartItem();
-                });
+            const cartItem = {
+                productId: product.productId,
+                customerId: this.selectedCustomerType,
+                image: product.image,
+                price: product.price,
+                qty: 1,
+                description: product.description,
+                total: product.price * 1,
+            };
+
+            axios.post("/addToCart", cartItem).then((data) => {
+                this.showCartItem();
+            });
         },
 
         calculateTotal() {
@@ -312,7 +350,7 @@ export default {
                 amountGiven: this.amountGiven,
                 customerId: this.selectedCustomerType,
                 items: this.cart.map((product) => ({
-                    productId: product.id,
+                    productId: product.productId,
                     customerId: this.selectedCustomerType,
                     qty: product.qty,
                     price: product.price,
@@ -360,6 +398,13 @@ export default {
                 this.showCartItem();
             });
         },
+        filterByCategory(id) {
+            if (this.selectedCategory === id) {
+                this.selectedCategory = null;
+            } else {
+                this.selectedCategory = id;
+            }
+        },
     },
     computed: {
         visibleCategories() {
@@ -375,6 +420,16 @@ export default {
         },
         change() {
             return this.amountGiven - this.totalAmount;
+        },
+        filteredProducts() {
+            if (!this.selectedCategory) {
+                // If no category is selected, return all products
+                return this.products;
+            }
+            // Filter products based on the selected category
+            return this.products.filter(
+                (product) => product.categoryId === this.selectedCategory
+            );
         },
     },
 
