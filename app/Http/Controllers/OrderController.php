@@ -12,11 +12,11 @@ class OrderController extends Controller
 {
 
     public function fetchOrders (Request $request){
-        $orders = OrderProduct::all();
+        $orders = Order::all();
 
         $formattedOrders = $orders->map(function ($order) {
             return [
-                'orderId' => $order->orderId,
+                'id' => $order->id,
                 'customerId' => $order->customerId,
                 'productId' => $order->productId,
                 'image' => $order->image,
@@ -36,8 +36,8 @@ class OrderController extends Controller
 
     public function viewOrder(Request $request){
 
-    if(OrderProduct::where('id', $request->orderId)->exists()){
-        return OrderProduct::find($request->orderId);
+    if(Order::where('id', $request->id)->exists()){
+        return Order::find($request->id);
     }
     else{
         return $data = (object)[

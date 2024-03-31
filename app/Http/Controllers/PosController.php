@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
-use App\Models\Product;
 use App\Models\Categories;
-use App\Models\OrderProduct;
+// use App\Models\OrderProduct;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\ReturnedProduct;
 use Auth;
 
-class PosController extends Controller
-{
-   public function fetchProducts()
+class PosController extends Controller{
+   
+    public function fetchProducts()
 {
     $userId = Auth::id();
 

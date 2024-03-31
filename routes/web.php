@@ -76,7 +76,6 @@ Route::post('/checkout', [ProductUserController::class, 'checkout']);
 
 Route::get("/get-product-lists", [ProductListController::class, 'getProductLists']);
 Route::post("/submit-productList", [ProductListController::class, 'createProductList']);
-// // Route for fetching pending products
 // Route::get('/get-pending-products', [ProductController::class, 'getPendingProducts']);
 
 // // Route for fetching approved products
