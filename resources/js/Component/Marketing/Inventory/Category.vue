@@ -88,16 +88,9 @@ export default {
                 ...editCategory,
             };
 
-            axios
-                .post("/submit-category", catPayload)
-                .then(({ data }) => {
-                    this.clearForm();
-                    this.getCategories();
-                    this.changeModalStatus();
-                })
-                .catch((error) => {
-                    console.error("Error submitting category:", error);
-                });
+            axios.post("/submit-category", catPayload).then(({ data }) => {
+                this.getCategories();
+            });
         },
         changeModalStatus() {
             this.modalStatus = !this.modalStatus;
@@ -123,7 +116,6 @@ export default {
                 .post("/update-category", { catPayload, editingCategoryId })
                 .then(({ data }) => {
                     this.getCategories();
-                    this.changeModalStatus();
                 });
         },
 

@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('productId')->nullable();
-            $table->string('userId')->nullable();
-            $table->boolean('paymentType')->nullable();
+            $table->integer('productId')->nullable();
+            $table->integer('userId')->nullable();
+            $table->boolean('type')->nullable();
             $table->float('qty')->nullable();
+            $table->float('actualQty')->nullable();
             $table->float('stocks')->nullable();
             $table->timestamps();
         });

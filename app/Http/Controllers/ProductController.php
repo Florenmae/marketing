@@ -45,15 +45,6 @@ class ProductController extends Controller{
     return response()->json(['imagePath' => $imageName]);
 }
 
-    public function getProducts($status = null) {
-        if ($status === 'pending') {
-            return Product::where('status', 2)->get();
-        } elseif ($status === 'approved') {
-            return Product::where('status', 3)->get();
-        } elseif ($status === 'returned') {
-            return Product::where('status', 4)->get();
-        } 
-    }
 
     public function updateProduct(Request $request){
         DB::beginTransaction();
@@ -183,6 +174,25 @@ class ProductController extends Controller{
         return Categories::all();
 
     }
+
+    public function getProducts($status = null) {
+        if ($status === 'pending') {
+            return Product::where('status', 2)->get();
+        } elseif ($status === 'approved') {
+            return Product::where('status', 3)->get();
+        } elseif ($status === 'returned') {
+            return Product::where('status', 4)->get();
+        } 
+    }
+
+
+    // public function getProducts()
+    // {
+    //     $user = Auth::user();
+    //     $products = $user->products;
+
+    //     return $products;
+    // }
 
     public function fetchDeliveries()
     {

@@ -25,8 +25,8 @@
                         <option value="">Select a category</option>
                         <option
                             v-for="category in categories"
-                            :key="category.categoryId"
-                            :value="category.categoryId"
+                            :key="category.id"
+                            :value="category.id"
                         >
                             {{ category.name }}
                         </option>
@@ -127,11 +127,20 @@ export default {
     },
     data() {
         return {
+            product: {
+                image: " ",
+                item_code: "",
+                categoryId: "",
+                userId: "",
+                price: "",
+                unit: "",
+                stocks: "",
+                description: "",
+            },
             editProductlist: {
-                productId: "",
                 categoryId: "",
                 name: "",
-                image: "",
+                image: " ",
                 item_code: "",
                 price: "",
                 description: "",
@@ -145,29 +154,19 @@ export default {
         };
     },
     methods: {
-        // submitProductlist() {
-        //     const { editProductlist } = this;
-        //     const prodlistPayload = {
-        //         ...editProductlist,
-        //     };
-
-        //     axios
-        //         .post("/submit-productList", prodlistPayload)
-        //         .then(({ data }) => {})
-        //         .catch((error) => {
-        //             console.error("Error submitting category:", error);
-        //         });
-        // },
-        // getCategories() {
-        //     axios.get("/get-categories").then(({ data }) => {
-        //         this.categories = data;
-        //     });
-        // },
         handleImageUpload(event) {
-            const file = event.target.files[0];
             const formData = new FormData();
-            formData.append("image", file);
-            this.editProductlist.image = formData;
+            formData.append("image", event.target.files[0]);
+
+            axios
+                .post("/upload-image", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((response) => {
+                    this.product.image = response.data.imagePath;
+                });
         },
         submitProductlist() {
             const { editProductlist } = this;

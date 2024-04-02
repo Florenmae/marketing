@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('transactionId')->nullable();
-            $table->string(' userId')->nullable();
-            $table->string('employeeId')->nullable();
-            $table->string('customerId')->nullable();
+            $table->integer('transactionId')->nullable();
+            $table->integer(' userId')->nullable();
+            $table->integer('employeeId')->nullable();
+            $table->integer('customerId')->nullable();
             $table->string('image')->nullable();
             $table->longText('description')->nullable();
             // $table->float('price')->nullable();

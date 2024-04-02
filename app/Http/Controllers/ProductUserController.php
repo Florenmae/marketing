@@ -165,8 +165,9 @@ public function submitAdmin(Request $request)
     return response()->json(['message' => 'Product added to cart']);
 }
 
-    public function showCartItem(Request $request){
+    public function showCartItems(Request $request){
         return DeliveryCart::all();
+        // dd(DeliveryCart::all());
     }
 
     public function deleteItem(Request $request){

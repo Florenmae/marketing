@@ -1,6 +1,6 @@
 <template>
     <userLayout>
-        <div class="flex">
+        <div class="flex justify-between w-full">
             <div class="flex-3 p-4 relative">
                 <h2 class="text-2xl font-semibold mb-4">Categories</h2>
                 <div class="absolute top-10 right-3 mt-2 mr-2">
@@ -56,12 +56,12 @@
                 </div>
 
                 <div
-                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2"
                 >
                     <div
                         v-for="product in products"
                         :key="product.id"
-                        class="p-4 border rounded-md text-center"
+                        class="p-2 border rounded-md text-center"
                     >
                         <img
                             :src="product.image"
@@ -69,18 +69,15 @@
                             class="w-full h-32 object-cover mb-2 rounded-md"
                         />
                         <h2 class="text-lg font-semibold">
-                            {{ product.name }}
+                            {{ getProductName(product.productId) }}
+                            <span class="text-lg font-bold text-green-500"
+                                >Php {{ product.price }}.00</span
+                            >
                         </h2>
-                        <p class="text-gray-600">
-                            {{ product.description }}
-                        </p>
                         <div class="mt-2">
-                            <span class="text-lg font-bold text-blue-500">{{
-                                product.price
-                            }}</span>
                             <button
                                 @click="addToCart(product)"
-                                class="ml-2 bg-green-500 text-white px-3 py-1 rounded-md"
+                                class="ml-2 bg-green-500 text-white px-5 py-1 rounded-md"
                             >
                                 Add to Cart
                             </button>
@@ -91,22 +88,17 @@
 
             <div class="flex-1 p-4">
                 <h2 class="text-2xl font-semibold mb-4">Delivery Cart</h2>
-                <div v-if="deliveryCart.length === 0" class="text-gray-600">
+                <div v-if="deliverycarts.length === 0" class="text-gray-600">
                     Your cart is empty.
                 </div>
                 <div v-else>
                     <div
-                        v-for="product in deliveryCart"
+                        v-for="product in deliverycarts"
                         :key="product.id"
                         class="flex items-center justify-between p-2 border-b"
                     >
                         <div class="flex items-center space-x-4">
-                            <img
-                                :src="product.image"
-                                alt="Product Image"
-                                class="w-10 h-10 object-cover rounded-md"
-                            />
-                            <span>{{ product.name }}</span>
+                            <span>{{ getProductName(product.productId) }}</span>
                         </div>
 
                         <div class="flex items-center space-x-0">
@@ -183,7 +175,7 @@ export default {
     data() {
         return {
             products: [],
-            deliveryCart: [],
+            deliverycarts: [],
             cart: [],
             categories: [],
             currentPage: 0,
@@ -191,6 +183,7 @@ export default {
             paymentMethod: "cash",
             amountGiven: 0,
             status: 0,
+            productlists: [],
         };
     },
     methods: {
@@ -235,11 +228,11 @@ export default {
         submitToAdmin() {
             axios
                 .post("/submit-to-admin", {
-                    products: this.deliveryCart,
+                    products: this.deliverycarts,
                 })
                 .then((response) => {
                     console.log("Cart submitted to admin:", response.data);
-                    this.deliveryCart = [];
+                    this.deliverycarts = [];
                 })
                 .catch((error) => {
                     console.error("Error submitting cart to admin:", error);
@@ -247,7 +240,7 @@ export default {
         },
 
         calculateTotal() {
-            return this.deliveryCart.reduce((price, product) => {
+            return this.deliverycarts.reduce((price, product) => {
                 return price + product.price;
             }, 0);
         },
@@ -261,9 +254,9 @@ export default {
             // product.total = product.price * product.qty;
         },
 
-        showCartItem() {
-            axios.get("/showCartItem").then(({ data }) => {
-                this.deliveryCart = data;
+        showCartItems() {
+            axios.get("/showCartItems").then(({ data }) => {
+                this.deliverycarts = data;
             });
         },
 
@@ -303,6 +296,19 @@ export default {
             }
         },
 
+        getProductlists() {
+            axios.get("/get-product-lists").then(({ data }) => {
+                this.productlists = data;
+            });
+        },
+
+        getProductName(productId) {
+            const productlist = this.productlists.find(
+                (b) => b.id === productId
+            );
+            return productlist ? productlist.name : "Unknown product";
+        },
+
         fetchCategories() {
             axios.get("/fetch-categories").then(({ data }) => {
                 this.categories = data;
@@ -339,8 +345,9 @@ export default {
 
     mounted() {
         this.fetchProducts();
-        this.showCartItem();
+        this.showCartItems();
         this.fetchCategories();
+        this.getProductlists();
     },
 };
 </script>

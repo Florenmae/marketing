@@ -12,7 +12,6 @@ class ProductList extends Model
     use HasFactory;
     protected $fillable = [
         'id',
-        'userId',
         'categoryId',
         'item_code',
         'name',
@@ -21,7 +20,6 @@ class ProductList extends Model
         'description',
     ];
 
-    // protected $table = 'productLists';
 
     public function products()
     {

@@ -67,7 +67,7 @@ Route::get("/get-categories", [ProductUserController::class, 'getCategories']);
 Route::post("/deliver", [ProductUserController::class, 'Deliver']);
 
 Route::post('/add-Cart', [ProductUserController::class, 'addToDevCart'])->name("addToDevCart");
-Route::get('/showCartItem', [ProductUserController::class, 'showCartItem']);
+Route::get('/showCartItems', [ProductUserController::class, 'showCartItems']);
 Route::post('/delete-item', [ProductUserController::class, 'deleteItem']);
 Route::post('/checkout', [ProductUserController::class, 'checkout']);
 
@@ -76,6 +76,7 @@ Route::post('/checkout', [ProductUserController::class, 'checkout']);
 
 Route::get("/get-product-lists", [ProductListController::class, 'getProductLists']);
 Route::post("/submit-productList", [ProductListController::class, 'createProductList']);
+Route::post("/upload-image", [ProductListController::class, 'uploadImage']);
 // Route::get('/get-pending-products', [ProductController::class, 'getPendingProducts']);
 
 // // Route for fetching approved products

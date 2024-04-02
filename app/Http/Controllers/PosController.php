@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use Illuminate\Http\Request;
+use App\Models\Product; 
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Categories;
-// use App\Models\OrderProduct;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
+use App\Models\OrderProduct;
 use App\Models\ReturnedProduct;
 use Auth;
+
 
 class PosController extends Controller{
    
@@ -69,7 +69,7 @@ class PosController extends Controller{
         $res = $deleteItem->delete();
         return $res;
     }
-use App\Models\Product;
+
 
 public function checkout(Request $request)
 {
@@ -91,12 +91,12 @@ public function checkout(Request $request)
         $changeAmount = 0;
     }
 
-    // Update product stocks and deduct quantities
+
     foreach ($cartItems as $cartItem) {
         $product = Product::find($cartItem->productId);
         if ($product) {
             $newStock = $product->stocks - $cartItem->qty;
-            // Make sure stock doesn't go negative
+            
             $product->stocks = max(0, $newStock);
             $product->save();
         }
