@@ -213,8 +213,7 @@ export default {
         },
 
         getProducts() {
-            axios.get("/get-products").then(({ data }) => {
-                console.log("Products data:", data);
+            axios.get("/getProducts").then(({ data }) => {
                 this.products = data;
             });
         },

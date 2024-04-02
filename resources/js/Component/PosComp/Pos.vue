@@ -373,13 +373,10 @@ export default {
                 });
         },
 
-        async fetchProducts() {
-            try {
-                const { data } = await axios.get("/get-products");
+        fetchProducts() {
+            axios.get("/getProducts").then(({ data }) => {
                 this.products = data;
-            } catch (error) {
-                console.error("Error fetching products:", error);
-            }
+            });
         },
 
         fetchCategories() {
@@ -423,10 +420,8 @@ export default {
         },
         filteredProducts() {
             if (!this.selectedCategory) {
-                // If no category is selected, return all products
                 return this.products;
             }
-            // Filter products based on the selected category
             return this.products.filter(
                 (product) => product.categoryId === this.selectedCategory
             );

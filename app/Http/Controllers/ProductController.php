@@ -175,41 +175,32 @@ class ProductController extends Controller{
 
     }
 
-    public function getProducts($status = null) {
-        if ($status === 'pending') {
-            return Product::where('status', 2)->get();
-        } elseif ($status === 'approved') {
-            return Product::where('status', 3)->get();
-        } elseif ($status === 'returned') {
-            return Product::where('status', 4)->get();
-        } 
+//     public function getProducts($status = null) {
+//     if ($status === 'pending') {
+//         return Product::where('status', 2)->get();
+//     } elseif ($status === 'approved') {
+//         return Product::where('status', 3)->get();
+//     } elseif ($status === 'returned') {
+//         return Product::where('status', 4)->get();
+//     } else {
+//         return Product::all();
+//     }
+// }
+
+
+
+    public function getProducts()
+    {
+        return Product::all();
     }
-
-
-    // public function getProducts()
-    // {
-    //     $user = Auth::user();
-    //     $products = $user->products;
-
-    //     return $products;
-    // }
 
     public function fetchDeliveries()
     {
         return Delivery::all();
-        // dd(Delivery::all());
-        // $deliveries = Delivery::select('qty')->get();
-        
-        // return $deliveries;
-
     }
 
     public function getProductLists()
     {
-        // $user = Auth::user();
-        // $productLists = $user->productLists;
-
-        // return $productLists;
         return ProductList::all();
     }
 
