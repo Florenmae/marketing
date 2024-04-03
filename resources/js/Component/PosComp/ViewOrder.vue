@@ -1,5 +1,5 @@
 <template>
-    <Modal
+    <Modal1
         :modalContent="{
             title: '',
             disablebtn: true,
@@ -114,16 +114,16 @@
                 </div>
             </div>
         </div>
-    </Modal>
+    </Modal1>
 </template>
 
 <script>
-import Modal from "@/Component/Modal.vue";
+import Modal1 from "@/Component/Modal1.vue";
 
 export default {
     props: ["order"],
     components: {
-        Modal,
+        Modal1,
     },
     data() {
         return {

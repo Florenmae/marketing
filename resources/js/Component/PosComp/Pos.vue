@@ -180,6 +180,11 @@
                         <span class="font-semibold"
                             >Total: Php {{ calculateTotal().toFixed(2) }}</span
                         >
+                        <Receipt
+                            v-if="showReceiptModal"
+                            :receipt="receipt"
+                            ref="receiptModal"
+                        />
                         <button
                             @click="checkout"
                             class="bg-green-500 text-white px-4 py-1 rounded-md"
@@ -302,6 +307,8 @@ export default {
             customerId: "",
             selectedCustomerType: "",
             selectedCategory: null,
+            showReceiptModal: false,
+            receipt: {},
         };
     },
     methods: {
@@ -372,6 +379,45 @@ export default {
                     this.cart = originalCart;
                 });
         },
+
+        // checkout() {
+        //     const originalCart = [...this.cart];
+        //     const orderPayload = {
+        //         paymentMethod: this.paymentMethod,
+        //         amountGiven: this.amountGiven,
+        //         customerId: this.selectedCustomerType,
+        //         items: this.cart.map((product) => ({
+        //             productId: product.productId,
+        //             customerId: this.selectedCustomerType,
+        //             qty: product.qty,
+        //             price: product.price,
+        //             total: product.total,
+        //         })),
+        //     };
+
+        //     axios
+        //         .post("/checkout", orderPayload)
+        //         .then((response) => {
+        //             const { status, remainingBalance } = response.data;
+        //             this.cart = [];
+        //             this.amountGiven = 0;
+        //             this.receipt = response.data.receipt;
+        //             this.showReceiptModal = true;
+
+        //             // Print receipt
+        //             setTimeout(() => {
+        //                 window.print();
+        //             }, 500);
+        //         })
+        //         .catch((error) => {
+        //             console.error("Error during checkout:", error);
+        //             this.cart = originalCart;
+        //         });
+        // },
+
+        // printReceiptModal() {
+        //     this.$refs.receiptModal.printReceipt();
+        // },
 
         fetchProducts() {
             axios.get("/getProducts").then(({ data }) => {

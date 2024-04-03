@@ -39,15 +39,17 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ returnedProduct.name }}
+                                {{ returnedProduct.productId }}
                             </th>
                             <td class="px-6 py-4">
                                 {{ returnedProduct.item_code }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ returnedProduct.supplier }}
+                                {{ returnedProduct.userId }}
                             </td>
-                            <td class="px-6 py-4">{{ returnedProduct.qty }}</td>
+                            <td class="px-6 py-4">
+                                {{ returnedProduct.stocks }}
+                            </td>
                             <td class="px-6 py-4">
                                 {{ returnedProduct.description }}
                             </td>
@@ -76,7 +78,6 @@ import Modal from "@/Component/Modal.vue";
 export default {
     components: {
         Modal,
-       
     },
     data() {
         return {
@@ -84,7 +85,7 @@ export default {
                 item_code: "",
                 name: "",
                 supplier: "",
-                qty: "",
+                stocks: "",
                 description: "",
             },
             returnedProducts: [],
@@ -100,7 +101,6 @@ export default {
         getReturnedProducts() {
             axios.get("/get-returns").then(({ data }) => {
                 this.returnedProducts = data;
-                this.getReturnedProducts();
             });
         },
 

@@ -12,7 +12,6 @@ import Product from "@/Component/Marketing/Inventory/Product.vue";
 import ProductList from "@/Component/Marketing/Inventory/ProductList.vue";
 import editProduct from "@/Component/Marketing/Inventory/editProduct.vue";
 
-
 import Transaction from "@/Component/Marketing/Inventory/Transaction.vue";
 import OrderList from "@/Component/Marketing/Inventory/OrderList.vue";
 
@@ -29,12 +28,20 @@ import userHome from "@/Component/userHome.vue";
 import userProduct from "@/Component/User/UserInventory/userProduct.vue";
 import addProduct from "@/Component/User/UserInventory/addProduct.vue";
 
+import Return from "@/Component/Marketing/Inventory/Return.vue";
+import ReturnList from "@/Component/Marketing/Inventory/ReturnList.vue";
+
+import orderDashboard from "@/Component/OnlineOrder/orderDashboard.vue";
+
+import pendingOrder from "@/Component/OnlineOrder/pendingOrder.vue";
+
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "./routes";
 
 import Layout from "@/Layout/Layout.vue";
 import userLayout from "@/Layout/userLayout.vue";
 import PosLayout from "@/Layout/PosLayout.vue";
+import OrderLayout from "@/Layout/OrderLayout.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -61,7 +68,8 @@ app.component("category", Category);
 app.component("editcategory", editCategory);
 app.component("addcategory", addCategory);
 
-// app.component("return", Return);
+app.component("return", Return);
+app.component("returnlist", ReturnList);
 // app.component("editreturn", editReturn);
 // app.component("addreturn", addReturn);
 // app.component("returnForm", returnForm);
@@ -71,15 +79,20 @@ app.component("modal1", Modal1);
 
 app.component("pos", Pos);
 app.component("orders", Orders);
-// app.component("viewOrder", ViewOrder);
+//app.component("viewOrder", ViewOrder);
 // app.component("view", View);
 
 app.component("userHome", userHome);
 app.component("userProduct", userProduct);
 app.component("addProduct", addProduct);
 
+app.component("orderDashboard", orderDashboard);
+
+app.component("pendingOrder", pendingOrder);
+
 app.component("Layout", Layout);
 app.component("userLayout", userLayout);
 app.component("posLayout", PosLayout);
+app.component("OrderLayout", OrderLayout);
 
 app.mount("#app");

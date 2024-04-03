@@ -213,22 +213,19 @@ class ProductController extends Controller{
     public function returnProduct(Request $request){
         $returnedProduct = Product::find($request->editingProductId);
 
-        if (!$returnedProduct) {
-            return response()->json(['message' => 'Product not found'], 404);
-        }
-        $returnedQty = (int)$request->prodPayload["qty"];
+        $returnedQty = (int)$request->prodPayload["stocks"];
 
-    if ($returnedQty >= $returnedProduct->qty) {
+    if ($returnedQty >= $returnedProduct->stocks) {
         $returnedProduct->delete();
     } else {
-        $returnedProduct->qty = $returnedProduct->qty - $returnedQty;
+        $returnedProduct->stocks = $returnedProduct->stocks - $returnedQty;
         $returnedProduct->save();
     }
 
         ReturnedProduct::create([
             'productId' => $returnedProduct->productId,
-            'supplierId' => $returnedProduct->supplierId,
-            'qty' => $returnedQty,
+            'userId' => $returnedProduct->userId,
+            'stocks' => $returnedQty,
             'description' => $request->prodPayload["description"]
 
         ]);
@@ -241,7 +238,7 @@ class ProductController extends Controller{
 
         ReturnedProduct::create([
             'name' => $returnedProduct->productId,
-            'supplier' => $returnedProduct->supplierId,
+            'supplier' => $returnedProduct->userId,
             'qty' => $returnedProduct->qty,
             'description' => $returnedProduct->description,
 

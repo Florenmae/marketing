@@ -61,11 +61,12 @@ Route::get("/get-productlists", [ProductController::class, 'getProductLists']);
 Route::get("/get-deliveries", [ProductController::class, 'fetchDeliveries']);
 Route::post("/receive", [ProductController::class, 'updateProduct']);
 
+
+//ProductUser
 Route::get("/get-productsUser", [ProductUserController::class, 'getProductsUser']);
 Route::post("/submit-to-admin", [ProductUserController::class, 'SubmitAdmin']);
 Route::get("/get-categories", [ProductUserController::class, 'getCategories']);
 Route::post("/deliver", [ProductUserController::class, 'Deliver']);
-
 Route::post('/add-Cart', [ProductUserController::class, 'addToDevCart'])->name("addToDevCart");
 Route::get('/showCartItems', [ProductUserController::class, 'showCartItems']);
 Route::post('/delete-item', [ProductUserController::class, 'deleteItem']);
@@ -77,6 +78,7 @@ Route::post('/checkout', [ProductUserController::class, 'checkout']);
 Route::get("/get-product-lists", [ProductListController::class, 'getProductLists']);
 Route::post("/submit-productList", [ProductListController::class, 'createProductList']);
 Route::post("/upload-image", [ProductListController::class, 'uploadImage']);
+
 
 Route::post("/submit-return", [ReturnedProductController::class, 'createReturns'])->name("createReturns");
 Route::get("/get-returns", [ReturnedProductController::class, 'getReturnedProducts'])->name("getReturnedProducts");
@@ -93,16 +95,21 @@ Route::post("/delete-category", [CategoryController::class, 'deleteCategory']);
 //POS
 Route::get("/getProducts", [PosController::class, 'fetchProducts'])->name('fetchProducts');
 Route::get('/fetch-categories', [PosController::class, 'fetchCategories']);
-
 Route::post('/addToCart', [PosController::class, 'addToCart'])->name("addToCart");
 Route::get('/showCartItem', [PosController::class, 'showCartItem']);
 Route::post('/delete-item', [PosController::class, 'deleteItem']);
 Route::post('/checkout', [PosController::class, 'checkout']);
 
-Route::get('/fetch-orders', [OrderController::class, 'fetchOrders']);
-Route::get('/view-order', [OrderController::class, 'viewOrder']);
+Route::get('/fetch-orders', [PosController::class, 'fetchOrders']);
+Route::get('/view-order', [PosController::class, 'viewOrder']);
 
 Route::get('/fetch-transactions', [TransactionController::class, 'fetchTransactions']);
+
+
+//Online Order
+Route::get("/getProd", [OrderController::class, 'getProd']);
+Route::post('/checkOutOrder', [OrderController::class, 'checkOutOrder']);
+
 
 Route::get('/{vue?}', function(){
     return view('app');

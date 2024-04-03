@@ -79,8 +79,7 @@ class ProductUserController extends Controller
 
 // }
 
-public function submitAdmin(Request $request)
-{
+public function submitAdmin(Request $request){
     DB::beginTransaction();
 
     try {

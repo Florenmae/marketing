@@ -10,8 +10,8 @@ use App\Models\Order;
 use App\Models\Categories;
 use App\Models\OrderProduct;
 use App\Models\ReturnedProduct;
+use Carbon\Carbon;
 use Auth;
-
 
 class PosController extends Controller{
    
@@ -91,7 +91,6 @@ public function checkout(Request $request)
         $changeAmount = 0;
     }
 
-
     foreach ($cartItems as $cartItem) {
         $product = Product::find($cartItem->productId);
         if ($product) {
@@ -128,6 +127,43 @@ public function checkout(Request $request)
     Cart::truncate();
 
     return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
+}
+
+public function fetchOrders (Request $request){
+        $orders = Order::all();
+
+        $formattedOrders = $orders->map(function ($order) {
+            return [
+                'id' => $order->id,
+                'customerId' => $order->customerId,
+                'productId' => $order->productId,
+                'image' => $order->image,
+                'description' => $order->description,
+                'price' => $order->price,
+                'qty' => $order->qty,
+                'total' => $order->total,
+                'balance' => $order->balance,
+                'paymentMethod' => $order->paymentMethod,
+                'created_at' => Carbon::parse($order->created_at)->format('F d, Y'),
+                'updated_at' => Carbon::parse($order->updated_at)->format('F d, Y'),
+            ];
+        });
+
+        return response()->json($formattedOrders);
+    }
+
+    public function viewOrder(Request $request){
+
+    if(Order::where('id', $request->id)->exists()){
+        return Order::find($request->id);
+    }
+    else{
+        return $data = (object)[
+            "id"=>0,
+            "name"=> "",
+
+        ];
+    }
 }
 
 }

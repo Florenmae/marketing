@@ -9,9 +9,9 @@ class DeliveryCart extends Model
 {
     use HasFactory;
     protected $table = "deliverycarts";
-    // protected $fillable = [
-    //     'productId',
-    //     'qty',
-    //     'price'
-    // ];
+    protected $fillable = [
+        'productId',
+        'qty',
+        'price'
+    ];
 }

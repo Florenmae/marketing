@@ -256,14 +256,18 @@
 <script>
 import Layout from "../Layout/Layout.vue";
 import Modal from "../Component/Modal.vue";
+
+// import { Bar } from "vue-chartjs";
+
 // import BarGraph from "./UserComp/Graph/BarGraph.vue";
 
 export default {
+    extends: Bar,
     props: ["authenticated"],
     components: {
         Layout,
         Modal,
-        // BarGraph,
+        
     },
     data() {
         return {

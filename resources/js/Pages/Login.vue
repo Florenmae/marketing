@@ -107,8 +107,10 @@ export default {
                         console.log("User Role:", res.data.roleId);
                         if (res.data.roleId === "1") {
                             this.$router.push("/home");
-                        } else {
+                        } else if (res.data.roleId === "2" && "3") {
                             this.$router.push("/userHome");
+                        } else {
+                            this.$router.push("/orderDashboard");
                         }
                     }
                 })

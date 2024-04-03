@@ -10,7 +10,8 @@ import OrderList from "@/Component/Marketing/Inventory/OrderList.vue";
 
 import Transaction from "@/Component/Marketing/Inventory/Transaction.vue";
 
-// import ReturnList from "@/Component/ProdComp/ReturnList.vue";
+import Return from "@/Component/Marketing/Inventory/Return.vue";
+import ReturnList from "@/Component/Marketing/Inventory/ReturnList.vue";
 // import returnForm from "@/Component/ProdComp/returnForm.vue";
 // import addReturn from "@/Component/ProdComp/addReturn.vue";
 
@@ -23,7 +24,10 @@ import Orders from "@/Component/PosComp/Orders.vue";
 // import ViewOrder from "@/Component/PosComp/ViewOrder.vue";
 // import View from "@/Component/PosComp/View.vue";
 
+import pendingOrder from "@/Component/OnlineOrder/pendingOrder.vue";
+
 import userHome from "@/Component/userHome.vue";
+import orderDashboard from "@/Component/OnlineOrder/orderDashboard.vue";
 import Login from "@/Pages/Login.vue";
 import Signup from "@/Pages/Signup.vue";
 
@@ -44,6 +48,11 @@ export const routes = [
         component: userHome,
     },
     {
+        path: "/orderDashboard",
+        name: "orderDashboard",
+        component: orderDashboard,
+    },
+    {
         path: "/user",
         name: "user",
         component: User,
@@ -58,6 +67,7 @@ export const routes = [
         name: "product",
         component: Product,
     },
+
     {
         path: "/transaction",
         name: "transaction",
@@ -89,11 +99,16 @@ export const routes = [
     //     name: "returnForm",
     //     component: returnForm,
     // },
-    // {
-    //     path: "/return",
-    //     name: "return",
-    //     component: Return,
-    // },
+    {
+        path: "/return",
+        name: "return",
+        component: Return,
+    },
+    {
+        path: "/returnlist",
+        name: "returnlist",
+        component: ReturnList,
+    },
     // {
     //     path: "/addReturn",
     //     name: "addReturn",
@@ -108,6 +123,11 @@ export const routes = [
         path: "/orders",
         name: "orders",
         component: Orders,
+    },
+    {
+        path: "/pendingOrder",
+        name: "pendingOrder",
+        component: pendingOrder,
     },
     // {
     //     path: "/view",
