@@ -274,6 +274,7 @@ export default {
         prevPage() {
             this.currentPage = Math.max(0, this.currentPage - 1);
         },
+
         deleteItem(id) {
             axios.post("/delete-item", { id }).then(({ data }) => {
                 this.showCartItems();

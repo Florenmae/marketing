@@ -49,12 +49,14 @@ Route::post("/delete-user", [UserController::class, "deleteUser"]);
 
 //Product
 Route::post("/submit-product", [ProductController::class, 'createProduct'])->name("createProduct");
-Route::get("/getProducts", [ProductController::class, 'getProducts']);
+Route::get("/get-products", [ProductController::class, 'getProducts']);
 Route::post("/update-product", [ProductController::class, 'updateProduct']);
 Route::post("/delete-product", [ProductController::class, 'deleteProduct']);
 Route::post("/upload-image", [ProductController::class, 'uploadImage']);
+
 Route::post("/return-product", [ProductController::class, 'returnProduct'])->name("returnProduct");
 Route::post("/returnAll-product", [ProductController::class, 'ReturnAll'])->name("ReturnAll");
+
 Route::get("/get-categories", [ProductController::class, 'getCategories']);
 Route::get("/get-users", [ProductController::class, 'getUsers']);
 Route::get("/get-productlists", [ProductController::class, 'getProductLists']);
@@ -108,6 +110,8 @@ Route::get('/fetch-transactions', [TransactionController::class, 'fetchTransacti
 
 //Online Order
 Route::get("/getProd", [OrderController::class, 'getProd']);
+Route::get("/getProdlist", [OrderController::class, 'getProdlist']);
+Route::post('/add-cart', [OrderController::class, 'addCart'])->name("addCart");
 Route::post('/checkOutOrder', [OrderController::class, 'checkOutOrder']);
 
 

@@ -152,7 +152,7 @@
                             </button>
                         </div>
                         <span class="font-semibold"
-                            >Php {{ product.price.toFixed(2) }}</span
+                            >Php {{ product.price }}</span
                         >
                         <span class="text-gray-600"
                             >Total: Php {{ product.total.toFixed(2) }}</span
@@ -178,7 +178,7 @@
                     </div>
                     <div class="mt-4 flex justify-between items-center">
                         <span class="font-semibold"
-                            >Total: Php {{ calculateTotal().toFixed(2) }}</span
+                            >Total: Php {{ calculateTotal() }}</span
                         >
                         <Receipt
                             v-if="showReceiptModal"

@@ -118,6 +118,7 @@ export default {
             this.modalStatus = true;
             this.getReturnedProducts;
         },
+
         updateReturnedProduct(data) {
             const { editReturnedProduct, editingReturnedProductId } = this;
             const retPayload = { ...editReturnedProduct };
@@ -132,6 +133,7 @@ export default {
                     console.error("Error updating product:", error);
                 });
         },
+        
         deleteReturn(id) {
             axios.post("/delete-returns", { id }).then(({ data }) => {
                 this.getReturnedProducts();

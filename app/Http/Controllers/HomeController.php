@@ -20,10 +20,12 @@ class HomeController extends Controller
     }
     public function getProductCount()
     {
-        $productCount = Product::count();
+        $productCount = Product::where('status', 3)->count();
 
         return response()->json(['count' => $productCount]);
     }
+
+    
     public function getCategoryCount()
     {
         $categoryCount = Categories::count();

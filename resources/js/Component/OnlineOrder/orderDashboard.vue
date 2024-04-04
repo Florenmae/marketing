@@ -71,7 +71,7 @@
                             class="w-full h-32 object-cover mb-2 rounded-md"
                         />
                         <h2 class="text-lg font-semibold">
-                            {{ product.name }}
+                            {{ getProductNames(product.productId) }}
                         </h2>
 
                         <div class="mt-2">
@@ -79,7 +79,7 @@
                                 product.price
                             }}</span>
                             <button
-                                @click="addToCart(product)"
+                                @click="addCart(product)"
                                 class="ml-2 bg-green-500 text-white px-3 py-1 rounded-md"
                             >
                                 Add to Cart
@@ -139,7 +139,7 @@
                                 >Qty: {{ product.stocks }}</span
                             >
                             <span class="font-semibold"
-                                >Php {{ product.price.toFixed(2) }}</span
+                                >Php {{ product.price }}</span
                             >
                             <!-- <span class="text-gray-600"
                             >Total: Php {{ product.total.toFixed(2) }}</span
@@ -220,6 +220,7 @@ export default {
     data() {
         return {
             products: [],
+            productlists: [],
             cart: [],
             categories: [],
             currentPage: 0,
@@ -234,11 +235,10 @@ export default {
         };
     },
     methods: {
-        addToCart(product) {
+        addCart(product) {
             console.log("Adding to Cart:", product);
             const cartItem = {
                 productId: product.productId,
-                customerId: this.selectedCustomerType,
                 image: product.image,
                 price: product.price,
                 qty: 1,
@@ -246,7 +246,7 @@ export default {
                 total: product.price * 1,
             };
 
-            axios.post("/addToCart", cartItem).then((data) => {
+            axios.post("/add-cart", cartItem).then((data) => {
                 this.showCartItem();
             });
         },
@@ -322,6 +322,12 @@ export default {
             });
         },
 
+        getProdlist() {
+            axios.get("/getProdlist").then(({ data }) => {
+                this.productlists = data;
+            });
+        },
+
         fetchCategories() {
             axios.get("/fetch-categories").then(({ data }) => {
                 this.categories = data;
@@ -344,6 +350,13 @@ export default {
             } else {
                 this.selectedCategory = id;
             }
+        },
+
+        getProductNames(productId) {
+            const productlist = this.productlists.find(
+                (b) => b.id === productId
+            );
+            return productlist ? productlist.name : "Unknown product";
         },
     },
     computed: {
@@ -373,6 +386,7 @@ export default {
 
     mounted() {
         this.getProd();
+        this.getProdlist();
         this.showCartItem();
         this.fetchCategories();
     },

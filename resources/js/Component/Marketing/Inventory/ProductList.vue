@@ -66,6 +66,12 @@
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
                                 <!-- <editProduct :product="product" /> -->
+                                <button
+                                    class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-red-600"
+                                    @click="deleteProduct(productlist.id)"
+                                >
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -119,17 +125,6 @@ export default {
             });
         },
 
-        // getPendingProducts() {
-        //     axios.get("/get-products?status=0").then(({ data }) => {
-        //         this.pendingProducts = data;
-        //     });
-        // },
-        // getApprovedProducts() {
-        //     axios.get("/get-products?status=1").then(({ data }) => {
-        //         this.approvedProducts = data;
-        //     });
-        // },
-
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;
@@ -160,11 +155,7 @@ export default {
         //     return user ? user.name : "Unknown User";
         // },
     },
-    // computed: {
-    //     receivedProduct() {
-    //         return this.products.filter((product) => product.status === 5);
-    //     },
-    // },
+    
     mounted() {
         this.getProductlists();
         this.getCategories();

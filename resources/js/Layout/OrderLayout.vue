@@ -70,7 +70,7 @@
                         class="absolute right-0 mt-2 bg-white rounded-md shadow-md"
                     >
                         <a
-                            href="orders"
+                            href=""
                             class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                         >
                             Orders

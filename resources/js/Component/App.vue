@@ -262,12 +262,9 @@ import Modal from "../Component/Modal.vue";
 // import BarGraph from "./UserComp/Graph/BarGraph.vue";
 
 export default {
-    extends: Bar,
-    props: ["authenticated"],
     components: {
         Layout,
         Modal,
-        
     },
     data() {
         return {

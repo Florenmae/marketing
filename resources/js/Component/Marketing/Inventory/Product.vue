@@ -156,7 +156,7 @@
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
-                                <Receive :product="product" />
+                                <!-- <Receive :product="product" /> -->
                                 <Return :product="product" />
                             </td>
                         </tr>
@@ -213,7 +213,7 @@ export default {
         },
 
         getProducts() {
-            axios.get("/getProducts").then(({ data }) => {
+            axios.get("/get-products").then(({ data }) => {
                 this.products = data;
             });
         },
@@ -254,9 +254,9 @@ export default {
             this.modalStatus = true;
         },
 
-        returnAll(product) {
+        returnAll(productId) {
             axios
-                .post("/returnAll-product", { product })
+                .post("/returnAll-product", { product: { productId } })
                 .then(({ data }) => {
                     window.location.reload("Reloading");
                 })
@@ -297,7 +297,9 @@ export default {
             return this.products.filter((product) => product.status === 2);
         },
         approvedProducts() {
-            return this.products.filter((product) => product.status === 3);
+            return this.products.filter(
+                (product) => product.status === 3 && product.userId === 1
+            );
         },
     },
     mounted() {
