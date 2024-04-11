@@ -98,7 +98,9 @@
                         class="flex items-center justify-between p-2 border-b"
                     >
                         <div class="flex items-center space-x-4">
-                            <span>{{ getProductName(product.productId) }}</span>
+                            <span>
+                                {{ getProductName(product.productId) }}</span
+                            >
                         </div>
 
                         <div class="flex items-center space-x-0">

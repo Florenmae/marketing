@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product; 
+use App\Models\ProductList; 
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
@@ -21,9 +22,15 @@ class PosController extends Controller{
 
     $products = Product::where('userId', $userId)
                         ->where('status', 3)
+                        ->where('stocks','>', 0)
                         ->get();
-
+    // dd($userId);
     return $products;
+}
+
+    public function fetchProductLists()
+{
+    return ProductList::all();
 }
 
     public function fetchCategories(){
@@ -36,28 +43,30 @@ class PosController extends Controller{
     $customerId = $request->input('customerId');
     $qty = $request->input('qty', 1);
 
+    $product = Product::find($productId);
+
     $cartItem = Cart::where('productId', $productId)
                     ->where('customerId', $customerId) 
                     ->first();
 
     if ($cartItem) {
         $cartItem->qty += $qty;
-        $cartItem->total = $cartItem->qty * $cartItem->price;
+        $cartItem->total = $cartItem->qty * $product->price;
         $cartItem->save();
     } else {
-        
         Cart::create([
             'productId' => $productId,
             'customerId' => $customerId, 
             'image' => $request->input('image'),
-            'price' => $request->input('price'),
+            'price' => $product->price ,
             'unit' => $request->input('unit'),
             'description' => $request->input('description'),
-            'total' => $request->input('price') * $qty,
+            'total' => $product->price * $qty,
             'qty' => $qty,
         ]);
     }
 }
+
 
     public function showCartItem(Request $request){
         return Cart::all();

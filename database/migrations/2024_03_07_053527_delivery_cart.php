@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('deliverycarts', function (Blueprint $table) {
             $table->id();
-            $table->string('deliveryId')->nullable();
-            $table->string('productId')->nullable();
+            // $table->integer('deliveryId')->nullable();
+            $table->integer('productId')->nullable();
             $table->float('qty')->nullable();
             $table->float('price')->nullable();
             $table->timestamps();

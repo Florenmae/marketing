@@ -14,8 +14,7 @@ return new class extends Migration
       Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
             $table->integer('userId')->nullable();
-            $table->integer('transactionId')->nullable();
-            $table->string('deliverTo')->nullable();
+            $table->integer('productId')->nullable();
             $table->float('qty')->nullable();
             $table->text('remarks')->nullable();
             $table->boolean('status')->default('1'); 

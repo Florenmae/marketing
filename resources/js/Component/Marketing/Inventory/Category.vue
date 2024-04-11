@@ -124,15 +124,6 @@ export default {
                 this.getCategories();
             });
         },
-        // clearForm() {
-        //     this.editCategory = {
-        //         cat_code: "",
-        //         categoryName: "",
-        //         product_count: "",
-        //     };
-        //     this.changeModalStatus();
-        //     this.editingCategoryId = null;
-        // },
     },
     mounted() {
         this.getCategories();

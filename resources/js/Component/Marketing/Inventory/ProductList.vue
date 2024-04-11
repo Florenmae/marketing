@@ -38,7 +38,7 @@
                                 <img
                                     :src="productlist.image"
                                     alt="Product Image"
-                                    class="w-34 h-auto rounded-lg"
+                                    class="w-20 h-auto rounded-lg"
                                 />
                             </td>
                             <th
@@ -115,6 +115,20 @@ export default {
         };
     },
     methods: {
+        submitProductlist() {
+            const { editProductlist } = this;
+            const prodlistPayload = {
+                ...editProductlist,
+            };
+
+            axios
+                .post("/submit-productList", prodlistPayload)
+                .then(({ data }) => {
+                    this.getProductlists();
+                    window.location.reload("Reloading");
+                });
+        },
+
         changeModalStatus() {
             this.modalStatus = !this.modalStatus;
         },
@@ -155,7 +169,7 @@ export default {
         //     return user ? user.name : "Unknown User";
         // },
     },
-    
+
     mounted() {
         this.getProductlists();
         this.getCategories();

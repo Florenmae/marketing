@@ -204,7 +204,7 @@ class ProductController extends Controller{
 
     public function getUsers()
     {
-         return User::where('id', '!=', '1')->get();
+         return User::all();
 
     }
 

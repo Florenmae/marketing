@@ -71,9 +71,8 @@
                             class="w-full h-32 object-cover mb-2 rounded-md"
                         />
                         <h2 class="text-lg font-semibold">
-                            {{ product.name }}
+                            {{ getProductName(product.name) }}
                         </h2>
-                        <p class="text-gray-600">{{ product.description }}</p>
                         <p class="text-gray-600">
                             Available Stock: {{ product.stocks }}
                         </p>
@@ -298,6 +297,7 @@ export default {
     data() {
         return {
             products: [],
+            productlists: [],
             cart: [],
             categories: [],
             currentPage: 0,
@@ -425,6 +425,19 @@ export default {
             });
         },
 
+        fetchProductlists() {
+            axios.get("/get-productlists").then(({ data }) => {
+                this.productlists = data;
+            });
+        },
+
+        getProductName(productId) {
+            const productlist = this.productlists.find(
+                (d) => d.id === productId
+            );
+            return productlist ? productlist.name : "Unknown product";
+        },
+
         fetchCategories() {
             axios.get("/fetch-categories").then(({ data }) => {
                 this.categories = data;
@@ -476,6 +489,7 @@ export default {
 
     mounted() {
         this.fetchProducts();
+        this.fetchProductlists();
         this.showCartItem();
         this.fetchCategories();
     },

@@ -79,6 +79,7 @@ export default {
                 this.getCategories();
             });
         },
+
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;

@@ -82,14 +82,13 @@ class ProductUserController extends Controller
 public function submitAdmin(Request $request){
     DB::beginTransaction();
 
-    try {
         $products = $request->input('products');
 
         foreach ($products as $productData) {
-            $id = $productData['id'];
+            $productId = $productData['productId'];
 
-            $product = Product::findOrFail($id);
-
+            $product = Product::findOrFail($productId);
+           
             $originalStock = $product->stocks;
 
             $subtractedQty = $productData['qty'];
@@ -101,7 +100,7 @@ public function submitAdmin(Request $request){
 
             $product->price;
             $product->status = 2;
-
+            
             $product->save();
 
             $transaction = new Transaction();
@@ -121,15 +120,7 @@ public function submitAdmin(Request $request){
 
         DB::commit();
         DeliveryCart::truncate();
-
-        return response()->json(['message' => 'Products submitted successfully'], 200);
-    } catch (\Exception $e) {
-        DB::rollback();
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
 }
-
-
 
     public function getCategories()
         {
@@ -137,32 +128,34 @@ public function submitAdmin(Request $request){
 
         }
 
-     public function addToDevCart(Request $request)
-{
+    public function addToDevCart(Request $request)
+{   
+
     $productId = $request->input('productId');
-    // $deliveryId = $request->input('deliveryId');
     $qty = $request->input('qty', 1);
 
-    $cartItem = DeliveryCart::where('productId', $request->input('productId'))
-                    // ->where('deliveryId', $request->input('deliveryId'))
-                    ->where('price', $request->input('price'))
-                    ->first();
+    $cartItem = DeliveryCart::where('productId', $productId)->first();
 
     if ($cartItem) {
+        
         $cartItem->qty += $qty;
-        $cartItem->price = $cartItem->qty * $cartItem->price;
+        
+        $product = Product::find($productId);
+
+        $cartItem->price = $product->price * $cartItem->qty;
         $cartItem->save();
     } else {
+        
+        $product = Product::find($productId);
+    
         DeliveryCart::create([
-            
             'productId' => $productId,
-            'price' => $request->input('price') * $qty,
+            'price' => $product->price * $qty,
             'qty' => $qty,
         ]);
     }
-
-    return response()->json(['message' => 'Product added to cart']);
 }
+
 
     public function showCartItems(Request $request){
         return DeliveryCart::all();
@@ -175,54 +168,5 @@ public function submitAdmin(Request $request){
         $res = $deleteItem->delete();
         return $res;
     }
-
-    public function checkout(Request $request)
-{
-    $cartItems = DeliveryCart::all();
-    $totalAmount = 0;
-
-    foreach ($cartItems as $cartItem) {
-        $totalAmount += $cartItem->total;
-    }
-
-    $paymentMethod = $request->input('paymentMethod');
-    $amountGiven = $request->input('amountGiven');
-
-
-    if ($amountGiven >= $totalAmount) {
-        $balance = 0;
-        $changeAmount = $amountGiven - $totalAmount;
-    } else {
-        $balance = $totalAmount - $amountGiven;
-        $changeAmount = 0;
-    }
-
-
-    $orderItems = [];
-    $now = now();
-
-    foreach ($cartItems as $cartItem) {
-        $orderItems[] = [
-            'productId' => $cartItem->productId,
-            'customerId' => $cartItem->customerId,
-            'price' => $cartItem->price,
-            'qty' => $cartItem->qty,
-            'total' => $cartItem->total,
-            'description' => $cartItem->description,
-            'paymentMethod' => $paymentMethod,
-            'balance' => $balance,
-            'changeAmount' => $changeAmount,
-            'created_at' => $now,
-            'updated_at' => $now,
-        ];
-    }
-
-    $orderProduct = new OrderProduct();
-    $orderProduct->insert($orderItems);
-
-    DeliveryCart::truncate();
-
-   
-}
 
 }

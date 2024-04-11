@@ -41,7 +41,7 @@
                                 <img
                                     :src="product.image"
                                     alt="Product Image"
-                                    class="w-34 h-auto rounded-lg"
+                                    class="w-20 h-auto rounded-lg"
                                 />
                             </td>
                             <th
@@ -124,7 +124,7 @@
                                 <img
                                     :src="product.image"
                                     alt="Product Image"
-                                    class="w-34 h-auto rounded-lg"
+                                    class="w-20 h-auto rounded-lg"
                                 />
                             </td>
                             <th
@@ -141,6 +141,7 @@
                             <td class="px-6 py-4">
                                 <p>{{ getSupplierName(product.userId) }}</p>
                             </td>
+
                             <td class="px-6 py-4">{{ product.price }}</td>
                             <td class="px-6 py-4">{{ product.stocks }}</td>
 

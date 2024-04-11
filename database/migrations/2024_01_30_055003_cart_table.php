@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->integer('customerId')->nullable();
             $table->integer('productId')->nullable();
-            $table->string('productName')->nullable();
             $table->string('image')->nullable();
             $table->longText('description')->nullable();
             $table->float('price')->nullable();

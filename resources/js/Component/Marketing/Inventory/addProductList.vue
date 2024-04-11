@@ -92,7 +92,7 @@
                         name="image"
                         id="image"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        @change="handleImageUpload"
+                        @change="imageUpload"
                         accept="image/*"
                         required
                     />
@@ -110,7 +110,6 @@
                         id="description"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Product Details"
-                        required=""
                     />
                 </div>
             </div>
@@ -127,20 +126,10 @@ export default {
     },
     data() {
         return {
-            product: {
-                image: " ",
-                item_code: "",
-                categoryId: "",
-                userId: "",
-                price: "",
-                unit: "",
-                stocks: "",
-                description: "",
-            },
             editProductlist: {
                 categoryId: "",
                 name: "",
-                image: " ",
+                image: null,
                 item_code: "",
                 price: "",
                 description: "",
@@ -154,18 +143,18 @@ export default {
         };
     },
     methods: {
-        handleImageUpload(event) {
+        imageUpload(event) {
             const formData = new FormData();
             formData.append("image", event.target.files[0]);
 
             axios
-                .post("/upload-image", formData, {
+                .post("/upload-images", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 })
                 .then((response) => {
-                    this.product.image = response.data.imagePath;
+                    this.editProductlist.image = response.data.imagePath;
                 });
         },
         submitProductlist() {
@@ -176,11 +165,12 @@ export default {
 
             axios
                 .post("/submit-productList", prodlistPayload)
-                .then(({ data }) => {})
-                .catch((error) => {
-                    console.error("Error submitting category:", error);
+                .then(({ data }) => {
+                    this.getProductlists();
+                    window.location.reload("Reloading");
                 });
         },
+
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;

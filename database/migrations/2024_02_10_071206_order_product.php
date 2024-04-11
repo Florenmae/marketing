@@ -21,7 +21,6 @@ return new class extends Migration
             $table->integer('customerId')->nullable();
             $table->string('image')->nullable();
             $table->longText('description')->nullable();
-            // $table->float('price')->nullable();
             $table->float('qty')->nullable();
             $table->float('total')->nullable();
             $table->boolean('paymentMethod')->default('1'); //1 for cash 2 credit

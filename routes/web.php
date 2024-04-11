@@ -79,7 +79,7 @@ Route::post('/checkout', [ProductUserController::class, 'checkout']);
 
 Route::get("/get-product-lists", [ProductListController::class, 'getProductLists']);
 Route::post("/submit-productList", [ProductListController::class, 'createProductList']);
-Route::post("/upload-image", [ProductListController::class, 'uploadImage']);
+Route::post("/upload-images", [ProductListController::class, 'uploadImages']);
 
 
 Route::post("/submit-return", [ReturnedProductController::class, 'createReturns'])->name("createReturns");
@@ -96,6 +96,7 @@ Route::post("/delete-category", [CategoryController::class, 'deleteCategory']);
 
 //POS
 Route::get("/getProducts", [PosController::class, 'fetchProducts'])->name('fetchProducts');
+Route::get("/get-productlists", [PosController::class, 'fetchProductLists']);
 Route::get('/fetch-categories', [PosController::class, 'fetchCategories']);
 Route::post('/addToCart', [PosController::class, 'addToCart'])->name("addToCart");
 Route::get('/showCartItem', [PosController::class, 'showCartItem']);

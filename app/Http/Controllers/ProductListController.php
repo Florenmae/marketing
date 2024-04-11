@@ -57,7 +57,7 @@ public function createProductList(Request $request){
         $res = $newproduct->save();
     }
 
-public function uploadImage(Request $request) {
+public function uploadImages(Request $request) {
     $request->validate([
         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
