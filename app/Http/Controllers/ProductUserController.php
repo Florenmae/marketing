@@ -79,6 +79,34 @@ class ProductUserController extends Controller
 
 // }
 
+public function addToDevCart(Request $request)
+{   
+
+    $productId = $request->input('productId');
+    $qty = $request->input('qty', 1);
+
+    $cartItem = DeliveryCart::where('productId', $productId)->first();
+
+    if ($cartItem) {
+        
+        $cartItem->qty += $qty;
+        
+        $product = Product::find($productId);
+
+        $cartItem->price = $product->price * $cartItem->qty;
+        $cartItem->save();
+    } else {
+        
+        $product = Product::find($productId);
+    
+        DeliveryCart::create([
+            'productId' => $productId,
+            'price' => $product->price * $qty,
+            'qty' => $qty,
+        ]);
+    }
+}
+
 public function submitAdmin(Request $request){
     DB::beginTransaction();
 
@@ -127,34 +155,6 @@ public function submitAdmin(Request $request){
             return Categories::all();
 
         }
-
-    public function addToDevCart(Request $request)
-{   
-
-    $productId = $request->input('productId');
-    $qty = $request->input('qty', 1);
-
-    $cartItem = DeliveryCart::where('productId', $productId)->first();
-
-    if ($cartItem) {
-        
-        $cartItem->qty += $qty;
-        
-        $product = Product::find($productId);
-
-        $cartItem->price = $product->price * $cartItem->qty;
-        $cartItem->save();
-    } else {
-        
-        $product = Product::find($productId);
-    
-        DeliveryCart::create([
-            'productId' => $productId,
-            'price' => $product->price * $qty,
-            'qty' => $qty,
-        ]);
-    }
-}
 
 
     public function showCartItems(Request $request){

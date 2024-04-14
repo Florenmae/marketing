@@ -96,7 +96,7 @@ Route::post("/delete-category", [CategoryController::class, 'deleteCategory']);
 
 //POS
 Route::get("/getProducts", [PosController::class, 'fetchProducts'])->name('fetchProducts');
-Route::get("/get-productlists", [PosController::class, 'fetchProductLists']);
+Route::get("/getproductlists", [PosController::class, 'fetchProductLists']);
 Route::get('/fetch-categories', [PosController::class, 'fetchCategories']);
 Route::post('/addToCart', [PosController::class, 'addToCart'])->name("addToCart");
 Route::get('/showCartItem', [PosController::class, 'showCartItem']);
@@ -111,6 +111,7 @@ Route::get('/fetch-transactions', [TransactionController::class, 'fetchTransacti
 
 //Online Order
 Route::get("/getProd", [OrderController::class, 'getProd']);
+Route::get("/getOrders", [OrderController::class, 'getOrders']);
 Route::get("/getProdlist", [OrderController::class, 'getProdlist']);
 Route::post('/add-cart', [OrderController::class, 'addCart'])->name("addCart");
 Route::post('/checkOutOrder', [OrderController::class, 'checkOutOrder']);

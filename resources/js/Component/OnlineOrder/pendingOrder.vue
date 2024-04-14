@@ -5,7 +5,7 @@
                 <div class="mt-6 mb-6">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
-                        >Pending Products</span
+                        >Pending Orders</span
                     >
                 </div>
             </div>
@@ -33,13 +33,13 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="product in pendingProducts"
-                            :key="product.id"
+                            v-for="order in pendingOrders"
+                            :key="order.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
                             <td class="px-6 py-4">
                                 <img
-                                    :src="product.image"
+                                    :src="order.image"
                                     alt="Product Image"
                                     class="w-34 h-auto rounded-lg"
                                 />
@@ -48,30 +48,30 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ getProductName(product.productId) }}
+                                {{ getProductName(order.productId) }}
                             </th>
-                            <td class="px-6 py-4">
-                                <p>{{ getCategoryName(product.categoryId) }}</p>
-                            </td>
-                            <td class="px-6 py-4">{{ product.item_code }}</td>
+                            <!-- <td class="px-6 py-4">
+                                <p>{{ getCategoryName(order.categoryId) }}</p>
+                            </td> -->
+                            <td class="px-6 py-4">{{ order.item_code }}</td>
 
                             <td class="px-6 py-4">
-                                <p>{{ getSupplierName(product.userId) }}</p>
+                                <p>{{ getSupplierName(order.userId) }}</p>
                             </td>
-                            <td class="px-6 py-4">{{ product.price }}</td>
+                            <td class="px-6 py-4">{{ order.price }}</td>
                             <td class="px-6 py-4">
-                                {{ filteredDeliveries(product.id) }}
+                                {{ filteredDeliveries(order.id) }}
                             </td>
-                            <td class="px-6 py-4">{{ product.description }}</td>
-                            <td class="px-6 py-4">{{ product.status }}</td>
+                            <td class="px-6 py-4">{{ order.description }}</td>
+                            <td class="px-6 py-4">{{ order.status }}</td>
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
                                 <!-- <editProduct :product="product" /> -->
-                                <Approve :product="product" />
+                                <Approve :order="order" />
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
-                                    @click="returnAll(product)"
+                                    @click="returnAll(order)"
                                 >
                                     Return
                                 </button>
@@ -85,7 +85,7 @@
                 <div class="mt-6 mb-6">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
-                        >Approved Products</span
+                        >Approved Orders</span
                     >
                 </div>
             </div>
@@ -116,13 +116,13 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="product in approvedProducts"
-                            :key="product.id"
+                            v-for="order in approvedOrders"
+                            :key="order.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
                             <td class="px-6 py-4">
                                 <img
-                                    :src="product.image"
+                                    :src="order.image"
                                     alt="Product Image"
                                     class="w-34 h-auto rounded-lg"
                                 />
@@ -131,23 +131,23 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                <p>{{ getProductName(product.productId) }}</p>
+                                <p>{{ getProductName(order.productId) }}</p>
                             </th>
                             <td class="px-6 py-4">
-                                <p>{{ getCategoryName(product.categoryId) }}</p>
+                                <p>{{ getCategoryName(order.categoryId) }}</p>
                             </td>
-                            <td class="px-6 py-4">{{ product.item_code }}</td>
+                            <td class="px-6 py-4">{{ order.item_code }}</td>
 
                             <td class="px-6 py-4">
-                                <p>{{ getSupplierName(product.userId) }}</p>
+                                <p>{{ getSupplierName(order.userId) }}</p>
                             </td>
-                            <td class="px-6 py-4">{{ product.price }}</td>
-                            <td class="px-6 py-4">{{ product.stocks }}</td>
+                            <td class="px-6 py-4">{{ order.price }}</td>
+                            <td class="px-6 py-4">{{ order.stocks }}</td>
 
-                            <td class="px-6 py-4">{{ product.description }}</td>
+                            <td class="px-6 py-4">{{ order.description }}</td>
                             <td class="px-6 py-4">
                                 <p
-                                    v-if="product.status === 3"
+                                    v-if="order.status === 3"
                                     class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
                                 >
                                     Approve
@@ -156,8 +156,8 @@
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
-                                <Receive :product="product" />
-                                <Return :product="product" />
+                                <Receive :order="order" />
+                                <Return :order="order" />
                             </td>
                         </tr>
                     </tbody>
@@ -176,7 +176,7 @@ import Return from "@/Component/Marketing/inventory/Return.vue";
 import axios from "axios";
 
 export default {
-    props: ["product"],
+    props: ["order"],
     components: {
         Modal,
         editProduct,
@@ -185,8 +185,8 @@ export default {
     },
     data() {
         return {
-            pendingProducts: [],
-            approvedProducts: [],
+            pendingOrders: [],
+            approvedOrders: [],
             outForDelivery: [],
             editProduct: {
                 item_code: "",
@@ -199,6 +199,7 @@ export default {
             },
             users: [],
             products: [],
+            orders: [],
             categories: [],
             editingProductId: null,
             modalStatus: false,
@@ -215,6 +216,12 @@ export default {
         getProducts() {
             axios.get("/getProducts").then(({ data }) => {
                 this.products = data;
+            });
+        },
+
+        getOrders() {
+            axios.get("/getOrders").then(({ data }) => {
+                this.orders = data;
             });
         },
 
@@ -247,23 +254,23 @@ export default {
                 });
         },
 
-        editProduct(product) {
-            this.editProduct = { ...product };
-            this.editingProductId = product.id;
-            this.modalContent.title = "Edit Product";
-            this.modalStatus = true;
-        },
+        // editProduct(product) {
+        //     this.editProduct = { ...product };
+        //     this.editingProductId = product.id;
+        //     this.modalContent.title = "Edit Product";
+        //     this.modalStatus = true;
+        // },
 
-        returnAll(product) {
-            axios
-                .post("/returnAll-product", { product })
-                .then(({ data }) => {
-                    window.location.reload("Reloading");
-                })
-                .catch((error) => {
-                    console.error("Error returning all products:", error);
-                });
-        },
+        // returnAll(product) {
+        //     axios
+        //         .post("/returnAll-product", { product })
+        //         .then(({ data }) => {
+        //             window.location.reload("Reloading");
+        //         })
+        //         .catch((error) => {
+        //             console.error("Error returning all products:", error);
+        //         });
+        // },
 
         filteredDeliveries(productId) {
             const delivery = this.deliveries.find(
@@ -293,11 +300,11 @@ export default {
         },
     },
     computed: {
-        pendingProducts() {
-            return this.products.filter((product) => product.status === 2);
+        pendingOrders() {
+            return this.orders.filter((order) => order.status === 2);
         },
-        approvedProducts() {
-            return this.products.filter((product) => product.status === 3);
+        approvedOrders() {
+            return this.orders.filter((order) => order.status === 3);
         },
     },
     mounted() {
@@ -306,6 +313,7 @@ export default {
         this.getCategories();
         this.getUsers();
         this.fetchDeliveries();
+        this.getOrders();
     },
 };
 </script>

@@ -9,7 +9,7 @@
     >
         <form @submit.prevent="submitCategory" class="p-4 md:p-5">
             <div class="grid gap-4 mb-4 grid-cols-2">
-                <div class="col-span-2">
+                <!-- <div class="col-span-2">
                     <label
                         for="cat_code"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -24,7 +24,7 @@
                         placeholder="Type the Category code"
                         required=""
                     />
-                </div>
+                </div> -->
                 <div class="col-span-2">
                     <label
                         for="name"
@@ -55,6 +55,7 @@ export default {
     },
     data() {
         return {
+            categories: [],
             editCategory: {
                 cat_code: "",
                 name: "",
@@ -76,6 +77,8 @@ export default {
             };
 
             axios.post("/submit-category", catPayload).then(({ data }) => {
+                this.categories.push(data);
+                this.$forceUpdate();
                 this.getCategories();
             });
         },

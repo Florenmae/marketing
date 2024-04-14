@@ -71,6 +71,7 @@ export default {
     },
     data() {
         return {
+            categories: [],
             editCategory: {
                 id: "",
                 categoryName: "",
@@ -89,6 +90,8 @@ export default {
             };
 
             axios.post("/submit-category", catPayload).then(({ data }) => {
+                this.categories.push(data);
+                this.$forceUpdate();
                 this.getCategories();
             });
         },

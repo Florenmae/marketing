@@ -18,13 +18,13 @@ class PosController extends Controller{
    
     public function fetchProducts()
 {
-    $userId = Auth::id();
+    // $userId = Auth::id();
 
-    $products = Product::where('userId', $userId)
+    $products = Product::where('userId', 1)
                         ->where('status', 3)
                         ->where('stocks','>', 0)
                         ->get();
-    // dd($userId);
+
     return $products;
 }
 
@@ -44,7 +44,7 @@ class PosController extends Controller{
     $qty = $request->input('qty', 1);
 
     $product = Product::find($productId);
-
+    
     $cartItem = Cart::where('productId', $productId)
                     ->where('customerId', $customerId) 
                     ->first();
@@ -80,6 +80,64 @@ class PosController extends Controller{
     }
 
 
+// public function checkout(Request $request)
+// {
+//     $cartItems = Cart::all();
+//     $totalAmount = 0;
+
+//     foreach ($cartItems as $cartItem) {
+//         $totalAmount += $cartItem->total;
+//     }
+
+//     $paymentMethod = $request->input('paymentMethod');
+//     $amountGiven = $request->input('amountGiven');
+
+//     if ($amountGiven >= $totalAmount) {
+//         $balance = 0;
+//         $changeAmount = $amountGiven - $totalAmount;
+//     } else {
+//         $balance = $totalAmount - $amountGiven;
+//         $changeAmount = 0;
+//     }
+
+//     foreach ($cartItems as $cartItem) {
+//         $product = Product::find($cartItem->productId);
+//         if ($product) {
+//             $newStock = $product->stocks - $cartItem->qty;
+            
+//             $product->stocks = max(0, $newStock);
+//             $product->save();
+//         }
+//     }
+
+//     $orderItems = [];
+//     $now = now();
+
+//     foreach ($cartItems as $cartItem) {
+//         $orderItems[] = [
+//             'productId' => $cartItem->productId,
+//             'customerId' => $cartItem->customerId,
+//             'price' => $cartItem->price,
+//             'qty' => $cartItem->qty,
+//             'total' => $cartItem->total,
+//             'description' => $cartItem->description,
+//             'image' => $cartItem->image,
+//             'paymentMethod' => $paymentMethod,
+//             'balance' => $balance,
+//             'changeAmount' => $changeAmount,
+//             'created_at' => $now,
+//             'updated_at' => $now,
+//         ];
+//     }
+
+//     $orderProduct = new Order();
+//     $orderProduct->insert($orderItems);
+
+//     Cart::truncate();
+
+//     return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
+// }
+
 public function checkout(Request $request)
 {
     $cartItems = Cart::all();
@@ -101,15 +159,13 @@ public function checkout(Request $request)
     }
 
     foreach ($cartItems as $cartItem) {
-        $product = Product::find($cartItem->productId);
-        if ($product) {
-            $newStock = $product->stocks - $cartItem->qty;
-            
-            $product->stocks = max(0, $newStock);
-            $product->save();
-        }
+    $product = Product::find($cartItem->productId);
+    dd($product);
+    if ($product && $cartItem->userId == 1) {
+        $product->stocks -= $cartItem->qty;
+        $product->save();
     }
-
+}
     $orderItems = [];
     $now = now();
 
@@ -137,6 +193,8 @@ public function checkout(Request $request)
 
     return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
 }
+
+
 
 public function fetchOrders (Request $request){
         $orders = Order::all();

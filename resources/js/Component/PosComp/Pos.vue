@@ -71,10 +71,10 @@
                             class="w-full h-32 object-cover mb-2 rounded-md"
                         />
                         <h2 class="text-lg font-semibold">
-                            {{ getProductName(product.name) }}
+                            {{ getProductName(product.productId) }}
                         </h2>
                         <p class="text-gray-600">
-                            Available Stock: {{ product.stocks }}
+                            Stocks: {{ product.stocks }}
                         </p>
                         <div class="mt-2">
                             <span class="text-lg font-bold text-blue-500">{{
@@ -192,64 +192,6 @@
                         </button>
                     </div>
                 </div>
-                <div class="mb-4 mt-4">
-                    <label for="paymentMethod" class="mr-2"
-                        >Payment Method:</label
-                    >
-                    <div class="flex items-center space-x-4 mt-4">
-                        <div
-                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
-                            @click="paymentMethod = '1'"
-                            :class="{
-                                'bg-green-100': paymentMethod === '1',
-                            }"
-                            style="width: 25%"
-                        >
-                            <span class="font-semibold">Cash</span>
-                        </div>
-                        <div
-                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
-                            @click="paymentMethod = '2'"
-                            :class="{
-                                'bg-green-100': paymentMethod === '2',
-                            }"
-                            style="width: 25%"
-                        >
-                            <span class="font-semibold">Credit</span>
-                        </div>
-                        <div
-                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
-                            @click="paymentMethod = '3'"
-                            :class="{
-                                'bg-green-100': paymentMethod === '3',
-                            }"
-                            style="width: 25%"
-                        >
-                            <span class="font-semibold">Gcash</span>
-                        </div>
-                        <div
-                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
-                            @click="paymentMethod = '4'"
-                            :class="{
-                                'bg-green-100': paymentMethod === '4',
-                            }"
-                            style="width: 25%"
-                        >
-                            <span class="font-semibold text-center">Card</span>
-                        </div>
-                        <div
-                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
-                            @click="paymentMethod = '5'"
-                            :class="{
-                                'bg-green-100': paymentMethod === '5',
-                            }"
-                            style="width: 25%"
-                        >
-                            <span class="font-semibold">Maya</span>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="mb-2 space-x-2">
                     <div class="flex items-center">
                         <label for="amountGiven" class="mr-4"
@@ -269,6 +211,52 @@
                                     >Php {{ change.toFixed(2) }}</span
                                 >
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4 mt-4">
+                    <label for="paymentMethod" class="mr-2"
+                        >Payment Method:</label
+                    >
+                    <div
+                        v-if="selectedCustomerType === '1'"
+                        class="flex items-center space-x-4 mt-4"
+                    >
+                        <div
+                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            @click="paymentMethod = '1'"
+                            :class="{
+                                'bg-green-100': paymentMethod === '1',
+                            }"
+                            style="width: 50%"
+                        >
+                            <span class="font-semibold">Cash</span>
+                        </div>
+                        <div
+                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            @click="paymentMethod = '2'"
+                            :class="{
+                                'bg-green-100': paymentMethod === '2',
+                            }"
+                            style="width: 50%"
+                        >
+                            <span class="font-semibold">Credit</span>
+                        </div>
+                    </div>
+                    <div
+                        v-else-if="selectedCustomerType === '2'"
+                        class="flex items-center space-x-4 mt-4"
+                    >
+                        <div
+                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            @click="paymentMethod = '1'"
+                            :class="{
+                                'bg-green-100': paymentMethod === '1',
+                            }"
+                            style="width: 100%"
+                        >
+                            <span class="font-semibold">Cash</span>
                         </div>
                     </div>
                 </div>
@@ -426,7 +414,7 @@ export default {
         },
 
         fetchProductlists() {
-            axios.get("/get-productlists").then(({ data }) => {
+            axios.get("/getproductlists").then(({ data }) => {
                 this.productlists = data;
             });
         },

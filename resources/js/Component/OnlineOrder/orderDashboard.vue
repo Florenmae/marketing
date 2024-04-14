@@ -172,7 +172,7 @@
                     </div>
 
                     <div class="mb-4 mt-4">
-                        <label for="paymentMethod" class="mr-2"
+                        <!-- <label for="paymentMethod" class="mr-2"
                             >Payment Method:</label
                         >
                         <div class="flex items-center space-x-4 mt-4">
@@ -182,21 +182,11 @@
                                 :class="{
                                     'bg-green-100': paymentMethod === '1',
                                 }"
-                                style="width: 50%"
+                                style="width: 100%"
                             >
                                 <span class="font-semibold">COD</span>
                             </div>
-                            <div
-                                class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
-                                @click="paymentMethod = '2'"
-                                :class="{
-                                    'bg-green-100': paymentMethod === '2',
-                                }"
-                                style="width: 50%"
-                            >
-                                <span class="font-semibold">Credit</span>
-                            </div>
-                        </div>
+                        </div> -->
 
                         <div class="mt-4 flex justify-between items-center">
                             <button
@@ -272,36 +262,6 @@ export default {
             });
         },
 
-        // checkout() {
-        //     const originalCart = [...this.cart];
-        //     const orderPayload = {
-        //         paymentMethod: this.paymentMethod,
-        //         amountGiven: this.amountGiven,
-        //         customerId: this.selectedCustomerType,
-        //         items: this.cart.map((product) => ({
-        //             productId: product.productId,
-        //             customerId: this.selectedCustomerType,
-        //             qty: product.qty,
-        //             price: product.price,
-        //             total: product.total,
-        //         })),
-        //     };
-
-        //     axios
-        //         .post("/checkout", orderPayload)
-        //         .then((response) => {
-        //             const { status, remainingBalance } = response.data;
-        //             this.cart = [];
-        //             this.amountGiven = 0;
-        //             this.receipt = response.data.receipt;
-        //             this.showReceiptModal = true;
-        //         })
-        //         .catch((error) => {
-        //             console.error("Error during checkout:", error);
-        //             this.cart = originalCart;
-        //         });
-        // },
-
         checkOutOrder() {
             axios
                 .post("/checkOutOrder", {
@@ -310,9 +270,6 @@ export default {
                 .then((response) => {
                     console.log("Cart submitted to admin:", response.data);
                     this.cart = [];
-                })
-                .catch((error) => {
-                    console.error("Error submitting cart to admin:", error);
                 });
         },
 

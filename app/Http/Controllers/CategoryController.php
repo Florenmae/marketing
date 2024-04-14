@@ -16,9 +16,8 @@ class CategoryController extends Controller
         $newCategory->id = $request->id;
         $newCategory->name = $request->name;
 
-        $res = $newCategory->save();
+        return $newCategory->save();
 
-        return $res;
     }
 
     public function getCategories(){
