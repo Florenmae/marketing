@@ -162,52 +162,46 @@ public function checkOutOrder(Request $request)
 {
     DB::beginTransaction();
 
-    try {
-        $products = $request->input('products');
+    $products = $request->input('products');
 
-        foreach ($products as $productData) {
-            $productId = $productData['productId'];
+    foreach ($products as $productData) {
+        $productId = $productData['productId'];
 
-            $product = Product::findOrFail($productId);
+        $product = Product::findOrFail($productId);
 
-            // Save the product in the order table with status 2 (pending approval)
-            $order = new Order();
-            $order->productId = $product->id;
-            $order->customerId = Auth::id(); // Assuming customer ID is stored in the order table
-            $order->qty = $productData['qty'];
-            $order->total = $product->price * $productData['qty'];
-            $order->status = 2; // Status 2 indicates pending approval
-            $order->save();
+        $order = new Order();
+        $order->productId = $product->id;
+        $order->userId = Auth::id(); 
+        $order->customerId = Auth::id(); 
+        $order->qty = $productData['qty'];
+        $order->total = $product->price * $productData['qty'];
+        $order->balance = $product->price * $productData['qty'];    
+        $order->status = 2; 
+        $order->save();
 
-            // Create a transaction record
-            $transaction = new Transaction();
-            $transaction->productId = $product->id;
-            $transaction->userId = Auth::id();
-            $transaction->qty = $productData['qty'];
-            $transaction->save();
+        $transaction = new Transaction();
+        $transaction->productId = $product->id;
+        $transaction->userId = Auth::id();
+        $transaction->qty = $productData['qty'];
+        $transaction->save();
 
-            // Create a delivery record
-            $delivery = new Delivery();
-            $delivery->userId = Auth::id();
-            $delivery->transactionId = $transaction->id;
-            $delivery->productId = $product->id;
-            $delivery->qty = $productData['qty'];
-            $delivery->status = 3; // Status 3 indicates pending delivery
-            $delivery->save();
-        }
+        $transactionId = $transaction->id;
 
-        // Commit the transaction if all operations succeed
-        DB::commit();
-        Cart::truncate(); // Empty the cart after successful checkout
-        return response()->json(['message' => 'Checkout successful'], 200);
-    } catch (\Exception $e) {
-        // Rollback the transaction if an error occurs
-        DB::rollback();
-        return response()->json(['error' => 'An error occurred while processing the order'], 500);
+        $order->transactionId = $transactionId;
+        $order->save();
+
+        $delivery = new Delivery();
+        $delivery->userId = Auth::id();
+        $delivery->transactionId = $transactionId;
+        $delivery->productId = $product->id;
+        $delivery->qty = $productData['qty'];
+        $delivery->status = 3; 
+        $delivery->save();
     }
-}
 
+    DB::commit();
+    Cart::truncate(); 
+    return response()->json(['message' => 'Checkout successful'], 200);
+    }
 
-    
-
-}
+    }

@@ -208,6 +208,11 @@ class ProductController extends Controller{
 
     }
 
+    public function getOrders()
+    {
+        return Order::whereIn('status', [2, 3])->get();
+    }
+
     public function returnProduct(Request $request){
         $returnedProduct = Product::find($request->editingProductId);
 
