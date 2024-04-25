@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Categories;
 use App\Models\Productlist;
 use App\Models\Delivery;
+use App\Models\User;
 
 class Product extends Model
 {
@@ -43,7 +44,7 @@ class Product extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'userId');
     }
 
     public function deliveries()

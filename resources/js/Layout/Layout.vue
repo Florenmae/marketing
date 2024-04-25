@@ -26,7 +26,7 @@
 
     <aside
         id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        class="fixed top-0 left-0 z-40 w-64 h-100 transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar"
         :class="{ hovered: clicked }"
     >
@@ -44,8 +44,8 @@
                     >Marketing</span
                 >
             </div>
-            <ul class="space-y-2 font-medium flex flex-col justify-between">
-                <div class="pb-[200px] space-y-4">
+            <ul class="space-y-4 font-medium flex flex-col justify-between">
+                <div class="pb-[200px] space-y-3">
                     <li>
                         <router-link to="/home">
                             <a
@@ -232,20 +232,6 @@
                                     >POS</a
                                 >
                             </li>
-                            <li>
-                                <a
-                                    href=""
-                                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >New Sales</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >Sales Report</a
-                                >
-                            </li>
                         </ul>
                     </li>
                     <li>
@@ -420,13 +406,6 @@
                                 <a
                                     href=""
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >Product Report</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href=""
-                                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                     >Inventory Report</a
                                 >
                             </li>
@@ -435,13 +414,6 @@
                                     href=""
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                     >Returned Items Report</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/return"
-                                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >Monthly Report</a
                                 >
                             </li>
                         </ul>
@@ -458,7 +430,7 @@
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
-                            viewBox="0 0 18 16"
+                            viewBox="0 0 18 14"
                         >
                             <path
                                 stroke="currentColor"
