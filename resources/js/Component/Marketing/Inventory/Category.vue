@@ -37,7 +37,7 @@
                                 {{ category.name }}
                             </th>
                             <td class="px-16 py-4">
-                                {{ category.id }}
+                                {{ category.cat_code }}
                             </td>
                             <td class="px-16 py-4">
                                 {{ category.product_count }}
@@ -75,6 +75,7 @@ export default {
             editCategory: {
                 id: "",
                 categoryName: "",
+                cat_code: " ",
                 product_count: "",
             },
             categories: [],

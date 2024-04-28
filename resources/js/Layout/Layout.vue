@@ -26,7 +26,7 @@
 
     <aside
         id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-100 transition-transform -translate-x-full sm:translate-x-0"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar"
         :class="{ hovered: clicked }"
     >
@@ -139,16 +139,9 @@
                         <ul id="dropdown-product" class="hidden py-2 space-y-2">
                             <li>
                                 <a
-                                    href="/product"
+                                    href="/category"
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >Inventory List</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/pendingOrder"
-                                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >Orders</a
+                                    >Category List</a
                                 >
                             </li>
                             <li>
@@ -160,17 +153,16 @@
                             </li>
                             <li>
                                 <a
-                                    href="/category"
+                                    href="/product"
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >Category List</a
+                                    >Inventory List</a
                                 >
                             </li>
-
                             <li>
                                 <a
-                                    href="#"
+                                    href="/pendingOrder"
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >Print Barcode</a
+                                    >Orders</a
                                 >
                             </li>
                         </ul>
@@ -223,6 +215,13 @@
                                     href=""
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                     >Sales List</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/cashreg"
+                                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                                    >Cash Registry</a
                                 >
                             </li>
                             <li>

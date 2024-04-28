@@ -10,6 +10,8 @@ import OrderList from "@/Component/Marketing/Inventory/OrderList.vue";
 
 import Transaction from "@/Component/Marketing/Inventory/Transaction.vue";
 
+import CashReg from "@/Component/Marketing/Cash/CashReg.vue";
+
 import Return from "@/Component/Marketing/Inventory/Return.vue";
 import ReturnList from "@/Component/Marketing/Inventory/ReturnList.vue";
 // import returnForm from "@/Component/ProdComp/returnForm.vue";
@@ -72,6 +74,12 @@ export const routes = [
         path: "/transaction",
         name: "transaction",
         component: Transaction,
+    },
+
+    {
+        path: "/cashreg",
+        name: "cashreg",
+        component: CashReg,
     },
     {
         path: "/productlist",

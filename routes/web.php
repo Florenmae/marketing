@@ -80,6 +80,8 @@ Route::post('/checkout', [ProductUserController::class, 'checkout']);
 Route::get("/get-product-lists", [ProductListController::class, 'getProductLists']);
 Route::post("/submit-productList", [ProductListController::class, 'createProductList']);
 Route::post("/upload-images", [ProductListController::class, 'uploadImages']);
+Route::post("/update-productlist", [ProductListController::class, 'updateProductList']);
+Route::get('/generateItemCode', [ProductListController::class, 'getItemCode']);
 
 
 Route::post("/submit-return", [ReturnedProductController::class, 'createReturns'])->name("createReturns");

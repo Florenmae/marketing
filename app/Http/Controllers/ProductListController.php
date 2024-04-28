@@ -10,6 +10,7 @@ use App\Models\Delivery;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ProductListController extends Controller
 {
@@ -74,5 +75,32 @@ public function uploadImages(Request $request) {
         return ProductList::all();
         // dd(ProductList::all());
         
+    }
+
+    public function updateProductList(Request $request){
+        DB::beginTransaction();
+
+        $productId = $request->editingProductId;
+        $product = ProductList::findOrFail($productId);
+
+        $product->categoryId = $request->prodPayload["categoryId"];
+        $product->name = $request->prodPayload["name"];
+        $product->item_code = $request->prodPayload["item_code"];
+        $product->price = $request->prodPayload["price"];
+        $product->description = $request->prodPayload["description"];
+
+
+        $product->save();
+
+        DB::commit();
+
+        return $product;
+    }
+
+    public function getItemCode(Request $request){
+        
+        $itemCode = mt_rand(1000, 9999);
+
+        return response()->json(['item_code' => $itemCode], 200);
     }
 }

@@ -65,7 +65,7 @@
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
-                                <!-- <editProduct :product="product" /> -->
+                                <editProductList :productlist="productlist" />
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-red-600"
                                     @click="deleteProduct(productlist.id)"
@@ -83,7 +83,7 @@
 
 <script>
 import Modal from "@/Component/Modal.vue";
-import editProduct from "@/Component/Marketing/inventory/editProduct.vue";
+import editProductList from "@/Component/Marketing/inventory/editProductList.vue";
 import addProductList from "@/Component/Marketing/inventory/addProductList.vue";
 
 import axios from "axios";
@@ -92,7 +92,7 @@ export default {
     props: ["productlist"],
     components: {
         Modal,
-        editProduct,
+        editProductList,
         addProductList,
     },
     data() {
