@@ -42,11 +42,9 @@ class PosController extends Controller{
     $productId = $request->input('productId');
     $customerId = $request->input('customerId');
     $qty = $request->input('qty', 1);
-
-    $user = Customer::where('userId', $customerId)->first();
     
     $product = Product::find($productId);
-    dd($product);
+    // dd($product);
     $cartItem = Cart::where('productId', $productId)
                     ->where('customerId', $customerId) 
                     ->first();

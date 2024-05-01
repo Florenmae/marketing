@@ -57,10 +57,11 @@
                     >
                     <select
                         v-model="product.productId"
+                        type="text"
                         id="productId"
                         name="productId"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        required
+                        required=""
                     >
                         <option value="">Select a Product</option>
                         <option
@@ -73,7 +74,7 @@
                     </select>
                 </div>
 
-                <div class="col-span-2 border-red-500">
+                <!-- <div class="col-span-2 border-red-500">
                     <label
                         for="userId"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -90,7 +91,7 @@
                         <option value="2">IGP</option>
                         <option value="3">Project</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="col-span-2">
                     <label
                         for="price"
@@ -113,15 +114,18 @@
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >Unit</label
                     >
-                    <input
+                    <select
                         v-model="product.unit"
                         type="text"
                         name="unit"
                         id="unit"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Select Product Unit"
-                        required=""
-                    />
+                        placeholder="Choose Product Unit"
+                    >
+                        <option value="kl">kl</option>
+                        <option value="pc">pc</option>
+                        <option value="gram">gram</option>
+                    </select>
                 </div>
                 <div class="col-span-2">
                     <label

@@ -134,16 +134,12 @@
                                     +
                                 </button>
                             </div>
-
                             <span class="font-semibold"
-                                >Qty: {{ product.stocks }}</span
+                                >Php{{ product.price }}.00</span
                             >
-                            <span class="font-semibold"
-                                >Php {{ product.price }}</span
-                            >
-                            <!-- <span class="text-gray-600"
-                            >Total: Php {{ product.total.toFixed(2) }}</span
-                        > -->
+                            <span class="text-gray-600"
+                            >Total: Php{{ product.total }}.00</span
+                        >
                             <button @click="deleteItem(product.id)">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -172,22 +168,6 @@
                     </div>
 
                     <div class="mb-4 mt-4">
-                        <!-- <label for="paymentMethod" class="mr-2"
-                            >Payment Method:</label
-                        >
-                        <div class="flex items-center space-x-4 mt-4">
-                            <div
-                                class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
-                                @click="paymentMethod = '1'"
-                                :class="{
-                                    'bg-green-100': paymentMethod === '1',
-                                }"
-                                style="width: 100%"
-                            >
-                                <span class="font-semibold">COD</span>
-                            </div>
-                        </div> -->
-
                         <div class="mt-4 flex justify-between items-center">
                             <button
                                 @click="checkOutOrder"

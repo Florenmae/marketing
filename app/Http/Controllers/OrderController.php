@@ -158,7 +158,7 @@ class OrderController extends Controller
 // }
     
 
-public function checkOutOrder(Request $request)
+    public function checkOutOrder(Request $request)
 {
     DB::beginTransaction();
 
@@ -169,20 +169,23 @@ public function checkOutOrder(Request $request)
 
         $product = Product::findOrFail($productId);
 
+        $price = $product->price;
+
         $order = new Order();
-        $order->productId = $product->id;
-        $order->userId = Auth::id(); 
+        $order->productId = $product->id;        
         $order->customerId = Auth::id(); 
         $order->qty = $productData['qty'];
-        $order->total = $product->price * $productData['qty'];
-        $order->balance = $product->price * $productData['qty'];    
+        $order->price = $price;
+        $order->total = $price * $productData['qty'];
         $order->status = 2; 
         $order->save();
 
         $transaction = new Transaction();
         $transaction->productId = $product->id;
         $transaction->userId = Auth::id();
+        $transaction->type = 2;
         $transaction->qty = $productData['qty'];
+        $transaction->totalprice = $price * $productData['qty'];
         $transaction->save();
 
         $transactionId = $transaction->id;
@@ -203,5 +206,61 @@ public function checkOutOrder(Request $request)
     Cart::truncate(); 
     return response()->json(['message' => 'Checkout successful'], 200);
     }
+
+    public function approveOrder(Request $request){
+    DB::beginTransaction();
+
+    $productId = $request->editingProductId;
+    $product = Product::findOrFail($productId);
+
+    $product->userId = $request->prodPayload["userId"];
+    $product->categoryId = $request->prodPayload["categoryId"];
+    $product->item_code = $request->prodPayload["item_code"];
+    $product->price = $request->prodPayload["price"];
+    $product->unit = $request->prodPayload["unit"];
+    $product->description = $request->prodPayload["description"];
+    $product->status = $request->prodPayload["status"];
+    $product->approved_by = $request->prodPayload["approved_by"];
+
+    if ($product->status == 3) {
+        $actualQty = $request->prodPayload["actualQty"];
+       
+        $totalprice = $actualQty * $product->price;
+
+        $transaction = new Transaction();
+        $transaction->productId = $product->id;
+        $transaction->userId = Auth::id();
+        $transaction->type = $request->prodPayload["type"];
+        // $transaction->qty = $qty;
+        $transaction->totalprice = $totalprice; 
+        $transaction->actualQty = $actualQty;
+
+        $product->stocks -= $actualQty;
+        $transaction->stocks = $product->stocks;
+
+        $transaction->save();
+    }
+
+    $adminProduct = Product::where('userId', 1)
+                            ->where('productId', $productId)
+                            ->first();
+
+    if ($adminProduct) {
+        $adminProduct->stocks += $request->prodPayload["actualQty"];
+        $adminProduct->save();
+    } else {
+        $adminProduct = $product->replicate();
+        $adminProduct->userId = 1; 
+        $adminProduct->stocks = $request->prodPayload["actualQty"];
+        $adminProduct->save();
+    }
+
+    $product->save();
+
+    DB::commit();
+
+    return $product;
+}
+
 
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Categories;
 use App\Models\Product;
@@ -20,10 +21,14 @@ class HomeController extends Controller
     }
     public function getProductCount()
     {
-        $productCount = Product::where('status', 3)->count();
+        $userId = Auth::id();
+        $productCount = Product::where('status', 3)
+            ->where('userId', $userId)
+            ->count();
 
         return response()->json(['count' => $productCount]);
     }
+
 
     
     public function getCategoryCount()

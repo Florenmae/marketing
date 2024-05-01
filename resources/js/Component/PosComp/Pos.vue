@@ -42,40 +42,36 @@
                     </button>
                 </div>
 
-                <div class="flex flex-wrap">
+                <div class="flex mt-6 mb-5">
                     <div
                         v-for="category in visibleCategories"
                         :key="category.id"
-                        class="space-x-2 p-2"
+                        class="bg-white shadow-md mb-2 category-item justify-center items-center text-center hover:bg-gray-100 cursor-pointer p-2 rounded-md mx-2"
+                        style="width: 250px"
+                        @click="filterByCategory(category.id)"
                     >
-                        <div
-                            class="bg-white shadow-md mb-3 category-item hover:bg-gray-100 cursor-pointer p-2 rounded-md"
-                            @click="filterByCategory(category.id)"
-                            style="width: 200px"
-                        >
-                            <p>{{ category.name }}</p>
-                        </div>
+                        <p>{{ category.name }}</p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-5 space-x-2 p-2">
+                <div class="flex flex mt-6 mb-5 space-x-5">
                     <div
                         v-for="product in filteredProducts"
                         :key="product.productId"
                         class="p-4 border rounded-md text-center"
-                        :style="{ width: categoryWidth + 'px' }"
+                        style="width: 250px; height: 250px"
                     >
                         <img
                             :src="product.image"
                             alt="Product Image"
-                            class="w-full h-32 object-cover mb-2 rounded-md"
+                            class="w-full h-32 object-cover mb-4 rounded-md"
                         />
                         <h2 class="text-lg font-semibold">
                             {{ getProductName(product.productId) }}
                         </h2>
-                        <p class="text-gray-600">
+                        <!-- <p class="text-gray-600">
                             Stocks: {{ product.stocks }}
-                        </p>
+                        </p> -->
                         <div class="mt-2">
                             <span class="text-lg font-bold text-blue-500">{{
                                 product.price
@@ -124,7 +120,7 @@
                         :key="product.productId"
                         class="flex items-center justify-between p-2 border-b"
                     >
-                        <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-2">
                             <img
                                 :src="product.image"
                                 alt="Product Image"
@@ -151,10 +147,10 @@
                             </button>
                         </div>
                         <span class="font-semibold"
-                            >Php {{ product.price }}</span
+                            >₱{{ product.price }}.00</span
                         >
                         <span class="text-gray-600"
-                            >Total: Php {{ product.total.toFixed(2) }}</span
+                            >Total: ₱{{ product.total.toFixed(2) }}</span
                         >
                         <button @click="deleteItem(product.id)">
                             <svg
@@ -184,17 +180,11 @@
                             :receipt="receipt"
                             ref="receiptModal"
                         />
-                        <button
-                            @click="checkout"
-                            class="bg-green-500 text-white px-4 py-1 rounded-md"
-                        >
-                            Checkout
-                        </button>
                     </div>
                 </div>
-                <div class="mb-2 space-x-2">
+                <div class="mb-2 space-x-2 mt-4">
                     <div class="flex items-center">
-                        <label for="amountGiven" class="mr-4"
+                        <label for="amountGiven" class="mr-2"
                             >Amount Given:</label
                         >
                         <input
@@ -215,7 +205,7 @@
                     </div>
                 </div>
 
-                <div class="mb-4 mt-4">
+                <div class="mb-4 mt-6">
                     <label for="paymentMethod" class="mr-2"
                         >Payment Method:</label
                     >
@@ -261,18 +251,12 @@
                     </div>
                 </div>
 
-                <div class="mb-4 mt-4">
+                <div class="mb-4 mt-6">
                     <button
-                        @click="printReceipt"
-                        class="bg-green-600 text-white px-4 py-2 rounded-md flex items-center justify-between w-full md:w-50"
+                        @click="checkout"
+                        class="bg-green-600 text-white px-4 py-2 rounded-md flex items-center justify-center w-full md:w-50"
                     >
-                        <span>Print Receipt</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path
-                                d="M4 5h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm14 10V8H6v7h12zm-3-4h-2v-2h2v2z"
-                            />
-                        </svg>
+                        Checkout
                     </button>
                 </div>
             </div>

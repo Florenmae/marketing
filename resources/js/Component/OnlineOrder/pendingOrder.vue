@@ -19,14 +19,10 @@
                         <tr>
                             <th scope="col" class="px-6 py-3">Image</th>
                             <th scope="col" class="px-6 py-3">Product Name</th>
-                            <th scope="col" class="px-6 py-3">Category</th>
-                            <th scope="col" class="px-6 py-3">Item Code</th>
-                            <th scope="col" class="px-6 py-3">
-                                Product Supplier
-                            </th>
-                            <th scope="col" class="px-6 py-3">Price</th>
+                            <th scope="col" class="px-6 py-3">Customer</th>
                             <th scope="col" class="px-6 py-3">Quantity</th>
-                            <th scope="col" class="px-6 py-3">Description</th>
+                            <th scope="col" class="px-6 py-3">Total</th>
+                            <th scope="col" class="px-6 py-3">Order Id</th>
                             <th scope="col" class="px-6 py-3">Status</th>
                             <th scope="col" class="px-20 py-3">Action</th>
                         </tr>
@@ -50,25 +46,21 @@
                             >
                                 {{ getProductName(order.productId) }}
                             </th>
-                            <!-- <td class="px-6 py-4">
-                                <p>{{ getCategoryName(order.categoryId) }}</p>
-                            </td> -->
-                            <td class="px-6 py-4">{{ order.item_code }}</td>
 
                             <td class="px-6 py-4">
-                                <p>{{ getSupplierName(order.userId) }}</p>
+                                <p>{{ getSupplierName(order.customerId) }}</p>
                             </td>
-                            <td class="px-6 py-4">{{ order.price }}</td>
+                            <td class="px-6 py-4">{{ order.qty }}</td>
+                            <td class="px-6 py-4">{{ order.total }}</td>
                             <td class="px-6 py-4">
                                 {{ filteredDeliveries(order.id) }}
                             </td>
-                            <td class="px-6 py-4">{{ order.description }}</td>
                             <td class="px-6 py-4">{{ order.status }}</td>
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
                                 <!-- <editProduct :product="product" /> -->
-                                <Approve :order="order" />
+                                <ApproveOrder :order="order" />
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
                                     @click="returnAll(order)"
@@ -100,16 +92,10 @@
                         <tr>
                             <th scope="col" class="px-6 py-3">Image</th>
                             <th scope="col" class="px-6 py-3">Product Name</th>
-                            <th scope="col" class="px-6 py-3">Category</th>
-                            <th scope="col" class="px-6 py-3">Item Code</th>
-                            <th scope="col" class="px-6 py-3">
-                                Product Supplier
-                            </th>
-                            <th scope="col" class="px-6 py-3">Price</th>
-                            <th scope="col" class="px-6 py-3">
-                                Stocks Available
-                            </th>
-                            <th scope="col" class="px-6 py-3">Description</th>
+                            <th scope="col" class="px-6 py-3">Customer</th>
+                            <th scope="col" class="px-6 py-3">Quantity</th>
+                            <th scope="col" class="px-6 py-3">Total</th>
+                            <th scope="col" class="px-6 py-3">Order Id</th>
                             <th scope="col" class="px-6 py-3">Status</th>
                             <th scope="col" class="px-20 py-3">Action</th>
                         </tr>
@@ -134,17 +120,11 @@
                                 <p>{{ getProductName(order.productId) }}</p>
                             </th>
                             <td class="px-6 py-4">
-                                <p>{{ getCategoryName(order.categoryId) }}</p>
-                            </td>
-                            <td class="px-6 py-4">{{ order.item_code }}</td>
-
-                            <td class="px-6 py-4">
-                                <p>{{ getSupplierName(order.userId) }}</p>
+                                <p>{{ getSupplierName(order.customerId) }}</p>
                             </td>
                             <td class="px-6 py-4">{{ order.price }}</td>
                             <td class="px-6 py-4">{{ order.stocks }}</td>
 
-                            <td class="px-6 py-4">{{ order.description }}</td>
                             <td class="px-6 py-4">
                                 <p
                                     v-if="order.status === 3"
@@ -170,8 +150,8 @@
 <script>
 import Modal from "@/Component/Modal.vue";
 import editProduct from "@/Component/Marketing/inventory/editProduct.vue";
-import Approve from "@/Component/Marketing/inventory/Approve.vue";
-import Return from "@/Component/Marketing/inventory/Return.vue";
+import ApproveOrder from "@/Component/OnlineOrder/ApproveOrder.vue";
+//import Return from "@/Component/Marketing/inventory/Return.vue";
 
 import axios from "axios";
 
@@ -180,8 +160,8 @@ export default {
     components: {
         Modal,
         editProduct,
-        Approve,
-        Return,
+        ApproveOrder,
+        //Return,
     },
     data() {
         return {
@@ -198,6 +178,7 @@ export default {
                 status: 0,
             },
             users: [],
+            customers: [],
             products: [],
             orders: [],
             categories: [],
@@ -239,7 +220,7 @@ export default {
 
         getUsers() {
             axios.get("/get-users").then(({ data }) => {
-                this.users = data;
+                this.customers = data;
             });
         },
 
@@ -293,10 +274,12 @@ export default {
             return category ? category.name : "Unknown Category";
         },
 
-        getSupplierName(userId) {
-            userId = Number(userId);
-            const user = this.users.find((user) => user.id === userId);
-            return user ? user.name : "Unknown User";
+        getSupplierName(customerId) {
+            customerId = Number(customerId);
+            const customer = this.customers.find(
+                (customer) => customer.id === customerId
+            );
+            return customer ? customer.name : "Unknown User";
         },
     },
     computed: {

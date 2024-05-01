@@ -250,6 +250,56 @@
             </div>
         </div>
         <!-- <BarGraph /> -->
+
+        <div
+            class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10 content-between w-full h-full"
+        >
+            <div
+                class="border border-blue-300 text-black overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full h-full"
+            >
+                <div class="p-4 flex flex-col items-center w-full h-full">
+                    <div
+                        class="flex justify-between items-center w-full h-full"
+                    >
+                        <div class="text-xl leading-7 font-semibold">
+                            <label class="text-center">Sold Items:</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="border border-green-300 text-black overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full h-full"
+            >
+                <div class="p-4 flex flex-col items-center w-full h-full">
+                    <div
+                        class="flex justify-between items-center w-full h-full"
+                    >
+                        <div class="text-xl leading-7 font-semibold">
+                            <label class="text-center">Returned Items:</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="grid grid-cols-1 md:grid-cols-1 gap-4 mt-10 content-between w-full h-full"
+        >
+            <div
+                class="border border-red-300 text-black overflow-hidden sm:rounded-lg flex flex-col items-center w-full h-full"
+            >
+                <div class="p-4 flex flex-col items-center w-full h-full">
+                    <div
+                        class="flex justify-between items-center w-full h-full"
+                    >
+                        <div class="text-xl leading-7 font-semibold">
+                            <label class="text-center">Recently Added:</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </Layout>
 </template>
 

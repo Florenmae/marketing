@@ -14,6 +14,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReturnedProductController;
 use App\Http\Controllers\ProductUserController;
 use App\Http\Controllers\ProductListController;
+use App\Http\Controllers\CashRegController;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,7 +118,11 @@ Route::get("/getOrders", [OrderController::class, 'getOrders']);
 Route::get("/getProdlist", [OrderController::class, 'getProdlist']);
 Route::post('/add-cart', [OrderController::class, 'addCart'])->name("addCart");
 Route::post('/checkOutOrder', [OrderController::class, 'checkOutOrder']);
+Route::post("/approve-order", [OrderController::class, 'approveOrder']);
 
+//CashReg
+Route::get("/get-cash", [CashRegController::class, 'getCash']);
+Route::post("/add-cash", [CashRegController::class, 'addCash']);
 
 Route::get('/{vue?}', function(){
     return view('app');

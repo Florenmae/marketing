@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('cashReg', function (Blueprint $table) {
+         Schema::create('transactiontype', function (Blueprint $table) {
             $table->id();
-            $table->integer('transactionId')->nullable();
-            $table->string('CashOnHand')->nullable();
-            $table->boolean('type')->nullable();
-            $table->float('total')->nullable();
-            $table->boolean('paymentMethod')->default('1'); 
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
