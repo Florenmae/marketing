@@ -140,7 +140,7 @@ export default {
     },
     data() {
         return {
-            editingProductId: this.product.productId,
+            editingProductId: this.id,
             editProduct: {
                 item_code: "",
                 categoryId: "",

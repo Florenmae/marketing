@@ -10,6 +10,7 @@ class DeliveryCart extends Model
     use HasFactory;
     protected $table = "deliverycarts";
     protected $fillable = [
+        'product_id',
         'productId',
         'qty',
         'price'

@@ -207,60 +207,77 @@ class OrderController extends Controller
     return response()->json(['message' => 'Checkout successful'], 200);
     }
 
-    public function approveOrder(Request $request){
-    DB::beginTransaction();
 
-    $productId = $request->editingProductId;
-    $product = Product::findOrFail($productId);
+//     public function approveOrder(Request $request)
+// {
+//     DB::beginTransaction();
 
-    $product->userId = $request->prodPayload["userId"];
-    $product->categoryId = $request->prodPayload["categoryId"];
-    $product->item_code = $request->prodPayload["item_code"];
-    $product->price = $request->prodPayload["price"];
-    $product->unit = $request->prodPayload["unit"];
-    $product->description = $request->prodPayload["description"];
-    $product->status = $request->prodPayload["status"];
-    $product->approved_by = $request->prodPayload["approved_by"];
+//     try {
+//         $id = $request->editingOrderId;
+//         $order = Order::findOrFail($id);
 
-    if ($product->status == 3) {
-        $actualQty = $request->prodPayload["actualQty"];
-       
-        $totalprice = $actualQty * $product->price;
+        
+//         $order->status = $request->prodPayload["status"];
+//         $order->status = $request->prodPayload["status"];
+//         $order->status = $request->prodPayload["status"];
+//         $order->approved_by = $request->prodPayload["approved_by"];
 
-        $transaction = new Transaction();
-        $transaction->productId = $product->id;
-        $transaction->userId = Auth::id();
-        $transaction->type = $request->prodPayload["type"];
-        // $transaction->qty = $qty;
-        $transaction->totalprice = $totalprice; 
-        $transaction->actualQty = $actualQty;
+//         // Check if the status is set to 3 (which typically indicates approval)
+//         if ($order->status == 3) {
+//             // Get the actual quantity from the request
+//             $actualQty = $request->prodPayload["actualQty"];
+           
+//             // Calculate total price based on actual quantity and order price
+//             $totalPrice = $actualQty * $order->price;
 
-        $product->stocks -= $actualQty;
-        $transaction->stocks = $product->stocks;
+//             // Create a new transaction record
+//             $transaction = new Transaction();
+//             $transaction->orderId = $order->id; // Assuming you have an orderId field in your Transaction model
+//             $transaction->userId = Auth::id();
+//             $transaction->type = $request->prodPayload["type"];
+//             $transaction->totalprice = $totalPrice;
+//             $transaction->actualQty = $actualQty;
 
-        $transaction->save();
+//             // Subtract the actual quantity from available stocks
+//             $order->qty -= $actualQty;
+
+//             // Save the transaction and update order stocks
+//             $transaction->save();
+//             $order->save();
+//         }
+
+//         // If the order is being approved by the admin, update the stocks accordingly
+//         if ($order->userId == 1) {
+//             $order->qty += $request->prodPayload["actualQty"];
+//             $order->save();
+//         }
+
+//         // Commit the transaction
+//         DB::commit();
+
+//         // Return the updated order
+//         return response()->json($order);
+//     } catch (\Exception $e) {
+//         // Roll back the transaction if an error occurs
+//         DB::rollBack();
+
+//         // Return an error response
+//         return response()->json(['error' => $e->getMessage()], 500);
+//     }
+// }
+
+    public function approveOrder(Request $request)
+    {
+        $id = $request->editingOrderId;
+        $order = Order::findOrFail($id);
+
+        $order->status = $request->prodPayload["status"];
+        $order->approved_by = $request->prodPayload["approved_by"];
+
+        $order->save();
+
+        return $order;
+
     }
 
-    $adminProduct = Product::where('userId', 1)
-                            ->where('productId', $productId)
-                            ->first();
-
-    if ($adminProduct) {
-        $adminProduct->stocks += $request->prodPayload["actualQty"];
-        $adminProduct->save();
-    } else {
-        $adminProduct = $product->replicate();
-        $adminProduct->userId = 1; 
-        $adminProduct->stocks = $request->prodPayload["actualQty"];
-        $adminProduct->save();
-    }
-
-    $product->save();
-
-    DB::commit();
-
-    return $product;
 }
-
-
-    }

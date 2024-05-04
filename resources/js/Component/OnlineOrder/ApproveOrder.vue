@@ -19,7 +19,7 @@
                     >Transaction Type:</label
                 >
                 <select
-                    v-model="editProduct.type"
+                    v-model="editOrder.type"
                     id="type"
                     name="type"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -39,7 +39,7 @@
                     >Actual Quantity:</label
                 >
                 <input
-                    v-model="editProduct.actualQty"
+                    v-model="editOrder.actualQty"
                     type="number"
                     name="actualQty"
                     id="actualQty"
@@ -53,7 +53,7 @@
                     >Approved By:</label
                 >
                 <input
-                    v-model="editProduct.approved_by"
+                    v-model="editOrder.approved_by"
                     type="text"
                     name="approved_by"
                     id="approved_by"
@@ -67,17 +67,14 @@
 <script>
 import Modal1 from "@/Component/Modal1.vue";
 export default {
-    props: ["product"],
+    props: ["order"],
     components: {
         Modal1,
     },
     data() {
         return {
-            editingProductId: null,
-            editProduct: {
-                productId: "",
-                name: "",
-                userId: "",
+            editingOrderId: this.order.id,
+            editOrder: {
                 price: "",
                 unit: "",
                 qty: "",
@@ -87,12 +84,13 @@ export default {
                 type: "",
                 actualQty: "",
             },
+            orders: [],
         };
     },
     watch: {
         product: {
             handler(newVal) {
-                this.editProduct = { ...newVal };
+                this.editOrder = { ...newVal };
             },
             deep: true,
             immediate: true,
@@ -100,29 +98,26 @@ export default {
     },
     methods: {
         approveOrder() {
-            const { editProduct, editingProductId } = this;
-            const prodPayload = { ...editProduct, status: 3 };
+            const { editOrder, editingOrderId } = this;
+            const prodPayload = { ...editOrder, status: 3 };
 
             axios
-                .post("/approve-order", { prodPayload, editingProductId })
+                .post("/approve-order", { prodPayload, editingOrderId })
                 .then(({ data }) => {
                     prodPayload.type = this.type;
                     prodPayload.actualQty = this.actualQty;
                     prodPayload.approved_by = this.approved_by;
                     window.location.reload("Reloading");
-                })
-                .catch((error) => {
-                    console.error("Error updating product:", error);
                 });
         },
-        getProducts() {
-            axios.get("/get-products").then(({ data }) => {
-                this.products = data;
+        getOrders() {
+            axios.get("/get-orders").then(({ data }) => {
+                this.orders = data;
             });
         },
     },
     mounted() {
-        this.getProducts();
+        this.getOrders();
     },
 };
 </script>

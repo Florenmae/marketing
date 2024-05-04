@@ -52,6 +52,7 @@ Route::post("/delete-user", [UserController::class, "deleteUser"]);
 Route::post("/submit-product", [ProductController::class, 'createProduct'])->name("createProduct");
 Route::get("/get-products", [ProductController::class, 'getProducts']);
 Route::post("/update-product", [ProductController::class, 'updateProduct']);
+Route::post("/approve-product", [ProductController::class, 'approveProduct']);
 Route::post("/delete-product", [ProductController::class, 'deleteProduct']);
 Route::post("/upload-image", [ProductController::class, 'uploadImage']);
 
