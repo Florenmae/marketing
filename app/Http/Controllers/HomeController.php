@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Categories;
 use App\Models\Product;
+use App\Models\Order;
+use App\Models\Transaction;
 use App\Models\ReturnedProduct;
 
 
@@ -49,4 +51,65 @@ class HomeController extends Controller
 
         return $recentProducts;
     }
+
+    public function getSoldItems()
+{
+    $userId = 1; // Assuming the user ID is 1
+    $transactions = Transaction::where('userId', $userId)->paginate(5);
+
+    $soldItems = [];
+    $totalSoldAmount = 0; 
+
+    // Iterate over all transactions to calculate total sold amount
+    foreach (Transaction::where('userId', $userId)->get() as $transaction) {
+        $totalSoldAmount += $transaction->totalprice; 
+    }
+
+    foreach ($transactions as $transaction) {
+        $soldItem = [
+            'productId' => $transaction->productId,
+            'qty' => $transaction->actualQty,
+            'totalPrice' => $transaction->totalprice,
+        ];
+
+        $soldItems[] = $soldItem;
+    }
+
+    return [
+        'soldItems' => $soldItems,
+        'totalSoldAmount' => $totalSoldAmount,
+        'pagination' => [
+            'currentPage' => $transactions->currentPage(),
+            'totalItems' => $transactions->total(),
+            'itemsPerPage' => $transactions->perPage(),
+            'lastPage' => $transactions->lastPage(),
+        ],
+    ];
+}
+
+
+
+    public function getReturnedItems()
+{
+    $returnedProducts = ReturnedProduct::all();
+    $returnedProducts = [];
+    
+    foreach ($returnedProducts as $returnedProduct) {
+        $returnedProduct = [
+            'productId' => $returnedProduct->productId,
+            'quantity' => $returnedProduct->qty,
+            'createdAt' => $returnedProduct->created_at,
+        ];
+
+        $returnedProducts[] = $returnedProduct;
+    }
+
+    return [
+        'returnedProducts' => $returnedProducts,
+    ];
+}
+
+
+
+
 }

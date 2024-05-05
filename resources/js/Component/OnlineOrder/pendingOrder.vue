@@ -19,7 +19,7 @@
                         <tr>
                             <th scope="col" class="px-6 py-3">Image</th>
                             <th scope="col" class="px-6 py-3">Product Name</th>
-                            <th scope="col" class="px-6 py-3">Customer</th>
+                            <!-- <th scope="col" class="px-6 py-3">Customer</th> -->
                             <th scope="col" class="px-6 py-3">Quantity</th>
                             <th scope="col" class="px-6 py-3">Total</th>
                             <th scope="col" class="px-6 py-3">Order Id</th>
@@ -47,9 +47,9 @@
                                 {{ getProductName(order.productId) }}
                             </th>
 
-                            <td class="px-6 py-4">
+                            <!-- <td class="px-6 py-4">
                                 <p>{{ getSupplierName(order.customerId) }}</p>
-                            </td>
+                            </td> -->
                             <td class="px-6 py-4">{{ order.qty }}</td>
                             <td class="px-6 py-4">{{ order.total }}</td>
                             <td class="px-6 py-4">
@@ -92,7 +92,7 @@
                         <tr>
                             <th scope="col" class="px-6 py-3">Image</th>
                             <th scope="col" class="px-6 py-3">Product Name</th>
-                            <th scope="col" class="px-6 py-3">Customer</th>
+                            <!-- <th scope="col" class="px-6 py-3">Customer</th> -->
                             <th scope="col" class="px-6 py-3">Quantity</th>
                             <th scope="col" class="px-6 py-3">Total</th>
                             <th scope="col" class="px-6 py-3">Order Id</th>
@@ -117,14 +117,17 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                <p>{{ getProductName(order.productId) }}</p>
+                                {{ getProductName (order.productId) }}
                             </th>
-                            <td class="px-6 py-4">
-                                <p>{{ getSupplierName(order.customerId) }}</p>
-                            </td>
-                            <td class="px-6 py-4">{{ order.price }}</td>
-                            <td class="px-6 py-4">{{ order.stocks }}</td>
 
+                            <!-- <td class="px-6 py-4">
+                                <p>{{ getSupplierName(order.customerId) }}</p>
+                            </td> -->
+                            <td class="px-6 py-4">{{ order.qty }}</td>
+                            <td class="px-6 py-4">{{ order.total }}</td>
+                            <td class="px-6 py-4">
+                                {{ filteredDeliveries(order.id) }}
+                            </td>
                             <td class="px-6 py-4">
                                 <p
                                     v-if="order.status === 3"
