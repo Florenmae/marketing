@@ -40,8 +40,7 @@
             </div>
 
             <!-- Cart and profile buttons -->
-            <div class="flex items-center space-x-4">
-            
+            <div class="flex items-center space-x-4 relative">
                 <div class="relative" @click="toggleDropdown">
                     <button class="text-black flex items-center space-x-4">
                         <img

@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\Categories;
 use App\Models\OrderProduct;
 use App\Models\ReturnedProduct;
+use App\Models\CashRegistry;
 use Carbon\Carbon;
 use Auth;
 
@@ -182,6 +183,61 @@ class PosController extends Controller{
 //     return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
 // }
 
+// public function checkout(Request $request)
+// {
+//     $cartItems = Cart::all();
+//     $totalAmount = 0;
+
+//     foreach ($cartItems as $cartItem) {
+//         $totalAmount += $cartItem->total;
+//     }
+
+//     $paymentMethod = $request->input('paymentMethod');
+//     $amountGiven = $request->input('amountGiven');
+
+//     if ($amountGiven >= $totalAmount) {
+//         $balance = 0;
+//         $changeAmount = $amountGiven - $totalAmount;
+//     } else {
+//         $balance = $totalAmount - $amountGiven;
+//         $changeAmount = 0;
+//     }
+
+//     foreach ($cartItems as $cartItem) {
+//     $product = Product::find($cartItem->productId);
+    
+//     if ($product && $cartItem->userId == 1) {
+//         $product->stocks -= $cartItem->qty;
+//         $product->save();
+//     }
+// }
+//     $orderItems = [];
+//     $now = now();
+
+//     foreach ($cartItems as $cartItem) {
+//         $orderItems[] = [
+//             'productId' => $cartItem->productId,
+//             'customerId' => $cartItem->customerId,
+//             'price' => $cartItem->price,
+//             'qty' => $cartItem->qty,
+//             'total' => $cartItem->total,
+//             'paymentMethod' => $paymentMethod,
+//             'balance' => $balance,
+//             'changeAmount' => $changeAmount,
+//             'status' => 3,
+//             'created_at' => $now,
+//             'updated_at' => $now,
+//         ];
+//     }
+
+//     $orderProduct = new Order();
+//     $orderProduct->insert($orderItems);
+
+//     Cart::truncate();
+
+//     return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
+// }
+
 public function checkout(Request $request)
 {
     $cartItems = Cart::all();
@@ -202,14 +258,27 @@ public function checkout(Request $request)
         $changeAmount = 0;
     }
 
-    foreach ($cartItems as $cartItem) {
-    $product = Product::find($cartItem->productId);
     
-    if ($product && $cartItem->userId == 1) {
-        $product->stocks -= $cartItem->qty;
-        $product->save();
+    $lastCashReg = CashRegistry::latest()->first();
+
+    if ($lastCashReg) {
+        
+        $updatedCashOnHand = $lastCashReg->cashOnHand + $totalAmount;
+
+        $cashReg = new CashRegistry();
+        $cashReg->cashOnHand = $updatedCashOnHand;
+        $cashReg->save();
     }
-}
+
+    foreach ($cartItems as $cartItem) {
+        $product = Product::find($cartItem->productId);
+    
+        if ($product && $cartItem->userId == 1) {
+            $product->stocks -= $cartItem->qty;
+            $product->save();
+        }
+    }
+
     $orderItems = [];
     $now = now();
 
@@ -236,6 +305,7 @@ public function checkout(Request $request)
 
     return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
 }
+
 
 
 

@@ -126,6 +126,7 @@ Route::post("/approve-order", [OrderController::class, 'approveOrder']);
 //CashReg
 Route::get("/get-cash", [CashRegController::class, 'getCash']);
 Route::post("/add-cash", [CashRegController::class, 'addCash']);
+Route::post("/save-to-admin", [CashRegController::class, 'remitToAdmin']);
 
 Route::get('/{vue?}', function(){
     return view('app');
