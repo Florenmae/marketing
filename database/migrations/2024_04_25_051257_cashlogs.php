@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('cashRegs', function (Blueprint $table) {
+         Schema::create('cashlogs', function (Blueprint $table) {
             $table->id();
-            $table->string('CashOnHand')->nullable();
+            $table->string('inflow')->nullable();
+            $table->string('outflow')->nullable();
+            $table->boolean('type')->nullable();
             $table->timestamps();
         });
     }

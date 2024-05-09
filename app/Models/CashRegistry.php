@@ -9,7 +9,7 @@ class CashRegistry extends Model
 {
     use HasFactory;
 
-    protected $table = "cashReg";
+    protected $table = "cashregs";
 
     protected $fillable = [
         'transactionId',

@@ -106,15 +106,16 @@ export default {
             cashOnHand: 0,
             newCash: 0,
             cashregs: [],
-            showInput: true, 
+            showInput: true,
         };
     },
     methods: {
         getCash() {
             axios.get("/get-cash").then(({ data }) => {
-                if (data && data.length > 0) {
+                console.log(data);
+                if (data) {
                     const lastSavedCash = data[data.length - 1];
-                    this.cashOnHand = lastSavedCash.amount;
+                    this.cashOnHand = data.CashOnHand;
                 }
             });
         },
@@ -125,10 +126,11 @@ export default {
                 .post("/add-cash", { cashOnHand })
                 .then(({ data }) => {
                     this.cashregs.push(data);
-                    this.showInput = false; 
+                    this.showInput = false;
                 })
                 .catch((error) => {
-                    console.error("Error adding cash:", error);s
+                    console.error("Error adding cash:", error);
+                    s;
                 });
         },
 
