@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CashRegistry;
 use App\Models\CashAdmin;
+use App\Models\CashLogs;
 
 class CashRegController extends Controller
 {
@@ -38,6 +39,10 @@ class CashRegController extends Controller
 
         
         return response()->json(['message' => 'Cash remitted to admin successfully'], 200);
+    }
+
+    public function getCashLogs(){
+        return CashLogs::all();
     }
 
 }

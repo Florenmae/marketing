@@ -49,20 +49,26 @@
                                 placeholder="Enter amount"
                                 v-if="showInput"
                             />
-                            <div class="flex">
-                                <button
-                                    @click="addCash"
-                                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md mb-2 mr-2"
-                                >
-                                    Add Cash
-                                </button>
-                                <button
-                                    @click="remitToAdmin"
-                                    class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mb-2"
-                                >
-                                    Remit To Admin
-                                </button>
-                            </div>
+                            <button
+                                v-if="showInput"
+                                @click="addCash"
+                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md mb-2 mr-2"
+                            >
+                                Add Cash
+                            </button>
+                            <button
+                                v-else
+                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md mb-2 mr-2"
+                                disabled
+                            >
+                                Add Cash
+                            </button>
+                            <button
+                                @click="remitToAdmin"
+                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mb-2"
+                            >
+                                Remit To Admin
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -80,7 +86,28 @@
                     </div>
                     <div class="mt-1 w-full">
                         <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50"></thead>
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th
+                                        scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                    >
+                                        Transaction Id
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                    >
+                                        Inflow
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                    >
+                                        Outflow
+                                    </th>
+                                </tr>
+                            </thead>
                             <tbody
                                 class="bg-white divide-y divide-gray-200"
                             ></tbody>
@@ -107,31 +134,24 @@ export default {
             newCash: 0,
             cashregs: [],
             showInput: true,
+            cashAdded: false,
+            cashLogs: [],
         };
     },
     methods: {
         getCash() {
             axios.get("/get-cash").then(({ data }) => {
-                console.log(data);
-                if (data) {
-                    const lastSavedCash = data[data.length - 1];
-                    this.cashOnHand = data.CashOnHand;
-                }
+                this.cashOnHand = data.CashOnHand;
             });
         },
 
         addCash() {
             const { cashOnHand } = this;
-            axios
-                .post("/add-cash", { cashOnHand })
-                .then(({ data }) => {
-                    this.cashregs.push(data);
-                    this.showInput = false;
-                })
-                .catch((error) => {
-                    console.error("Error adding cash:", error);
-                    s;
-                });
+            axios.post("/add-cash", { cashOnHand }).then(({ data }) => {
+                this.cashregs.push(data);
+                this.showInput = false;
+                this.cashAdded = true;
+            });
         },
 
         remitToAdmin() {
@@ -139,12 +159,20 @@ export default {
             axios.post("/save-to-admin", { cashOnHand }).then(() => {
                 this.cashOnHand = 0;
                 this.showInput = true;
+                this.cashAdded = false;
+            });
+        },
+
+        getCashLogs() {
+            axios.get("/get-cashlogs").then(({ data }) => {
+                this.cashLogs = data;
             });
         },
     },
 
     mounted() {
         this.getCash();
+        this.getCashLogs();
     },
 };
 </script>

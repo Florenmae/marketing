@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CashAdmin extends Model
+class CashLogs extends Model
 {
     use HasFactory;
 
-    protected $table = "cashadmin";
+    protected $table = "cashlogs";
 
     protected $fillable = [
-        'amount',
+        'transactionId',
+        'inflow',
+        'outflow',
     ];
 }
+

@@ -11,9 +11,13 @@ use App\Models\Order;
 use App\Models\Categories;
 use App\Models\OrderProduct;
 use App\Models\ReturnedProduct;
+use App\Models\Transaction;
 use App\Models\CashRegistry;
+use App\Models\CashLogs;
 use Carbon\Carbon;
-use Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+    
 
 class PosController extends Controller{
    
@@ -124,129 +128,10 @@ class PosController extends Controller{
         return $res;
     }
 
-
-// public function checkout(Request $request)
-// {
-//     $cartItems = Cart::all();
-//     $totalAmount = 0;
-
-//     foreach ($cartItems as $cartItem) {
-//         $totalAmount += $cartItem->total;
-//     }
-
-//     $paymentMethod = $request->input('paymentMethod');
-//     $amountGiven = $request->input('amountGiven');
-
-//     if ($amountGiven >= $totalAmount) {
-//         $balance = 0;
-//         $changeAmount = $amountGiven - $totalAmount;
-//     } else {
-//         $balance = $totalAmount - $amountGiven;
-//         $changeAmount = 0;
-//     }
-
-//     foreach ($cartItems as $cartItem) {
-//         $product = Product::find($cartItem->productId);
-//         if ($product) {
-//             $newStock = $product->stocks - $cartItem->qty;
-            
-//             $product->stocks = max(0, $newStock);
-//             $product->save();
-//         }
-//     }
-
-//     $orderItems = [];
-//     $now = now();
-
-//     foreach ($cartItems as $cartItem) {
-//         $orderItems[] = [
-//             'productId' => $cartItem->productId,
-//             'customerId' => $cartItem->customerId,
-//             'price' => $cartItem->price,
-//             'qty' => $cartItem->qty,
-//             'total' => $cartItem->total,
-//             'description' => $cartItem->description,
-//             'image' => $cartItem->image,
-//             'paymentMethod' => $paymentMethod,
-//             'balance' => $balance,
-//             'changeAmount' => $changeAmount,
-//             'created_at' => $now,
-//             'updated_at' => $now,
-//         ];
-//     }
-
-//     $orderProduct = new Order();
-//     $orderProduct->insert($orderItems);
-
-//     Cart::truncate();
-
-//     return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
-// }
-
-// public function checkout(Request $request)
-// {
-//     $cartItems = Cart::all();
-//     $totalAmount = 0;
-
-//     foreach ($cartItems as $cartItem) {
-//         $totalAmount += $cartItem->total;
-//     }
-
-//     $paymentMethod = $request->input('paymentMethod');
-//     $amountGiven = $request->input('amountGiven');
-
-//     if ($amountGiven >= $totalAmount) {
-//         $balance = 0;
-//         $changeAmount = $amountGiven - $totalAmount;
-//     } else {
-//         $balance = $totalAmount - $amountGiven;
-//         $changeAmount = 0;
-//     }
-
-//     foreach ($cartItems as $cartItem) {
-//     $product = Product::find($cartItem->productId);
-    
-//     if ($product && $cartItem->userId == 1) {
-//         $product->stocks -= $cartItem->qty;
-//         $product->save();
-//     }
-// }
-//     $orderItems = [];
-//     $now = now();
-
-//     foreach ($cartItems as $cartItem) {
-//         $orderItems[] = [
-//             'productId' => $cartItem->productId,
-//             'customerId' => $cartItem->customerId,
-//             'price' => $cartItem->price,
-//             'qty' => $cartItem->qty,
-//             'total' => $cartItem->total,
-//             'paymentMethod' => $paymentMethod,
-//             'balance' => $balance,
-//             'changeAmount' => $changeAmount,
-//             'status' => 3,
-//             'created_at' => $now,
-//             'updated_at' => $now,
-//         ];
-//     }
-
-//     $orderProduct = new Order();
-//     $orderProduct->insert($orderItems);
-
-//     Cart::truncate();
-
-//     return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
-// }
-
 public function checkout(Request $request)
 {
     $cartItems = Cart::all();
-    $totalAmount = 0;
-
-    foreach ($cartItems as $cartItem) {
-        $totalAmount += $cartItem->total;
-    }
-
+    $totalAmount = $cartItems->sum('total');
     $paymentMethod = $request->input('paymentMethod');
     $amountGiven = $request->input('amountGiven');
 
@@ -258,30 +143,36 @@ public function checkout(Request $request)
         $changeAmount = 0;
     }
 
-    
     $lastCashReg = CashRegistry::latest()->first();
-
     if ($lastCashReg) {
-        
-        $updatedCashOnHand = $lastCashReg->cashOnHand + $totalAmount;
 
-        $cashReg = new CashRegistry();
-        $cashReg->cashOnHand = $updatedCashOnHand;
-        $cashReg->save();
+        $updatedCashOnHand = $lastCashReg->CashOnHand + $amountGiven;
+        $lastCashReg->CashOnHand = $updatedCashOnHand;
+        $lastCashReg->save();
+
+        
+        $cashLog = new CashLogs();
+        $cashLog->inflow = $amountGiven;
+        $cashLog->outflow = $changeAmount;
+
+        $transaction = Transaction::latest()->first();
+        if ($transaction) {
+            $cashLog->transactionId = $transaction->id;
+        }
+        
+        $cashLog->save();
     }
 
     foreach ($cartItems as $cartItem) {
         $product = Product::find($cartItem->productId);
-    
         if ($product && $cartItem->userId == 1) {
-            $product->stocks -= $cartItem->qty;
-            $product->save();
+            $product->decrement('stocks', $cartItem->qty);
         }
     }
 
+   
     $orderItems = [];
     $now = now();
-
     foreach ($cartItems as $cartItem) {
         $orderItems[] = [
             'productId' => $cartItem->productId,
@@ -296,15 +187,29 @@ public function checkout(Request $request)
             'created_at' => $now,
             'updated_at' => $now,
         ];
+
+      
+        $transaction = new Transaction();
+        $transaction->productId = $cartItem->productId;
+        $transaction->userId = Auth::id();
+        $transaction->qty = $cartItem->qty;
+        $transaction->actualQty = $cartItem->qty;
+        $transaction->type = 2; 
+        $transaction->amountGiven = $amountGiven; 
+        $transaction->balance = $balance; 
+        $transaction->totalprice = $cartItem->total; 
+        $transaction->changeAmount = $changeAmount;
+        $transaction->save();
     }
 
-    $orderProduct = new Order();
-    $orderProduct->insert($orderItems);
+  
+    Order::insert($orderItems);
 
     Cart::truncate();
 
     return response()->json(['message' => 'Checkout successful', 'balance' => $balance, 'change' => $changeAmount]);
 }
+
 
 
 

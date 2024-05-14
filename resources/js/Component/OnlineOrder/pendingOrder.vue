@@ -137,9 +137,8 @@
                                 </p>
                             </td>
                             <td
-                                class="px-6 py-4 flex justify-center items-center space-x-2"
+                                class="px-6 py-4 flex justify-center items-center"
                             >
-                                <Receive :order="order" />
                                 <Return :order="order" />
                             </td>
                         </tr>
@@ -154,7 +153,7 @@
 import Modal from "@/Component/Modal.vue";
 import editProduct from "@/Component/Marketing/inventory/editProduct.vue";
 import ApproveOrder from "@/Component/OnlineOrder/ApproveOrder.vue";
-//import Return from "@/Component/Marketing/inventory/Return.vue";
+import Return from "@/Component/Marketing/inventory/Return.vue";
 
 import axios from "axios";
 
@@ -164,7 +163,7 @@ export default {
         Modal,
         editProduct,
         ApproveOrder,
-        //Return,
+        Return,
     },
     data() {
         return {
