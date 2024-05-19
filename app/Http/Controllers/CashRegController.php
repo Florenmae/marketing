@@ -18,7 +18,7 @@ class CashRegController extends Controller
 
     public function addCash(Request $request){
         $newCash = CashRegistry::create([
-        'cashOnHand' => $request->cashOnHand
+        'amount' => $request->amount
     ]);
 
    

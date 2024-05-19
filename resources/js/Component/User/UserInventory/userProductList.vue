@@ -10,7 +10,6 @@
                 </div>
                 <div><addProduct></addProduct></div>
             </div>
-
             <div class="overflow-x-auto border border-gray-300">
                 <table
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
@@ -28,7 +27,7 @@
                             <th scope="col" class="px-6 py-3">Stocks</th>
                             <th scope="col" class="px-6 py-3">Description</th>
                             <th scope="col" class="px-6 py-3">Status</th>
-                            <th scope="col" class="px-20 py-3">Action</th>
+                            <th scope="col" class="px-6 py-3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,7 +47,7 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ getProductName(product.productId) }}
+                                {{ getProductlistName(product.productlistId) }}
                             </th>
                             <td class="px-6 py-4">
                                 {{ getCategoryName(product.categoryId) }}
@@ -106,9 +105,9 @@
 import Modal from "@/Component/Modal.vue";
 import addProduct from "@/Component/User/UserInventory/addProduct.vue";
 import SendToAdmin from "@/Component/User/UserInventory/SendToAdmin.vue";
-
 import axios from "axios";
 import UserLayout from "../../../Layout/userLayout.vue";
+
 export default {
     components: {
         Modal,
@@ -120,7 +119,7 @@ export default {
         return {
             product: {
                 item_code: "",
-                productId: "",
+                productlistId: "",
                 userId: "",
                 price: "",
                 stocks: "",
@@ -138,7 +137,6 @@ export default {
         changeModalStatus() {
             this.modalStatus = !this.modalStatus;
         },
-
         getProductUsers() {
             axios.get("/get-productsUser").then(({ data }) => {
                 this.products = data;
@@ -149,9 +147,8 @@ export default {
             this.editingProductId = product.id;
             this.modalContent.title = "Edit Product";
             this.modalStatus = true;
-            this.getProducts;
+            this.getProducts();
         },
-
         updateProduct(data) {
             const { product, editingProductId } = this;
             const prodPayload = { ...product };
@@ -159,53 +156,63 @@ export default {
             axios
                 .post("/update-product", { prodPayload, editingProductId })
                 .then(({ data }) => {
-                    this.getProducts;
+                    this.getProducts();
                     this.changeModalStatus();
                 })
                 .catch((error) => {
                     console.error("Error updating product:", error);
                 });
         },
-
         promptDelete(product) {
             const confirmed = confirm(
                 "Are you sure you want to delete this user?"
             );
             if (confirmed) {
-                this.deleteProduct(product.productId);
+                this.deleteProduct(product.id);
             }
         },
-
-        deleteProduct(productId) {
-            axios.post("/delete-product", { productId }).then(({ data }) => {
+        deleteProduct(id) {
+            axios.post("/delete-product", { id }).then(({ data }) => {
                 this.getProducts();
             });
         },
-
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;
             });
         },
-
         getProductList() {
-            axios.get("/get-product-lists").then(({ data }) => {
-                this.productLists = data;
-            });
+            axios
+                .get("/get-product-lists")
+                .then(({ data }) => {
+                    if (data && Array.isArray(data.data)) {
+                        this.productLists = data.data;
+                    } else {
+                        console.error("Expected array but got:", data);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching product lists:", error);
+                });
         },
         getCategoryName(categoryId) {
             const category = this.categories.find((c) => c.id === categoryId);
             return category ? category.name : "Unknown Category";
         },
-
-        getProductName(productId) {
+        getProductlistName(productlistId) {
+            if (!Array.isArray(this.productLists)) {
+                console.error(
+                    "productLists is not an array:",
+                    this.productLists
+                );
+                return "Unknown Name";
+            }
             const productList = this.productLists.find(
-                (d) => d.id === productId
+                (d) => d.id === productlistId
             );
             return productList ? productList.name : "Unknown Name";
         },
     },
-
     mounted() {
         this.getProductUsers();
         this.getCategories();

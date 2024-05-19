@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('categoryId')->nullable();
             $table->integer('userId')->nullable();
             $table->string('item_code')->nullable();
-            $table->integer('productId')->nullable();
+            $table->integer('productlistId')->nullable();
             $table->string('image')->nullable();
             $table->float('price')->nullable();
             $table->string('unit')->nullable();

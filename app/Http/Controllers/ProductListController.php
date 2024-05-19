@@ -14,37 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductListController extends Controller
 {
-    // public function getProductLists()
-    // {
-    //     $user = Auth::user();
-    //     $productLists = $user->productLists;
-
-    //     return $productLists;
-    // }
-
-
-// public function createProductList(Request $request){
-//     $newprod = new ProductList();
-
-//     $newprod->id = $request->id;
-//     $newprod->categoryId = $request->categoryId;
-//     $newprod->item_code = $request->item_code;
-//     $newprod->name = $request->name;
-
-//     if ($request->hasFile('image')) {
-//         $path = $request->file('image')->store('public');
-//         $filename = basename($path);
-//         $newprod->image = $filename;
-//     }
-
-//     $newprod->price = $request->price;
-//     $newprod->description = $request->description;
-
-//     $res = $newprod->save();
-
-//     return $res;
-// }
-
+    
 public function createProductList(Request $request){
         $newproduct = new ProductList();
 
@@ -70,11 +40,27 @@ public function uploadImages(Request $request) {
 }
 
 
-    public function getProductLists()
+    public function getProductLists(Request $request)
     {   
-        return ProductList::all();
-        // dd(ProductList::all());
-        
+        $query = ProductList::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+
+        $productlist = ProductList::paginate(5);
+
+        return [ 
+            'data' => $productlist->items(),
+            'pagination' => [
+            'currentPage' => $productlist->currentPage(),
+            'totalItems' => $productlist->total(),
+            'itemsPerPage' => $productlist->perPage(),
+            'lastPage' => $productlist->lastPage(),
+        ],
+    ];
+
     }
 
     public function updateProductList(Request $request){

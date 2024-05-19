@@ -330,10 +330,6 @@
                                 >
                                     Next
                                 </button>
-                                <!-- <span
-                                >{{ pagination.currentPage }} /
-                                {{ pagination.lastPage }}</span
-                            > -->
                             </div>
                         </div>
                     </div>

@@ -51,7 +51,6 @@ Route::post("/delete-user", [UserController::class, "deleteUser"]);
 
 
 //Product
-Route::post("/submit-product", [ProductController::class, 'createProduct'])->name("createProduct");
 Route::get("/get-products", [ProductController::class, 'getProducts']);
 Route::post("/update-product", [ProductController::class, 'updateProduct']);
 Route::post("/approve-product", [ProductController::class, 'approveProduct']);
@@ -69,6 +68,7 @@ Route::post("/receive", [ProductController::class, 'updateProduct']);
 
 
 //ProductUser
+Route::post("/submit-product", [ProductUserController::class, 'createProduct'])->name("createProduct");
 Route::get("/get-productsUser", [ProductUserController::class, 'getProductsUser']);
 Route::post("/submit-to-admin", [ProductUserController::class, 'SubmitAdmin']);
 Route::get("/get-categories", [ProductUserController::class, 'getCategories']);
@@ -76,7 +76,9 @@ Route::post("/deliver", [ProductUserController::class, 'Deliver']);
 Route::post('/add-Cart', [ProductUserController::class, 'addToDevCart'])->name("addToDevCart");
 Route::get('/showCartItems', [ProductUserController::class, 'showCartItems']);
 Route::post('/delete-item', [ProductUserController::class, 'deleteItem']);
+Route::post('/delete-product', [ProductUserController::class, 'deleteProduct']);
 Route::post('/checkout', [ProductUserController::class, 'checkout']);
+Route::get("/getproductlists", [ProductUserController::class, 'getProductLists']);
 
 //Route::get('/get-transaction-id/{productId}', [ProductUserController::class, 'getTransactionId']);
 

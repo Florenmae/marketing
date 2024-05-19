@@ -30,7 +30,7 @@
                                         >
                                             <div class="pb-1">
                                                 <div class="text-5xl font-bold">
-                                                    {{ cashOnHand }}
+                                                    {{ amount }}
                                                 </div>
                                             </div>
                                         </div>
@@ -43,7 +43,7 @@
                             class="flex flex-col items-center justify-center w-full"
                         >
                             <input
-                                v-model="cashOnHand"
+                                v-model="amount"
                                 type="number"
                                 class="border border-gray-300 rounded-md px-4 py-2 mb-2"
                                 placeholder="Enter amount"
@@ -130,7 +130,7 @@ export default {
     },
     data() {
         return {
-            cashOnHand: 0,
+            amount: 0,
             newCash: 0,
             cashregs: [],
             showInput: true,
@@ -141,13 +141,13 @@ export default {
     methods: {
         getCash() {
             axios.get("/get-cash").then(({ data }) => {
-                this.cashOnHand = data.CashOnHand;
+                this.amount = data.amount;
             });
         },
 
         addCash() {
-            const { cashOnHand } = this;
-            axios.post("/add-cash", { cashOnHand }).then(({ data }) => {
+            const { amount } = this;
+            axios.post("/add-cash", { amount }).then(({ data }) => {
                 this.cashregs.push(data);
                 this.showInput = false;
                 this.cashAdded = true;
@@ -155,9 +155,9 @@ export default {
         },
 
         remitToAdmin() {
-            const { cashOnHand } = this;
-            axios.post("/save-to-admin", { cashOnHand }).then(() => {
-                this.cashOnHand = 0;
+            const { amount } = this;
+            axios.post("/save-to-admin", { amount }).then(() => {
+                this.amount = 0;
                 this.showInput = true;
                 this.cashAdded = false;
             });

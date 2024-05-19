@@ -26,6 +26,20 @@
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 />
             </div>
+            <div class="col-span-2 border-red-500">
+                <label
+                    for="name"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Category Code</label
+                >
+                <input
+                    v-model="category.cat_code"
+                    type="text"
+                    name="cat_code"
+                    id="cat_code"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                />
+            </div>
         </div>
     </Modal>
 </template>
@@ -42,6 +56,7 @@ export default {
             editingCategoryId: this.category.id,
             editCategory: {
                 name: "",
+                cat_code: " ",
                 product_count: "",
             },
         };

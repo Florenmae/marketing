@@ -16,35 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller{
 
- public function createProduct(Request $request){
-        $newproduct = new Product();
-
-        $newproduct->categoryId = $request->categoryId;
-        $newproduct->userId = Auth::id();
-        $newproduct->productId = $request->productId;
-        $newproduct->item_code = $request->item_code;
-        $newproduct->image = $request->image;
-        $newproduct->price = $request->price;
-        $newproduct->unit = $request->unit;
-        $newproduct->stocks = $request->stocks;
-        $newproduct->description = $request->description;
-        $newproduct->status = 1; 
-        $newproduct->approved_by = $request->approved_by;
-
-        $res = $newproduct->save();
-    }
-
-    public function uploadImage(Request $request) {
-    $request->validate([
-        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
-
-    $imageName = $request->image->getClientOriginalName();
-    $request->image->move(public_path('images'), $imageName);
-
-    return response()->json(['imagePath' => $imageName]);
-}
-
+    
 
     public function updateProduct(Request $request){
         DB::beginTransaction();
@@ -175,17 +147,6 @@ class ProductController extends Controller{
 
     }
 
-//     public function getProducts($status = null) {
-//     if ($status === 'pending') {
-//         return Product::where('status', 2)->get();
-//     } elseif ($status === 'approved') {
-//         return Product::where('status', 3)->get();
-//     } elseif ($status === 'returned') {
-//         return Product::where('status', 4)->get();
-//     } else {
-//         return Product::all();
-//     }
-// }
 
     public function getProducts()
     {

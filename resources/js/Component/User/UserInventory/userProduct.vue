@@ -69,7 +69,7 @@
                             class="w-full h-32 object-cover mb-2 rounded-md"
                         />
                         <h2 class="text-lg font-semibold">
-                            {{ getProductName(product.productId) }}
+                            {{ getProductName(product.productlistId) }}
                             <span class="text-lg font-bold text-green-500"
                                 >Php {{ product.price }}.00</span
                             >
@@ -99,7 +99,9 @@
                     >
                         <div class="flex items-center space-x-4">
                             <span>
-                                {{ getProductName(product.productId) }}</span
+                                {{
+                                    getProductName(product.productlistId)
+                                }}</span
                             >
                         </div>
 
@@ -193,8 +195,8 @@ export default {
             console.log("Adding to Cart:", product);
             axios
                 .post("/add-Cart", {
-                    productId: product.productId,
-                    name: product.name,
+                    id: product.id,
+                    productlistId: product.productlistId,
                     categoryId: product.categoryId,
                     userId: product.userId,
                     image: product.image,
@@ -229,12 +231,10 @@ export default {
         },
         incrementQuantity(product) {
             product.qty = Math.max(1, product.qty + 1);
-            // product.total = product.price * product.qty;
         },
 
         decrementQuantity(product) {
             product.qty = Math.max(1, product.qty - 1);
-            // product.total = product.price * product.qty;
         },
 
         showCartItems() {
@@ -253,14 +253,14 @@ export default {
         },
 
         getProductlists() {
-            axios.get("/get-product-lists").then(({ data }) => {
+            axios.get("/getproductlists").then(({ data }) => {
                 this.productlists = data;
             });
         },
 
-        getProductName(productId) {
+        getProductName(productlistId) {
             const productlist = this.productlists.find(
-                (b) => b.id === productId
+                (b) => b.id === productlistId
             );
             return productlist ? productlist.name : "Unknown product";
         },

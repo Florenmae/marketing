@@ -16,6 +16,54 @@ use Illuminate\Support\Facades\DB;
 class ProductUserController extends Controller
 {
 
+
+    public function createProduct(Request $request)
+    {
+   
+    $request->validate([
+        'categoryId' => 'required|exists:categories,id',
+        'productlistId' => 'required|exists:product_lists,id',
+        'unit' => 'required|string',
+        'stocks' => 'required|integer',
+        'description' => 'required|string',
+        
+    ]);
+
+    $productList = ProductList::findOrFail($request->productlistId);
+
+    $newProduct = new Product();
+
+    $newProduct->categoryId = $request->categoryId;
+    $newProduct->userId = Auth::id();
+    $newProduct->productlistId = $request->productlistId;
+    $newProduct->item_code = $productList->item_code; 
+    $newProduct->image = $productList->image;
+    $newProduct->price = $productList->price; 
+    $newProduct->unit = $request->unit;
+    $newProduct->stocks = $request->stocks;
+    $newProduct->description = $request->description;
+    $newProduct->status = 1; 
+    $newProduct->approved_by = $request->approved_by;
+    
+    $res = $newProduct->save();
+
+    return $res;
+}
+
+
+//     public function uploadImage(Request $request) {
+//     $request->validate([
+//         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+//     ]);
+
+//     $imageName = $request->image->getClientOriginalName();
+//     $request->image->move(public_path('images'), $imageName);
+
+//     return response()->json(['imagePath' => $imageName]);
+// }
+
+
+
     public function getProductsUser()
     {
         $user = Auth::user();
@@ -23,14 +71,6 @@ class ProductUserController extends Controller
 
         return $products;
     }
-
-    //  public function getProductLists()
-    // {
-    //     $user = Auth::user();
-    //     $productLists = $user->productLists;
-
-    //     return $productLists;
-    // }
 
 // public function submitAdmin(Request $request)
 // {
@@ -81,31 +121,33 @@ class ProductUserController extends Controller
 
 public function addToDevCart(Request $request)
 {   
-
-    $productId = $request->input('productId');
+    $id = $request->input('id');
     $qty = $request->input('qty', 1);
+    $productlistId = $request->input('productlistId');
 
-    $cartItem = DeliveryCart::where('productId', $productId)->first();
+    $product = Product::find($id);
+    
+    $cartItem = DeliveryCart::where('productId', $id)
+                            ->where('productlistId', $productlistId)
+                            ->first();
 
     if ($cartItem) {
-        
         $cartItem->qty += $qty;
-        
-        $product = Product::find($productId);
-
         $cartItem->price = $product->price * $cartItem->qty;
         $cartItem->save();
     } else {
-        
-        $product = Product::find($productId);
-    
         DeliveryCart::create([
-            'productId' => $productId,
+            'productId' => $id,
+            'productlistId' => $productlistId,
             'price' => $product->price * $qty,
             'qty' => $qty,
         ]);
     }
+
+    return response()->json(['message' => 'Cart updated successfully'], 200);
 }
+
+
 
     public function submitAdmin(Request $request){
         DB::beginTransaction();
@@ -156,18 +198,29 @@ public function addToDevCart(Request $request)
             DeliveryCart::truncate();
     }
 
-    
-
     public function getCategories()
         {
             return Categories::all();
 
         }
 
+    public function getProductLists()
+    {   
+        return ProductList::all();
+
+    }
+
+    public function deleteProduct(Request $request){
+        $deleteProduct = Product::find($request->id);
+
+        $res = $deleteProduct->delete();
+        return $res;
+    }
+
 
     public function showCartItems(Request $request){
         return DeliveryCart::all();
-        // dd(DeliveryCart::all());
+       
     }
 
     public function deleteItem(Request $request){

@@ -8,7 +8,9 @@
                         >Product List</span
                     >
                 </div>
-                <div><addProductList></addProductList></div>
+                <div>
+                    <addProductList></addProductList>
+                </div>
             </div>
 
             <div class="overflow-x-auto border border-gray-300">
@@ -57,13 +59,12 @@
                             <td class="px-6 py-4">
                                 {{ productlist.item_code }}
                             </td>
-
                             <td class="px-6 py-4">{{ productlist.price }}</td>
                             <td class="px-6 py-4">
                                 {{ productlist.description }}
                             </td>
                             <td
-                                class="px-6 py-4 flex justify-center items-center space-x-2"
+                                class="px-2 py-7 flex justify-center items-center space-x-3"
                             >
                                 <editProductList :productlist="productlist" />
                                 <button
@@ -77,6 +78,27 @@
                     </tbody>
                 </table>
             </div>
+            <div class="mt-4">
+                <div
+                    class="px-4 text-right text-s font-medium text-gray-500 uppercase tracking-wider"
+                >
+                    <button
+                        @click="prevPage"
+                        :disabled="pagination.currentPage === 1"
+                    >
+                        Prev
+                    </button>
+                    <span> / </span>
+                    <button
+                        @click="nextPage"
+                        :disabled="
+                            pagination.currentPage === pagination.lastPage
+                        "
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
         </div>
     </Layout>
 </template>
@@ -85,7 +107,6 @@
 import Modal from "@/Component/Modal.vue";
 import editProductList from "@/Component/Marketing/inventory/editProductList.vue";
 import addProductList from "@/Component/Marketing/inventory/addProductList.vue";
-
 import axios from "axios";
 
 export default {
@@ -108,10 +129,13 @@ export default {
                 status: 1,
             },
             categories: [],
-            //users: [],
             productlists: [],
             editingProductListId: null,
             modalStatus: false,
+            pagination: {
+                currentPage: 1,
+                lastPage: 1,
+            },
         };
     },
     methods: {
@@ -133,9 +157,11 @@ export default {
             this.modalStatus = !this.modalStatus;
         },
 
-        getProductlists() {
-            axios.get("/get-product-lists").then(({ data }) => {
-                this.productlists = data;
+        getProductlists(page = 1) {
+            axios.get(`/get-product-lists?page=${page}`).then(({ data }) => {
+                this.productlists = data.data;
+                this.pagination.currentPage = data.pagination.currentPage;
+                this.pagination.lastPage = data.pagination.lastPage;
             });
         },
 
@@ -151,29 +177,25 @@ export default {
             });
         },
 
-        // editProduct(product) {
-        //     this.editProduct = { ...product };
-        //     this.editingProductId = product.id;
-        //     this.modalContent.title = "Edit Product";
-        //     this.modalStatus = true;
-        // },
-
         getCategoryName(categoryId) {
             const category = this.categories.find((c) => c.id === categoryId);
             return category ? category.name : "Unknown Category";
         },
-
-        // getSupplierName(userId) {
-        //     userId = Number(userId);
-        //     const user = this.users.find((user) => user.id === userId);
-        //     return user ? user.name : "Unknown User";
-        // },
+        prevPage() {
+            if (this.pagination.currentPage > 1) {
+                this.getProductlists(this.pagination.currentPage - 1);
+            }
+        },
+        nextPage() {
+            if (this.pagination.currentPage < this.pagination.lastPage) {
+                this.getProductlists(this.pagination.currentPage + 1);
+            }
+        },
     },
 
     mounted() {
-        this.getProductlists();
+        this.getProductlists(1);
         this.getCategories();
-        //this.getUsers();
     },
 };
 </script>
