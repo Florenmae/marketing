@@ -519,12 +519,6 @@ export default {
             });
         },
 
-        // getSoldItems() {
-        //     axios.get("/get-sold-items").then((response) => {
-        //         this.soldItems = response.data.soldItems;
-        //         this.totalSoldAmount = response.data.totalSoldAmount;
-        //     });
-        // },
         getSoldItems(page) {
             axios
                 .get(`/get-sold-items?page=${page}`)

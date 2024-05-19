@@ -37,7 +37,7 @@
                                 d="M0 0h24v24H0z"
                                 fill="none"
                             ></path>
-                            <polyline points="15 6 9 12 15 18"></polyline>
+                            <polyline points="9 6 15 12 9 18"></polyline>
                         </svg>
                     </button>
                 </div>
@@ -45,10 +45,11 @@
                     <div
                         v-for="category in visibleCategories"
                         :key="category.id"
-                        class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
+                        class="w-1/4 p-2"
                     >
                         <div
                             class="bg-white shadow-md mb-4 category-item hover:bg-gray-100 cursor-pointer p-2 rounded-md"
+                            @click="selectCategory(category.id)"
                         >
                             <p class="">{{ category.name }}</p>
                         </div>
@@ -59,21 +60,23 @@
                     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2"
                 >
                     <div
-                        v-for="product in products"
+                        v-for="product in filteredProducts"
                         :key="product.id"
                         class="p-2 border rounded-md text-center"
                     >
-                        <img
-                            :src="product.image"
-                            alt="Product Image"
-                            class="w-full h-32 object-cover mb-2 rounded-md"
-                        />
-                        <h2 class="text-lg font-semibold">
+                        <div class="relative h-32">
+                            <img
+                                :src="product.image"
+                                alt="Product Image"
+                                class="w-40 h-32 object-cover rounded-md"
+                            />
+                        </div>
+                        <h2 class="text-lg font-semibold mt-2">
                             {{ getProductName(product.productlistId) }}
-                            <span class="text-lg font-bold text-green-500"
-                                >Php {{ product.price }}.00</span
-                            >
                         </h2>
+                        <span class="text-lg font-bold text-green-500"
+                            >Php {{ product.price }}.00</span
+                        >
                         <div class="mt-2">
                             <button
                                 @click="addToCart(product)"
@@ -157,8 +160,8 @@
                         >
                             Deliver
                         </button>
-                        <!-- <SendToAdmin :product="product" /> -->
                     </div>
+                    <toast-container />
                 </div>
             </div>
         </div>
@@ -169,6 +172,8 @@
 import Modal from "@/Component/Modal.vue";
 import addProduct from "@/Component/User/UserInventory/addProduct.vue";
 import SendToAdmin from "@/Component/User/UserInventory/SendToAdmin.vue";
+
+import { useToast } from "vue-toast-notification";
 
 export default {
     components: {
@@ -188,6 +193,7 @@ export default {
             amountGiven: 0,
             status: 0,
             productlists: [],
+            selectedCategoryId: null, // Added selected category state
         };
     },
     methods: {
@@ -218,9 +224,22 @@ export default {
                 .then((response) => {
                     console.log("Cart submitted to admin:", response.data);
                     this.deliverycarts = [];
+
+                    const toast = useToast();
+
+                    toast.success("Cart submitted successfully", {
+                        duration: 5000,
+                        position: "top-right-20",
+                    });
                 })
                 .catch((error) => {
                     console.error("Error submitting cart to admin:", error);
+                    const toast = useToast();
+
+                    toast.error("Failed to submit cart", {
+                        duration: 5000,
+                        position: "top-right-20",
+                    });
                 });
         },
 
@@ -282,12 +301,28 @@ export default {
                 this.showCartItems();
             });
         },
+
+        selectCategory(categoryId) {
+            if (this.selectedCategoryId === categoryId) {
+                this.selectedCategoryId = null;
+            } else {
+                this.selectedCategoryId = categoryId;
+            }
+        },
     },
     computed: {
         visibleCategories() {
             const start = this.currentPage * this.itemsPerPage;
             const end = start + this.itemsPerPage;
             return this.categories.slice(start, end);
+        },
+        filteredProducts() {
+            if (this.selectedCategoryId) {
+                return this.products.filter(
+                    (product) => product.categoryId === this.selectedCategoryId
+                );
+            }
+            return this.products;
         },
         totalAmount() {
             return this.deliveryCart.reduce(

@@ -35,7 +35,7 @@
                     >Product Name</label
                 >
                 <input
-                    v-model="editProduct.productId"
+                    v-model="editProduct.productlistId"
                     type="text"
                     name="productId"
                     id="productId"
@@ -102,7 +102,7 @@
                     >Quantity</label
                 >
                 <input
-                    v-model="editProduct.qty"
+                    v-model="editProduct.stocks"
                     type="text"
                     name="qty"
                     id="qty"
@@ -140,7 +140,7 @@ export default {
     },
     data() {
         return {
-            editingProductId: this.id,
+            editingProductId: this.product.id,
             editProduct: {
                 item_code: "",
                 categoryId: "",

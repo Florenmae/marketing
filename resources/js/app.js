@@ -1,5 +1,7 @@
 import "./bootstrap";
 import { createApp } from "vue/dist/vue.esm-bundler";
+import "vue-toast-notification/dist/theme-default.css";
+
 import App from "@/Component/App.vue";
 import Modal from "@/Component/Modal.vue";
 import Modal1 from "@/Component/Modal1.vue";
@@ -21,8 +23,6 @@ import addCategory from "@/Component/Marketing/Inventory/addCategory.vue";
 
 import Pos from "@/Component/PosComp/Pos.vue";
 import Orders from "@/Component/PosComp/Orders.vue";
-//import ViewOrder from "@/Component/PosComp/ViewOrder.vue";
-// import View from "@/Component/PosComp/View.vue";
 
 import userHome from "@/Component/userHome.vue";
 import userProduct from "@/Component/User/UserInventory/userProduct.vue";
@@ -71,17 +71,12 @@ app.component("addcategory", addCategory);
 
 app.component("return", Return);
 app.component("returnlist", ReturnList);
-// app.component("editreturn", editReturn);
-// app.component("addreturn", addReturn);
-// app.component("returnForm", returnForm);
 
 app.component("modal", Modal);
 app.component("modal1", Modal1);
 
 app.component("pos", Pos);
 app.component("orders", Orders);
-//app.component("viewOrder", ViewOrder);
-// app.component("view", View);
 
 app.component("userHome", userHome);
 app.component("userProduct", userProduct);

@@ -8,7 +8,7 @@
         :buttonLabel="'Approve'"
         :cancelLabel="'Close'"
         :saveLabel="'Approve'"
-        @save="updateProduct"
+        @save="approveProduct"
         :save-option="true"
     >
         <div class="grid gap-4 mb-4 grid-cols-4">
@@ -73,7 +73,7 @@ export default {
     },
     data() {
         return {
-            editingProductId: this.product.productId,
+            editingProductId: this.product.id,
             editProduct: {
                 item_code: "",
                 categoryId: "",
@@ -100,12 +100,12 @@ export default {
         },
     },
     methods: {
-        updateProduct() {
+        approveProduct() {
             const { editProduct, editingProductId } = this;
             const prodPayload = { ...editProduct, status: 3 };
 
             axios
-                .post("/update-product", { prodPayload, editingProductId })
+                .post("/approve-product", { prodPayload, editingProductId })
                 .then(({ data }) => {
                     prodPayload.type = this.type;
                     prodPayload.actualQty = this.actualQty;

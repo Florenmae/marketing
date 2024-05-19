@@ -18,63 +18,9 @@ class ProductController extends Controller{
 
     
 
-    public function updateProduct(Request $request){
-        DB::beginTransaction();
+//     public function updateProduct(Request $request){
+//         DB::beginTransaction();
 
-        $productId = $request->editingProductId;
-        $product = Product::findOrFail($productId);
-
-        $product->userId = $request->prodPayload["userId"];
-        $product->categoryId = $request->prodPayload["categoryId"];
-        $product->item_code = $request->prodPayload["item_code"];
-        $product->price = $request->prodPayload["price"];
-        $product->unit = $request->prodPayload["unit"];
-        $product->description = $request->prodPayload["description"];
-        $product->status = $request->prodPayload["status"];
-        $product->approved_by = $request->prodPayload["approved_by"];
-
-        if ($product->status == 3) {
-            $actualQty = $request->prodPayload["actualQty"];
-
-            $transaction = new Transaction();
-            $transaction->productId = $product->id;
-            $transaction->userId = Auth::id();
-            $transaction->type = $request->prodPayload["type"];
-            // $transaction->qty = $qty; 
-            $transaction->actualQty = $actualQty;
-
-            $product->stocks -= $actualQty;
-            $transaction->stocks = $product->stocks;
-
-            $transaction->save();
-        }
-
-        $adminProduct = Product::where('userId', 1)
-                                ->where('productId', $productId)
-                                ->first();
-
-        if ($adminProduct) {
-            $adminProduct->stocks += $request->prodPayload["actualQty"];
-            $adminProduct->save();
-        } else {
-            $adminProduct = $product->replicate();
-            $adminProduct->userId = 1; 
-            $adminProduct->stocks = $request->prodPayload["actualQty"];
-            $adminProduct->save();
-        }
-
-
-        $product->save();
-
-        DB::commit();
-
-        return $product;
-}
-
-// public function updateProduct(Request $request){
-//     DB::beginTransaction();
-
-//     try {
 //         $productId = $request->editingProductId;
 //         $product = Product::findOrFail($productId);
 
@@ -90,31 +36,19 @@ class ProductController extends Controller{
 //         if ($product->status == 3) {
 //             $actualQty = $request->prodPayload["actualQty"];
 
-//             // Find the existing transaction for the product
-//             $transaction = Transaction::where('productId', $product->id)->first();
-//             if ($transaction) {
-//                 // Update the existing transaction
-//                 $transaction->qty = -$actualQty;
-//                 $transaction->actualQty = $actualQty;
-//                 $transaction->stocks = $product->stocks - $actualQty; // Update stocks
-//                 $transaction->save();
-//             } else {
-//                 // No existing transaction found, create a new one
-//                 $transaction = new Transaction();
-//                 $transaction->productId = $product->id;
-//                 $transaction->userId = Auth::id();
-//                 $transaction->type = $request->prodPayload["type"];
-//                 $transaction->qty = -$actualQty; 
-//                 $transaction->actualQty = $actualQty;
-//                 $transaction->stocks = $product->stocks - $actualQty; // Update stocks
-//                 $transaction->save();
-//             }
+//             $transaction = new Transaction();
+//             $transaction->productId = $product->id;
+//             $transaction->userId = Auth::id();
+//             $transaction->type = $request->prodPayload["type"];
+//             // $transaction->qty = $qty; 
+//             $transaction->actualQty = $actualQty;
 
-//             // Subtract from product stocks
 //             $product->stocks -= $actualQty;
+//             $transaction->stocks = $product->stocks;
+
+//             $transaction->save();
 //         }
 
-//         // Update admin product
 //         $adminProduct = Product::where('userId', 1)
 //                                 ->where('productId', $productId)
 //                                 ->first();
@@ -129,17 +63,79 @@ class ProductController extends Controller{
 //             $adminProduct->save();
 //         }
 
+
 //         $product->save();
 
 //         DB::commit();
 
 //         return $product;
-//     } catch (\Exception $e) {
-//         DB::rollback();
-//         // Log or handle the exception as needed
-//         return response()->json(['error' => 'An error occurred while updating the product.'], 500);
-//     }
 // }
+
+    public function approveProduct(Request $request){
+
+    DB::beginTransaction();
+
+    try {
+        $productId = $request->editingProductId;
+        $product = Product::findOrFail($productId);
+
+        // Approve and update the existing product
+        $product->userId = $request->prodPayload["userId"];
+        $product->categoryId = $request->prodPayload["categoryId"];
+        $product->item_code = $request->prodPayload["item_code"];
+        $product->price = $request->prodPayload["price"];
+        $product->unit = $request->prodPayload["unit"];
+        $product->description = $request->prodPayload["description"];
+        $product->status = 3; 
+        $product->approved_by = $request->prodPayload["approved_by"];
+        $product->save();
+
+        if ($product->status == 3) {
+            $actualQty = $request->prodPayload["actualQty"];
+
+            $transaction = Transaction::where('productId', $product->id)->first();
+            if ($transaction) {
+                $transaction->qty = -$actualQty;
+                $transaction->actualQty = $actualQty;
+                $transaction->stocks = $product->stocks - $actualQty; 
+                $transaction->save();
+            } else {
+                
+                $transaction = new Transaction();
+                $transaction->productId = $product->id;
+                $transaction->userId = Auth::id();
+                $transaction->type = $request->prodPayload["type"];
+                $transaction->qty = -$actualQty;
+                $transaction->actualQty = $actualQty;
+                $transaction->stocks = $product->stocks - $actualQty;
+                $transaction->save();
+            }
+
+            $product->stocks -= $actualQty;
+        }
+
+        $adminProduct = new Product();
+        $adminProduct->userId = 1;
+        $adminProduct->categoryId = $product->categoryId;
+        $adminProduct->productlistId = $product->productlistId;
+        $adminProduct->item_code = $product->item_code;
+        $adminProduct->price = $product->price;
+        $adminProduct->image = $product->image;
+        $adminProduct->unit = $product->unit;
+        $adminProduct->stocks = $actualQty;
+        $adminProduct->description = $product->description;
+        $adminProduct->status = 3; 
+        $adminProduct->approved_by = $product->approved_by;
+        $adminProduct->save();
+
+        DB::commit();
+
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
 
     public function getCategories()
     {
@@ -174,10 +170,9 @@ class ProductController extends Controller{
         return Order::whereIn('status', [2, 3])->get();
     }
 
-    public function returnProduct(Request $request){
-        $returnedProduct = Product::find($request->editingProductId);
-
-        $returnedQty = (int)$request->prodPayload["stocks"];
+   public function returnProduct(Request $request) {
+    $returnedProduct = Product::find($request->editingProductId);
+    $returnedQty = (int) $request->prodPayload["stocks"];
 
     if ($returnedQty >= $returnedProduct->stocks) {
         $returnedProduct->delete();
@@ -186,16 +181,17 @@ class ProductController extends Controller{
         $returnedProduct->save();
     }
 
-        ReturnedProduct::create([
-            'productId' => $returnedProduct->productId,
-            'userId' => $returnedProduct->userId,
-            'stocks' => $returnedQty,
-            'description' => $request->prodPayload["description"]
+    ReturnedProduct::create([
+        'productlistId' => $returnedProduct->productlistId,
+        'userId' => $returnedProduct->userId,
+        'item_code' => $returnedProduct->item_code,
+        'qty' => $returnedQty,
+        'description' => $request->prodPayload["description"]
+    ]);
 
-        ]);
+    return response()->json(['success' => true]);
+}
 
-        $res = $returnedProduct->save();
-    }
 
     // public function ReturnAll(Request $request){
     //     $returnedProduct = Product::find($request->product['productId']);

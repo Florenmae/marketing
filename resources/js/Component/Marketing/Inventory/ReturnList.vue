@@ -39,7 +39,11 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ returnedProduct.productId }}
+                                {{
+                                    getProductName(
+                                        returnedProduct.productlistId
+                                    )
+                                }}
                             </th>
                             <td class="px-6 py-4">
                                 {{ returnedProduct.item_code }}
@@ -48,7 +52,7 @@
                                 {{ returnedProduct.userId }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ returnedProduct.stocks }}
+                                {{ returnedProduct.qty }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ returnedProduct.description }}
@@ -58,7 +62,7 @@
                                     :returnedProduct="returnedProduct"
                                 />
                                 <button
-                                    class="bg-red-500 px-4 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
+                                    class="bg-red-500 px-4 py-2 rounded-md text-white my-4 text-sm hover:bg-red-700"
                                     @click="deleteReturn(returnedProduct.id)"
                                 >
                                     Delete
@@ -73,7 +77,10 @@
 </template>
 
 <script>
+import axios from "axios";
 import Modal from "@/Component/Modal.vue";
+// import returnForm from "@/Component/returnForm.vue";
+// import editReturn from "@/Component/editReturn.vue";
 
 export default {
     components: {
@@ -83,12 +90,13 @@ export default {
         return {
             editReturnedProduct: {
                 item_code: "",
-                name: "",
-                supplier: "",
-                stocks: "",
+                productlistId: "",
+                userId: "",
+                qty: "",
                 description: "",
             },
             returnedProducts: [],
+            productlists: [],
             editingReturnedProductId: null,
             modalStatus: false,
         };
@@ -104,45 +112,28 @@ export default {
             });
         },
 
-        // fetchReturnedProducts() {
-        //     axios.get("/returned-products").then(({ data }) => {
-        //         this.returnedProducts = data;
-        //         this.fetchReturnedProducts();
-        //     });
-        // },
-
-        editReturnedProduct(returnedProduct) {
-            this.editReturnedProduct = { ...returnedProduct };
-            this.editingReturnedProductId = returnedProduct.id;
-            this.modalContent.title = "Edit Product";
-            this.modalStatus = true;
-            this.getReturnedProducts;
+        getProductName(productlistId) {
+            const productlist = this.productlists.find(
+                (b) => b.id === productlistId
+            );
+            return productlist ? productlist.name : "Unknown product";
         },
 
-        updateReturnedProduct(data) {
-            const { editReturnedProduct, editingReturnedProductId } = this;
-            const retPayload = { ...editReturnedProduct };
-
-            axios
-                .post("/update-returnedProduct", {
-                    retPayload,
-                    editingReturnedProductId,
-                })
-                .then(({ data }) => {})
-                .catch((error) => {
-                    console.error("Error updating product:", error);
-                });
-        },
-        
         deleteReturn(id) {
             axios.post("/delete-returns", { id }).then(({ data }) => {
                 this.getReturnedProducts();
             });
         },
+
+        getProductLists() {
+            axios.get("/get-productlists").then(({ data }) => {
+                this.productlists = data;
+            });
+        },
     },
     mounted() {
         this.getReturnedProducts();
-        // this.fetchReturnedProducts();
+        this.getProductLists();
     },
 };
 </script>

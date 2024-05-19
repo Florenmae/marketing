@@ -181,13 +181,6 @@
                         <ul id="dropdown-sales" class="hidden py-2 space-y-2">
                             <li>
                                 <a
-                                    href="/userProduct"
-                                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                    >POS</a
-                                >
-                            </li>
-                            <li>
-                                <a
                                     href="#"
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                     >Sales Report</a
@@ -240,7 +233,7 @@
                         <ul id="dropdown-return" class="hidden py-2 space-y-2">
                             <li>
                                 <a
-                                    href="/"
+                                    href=""
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                     >Returned Items</a
                                 >
@@ -327,7 +320,7 @@
                             </li>
                             <li>
                                 <a
-                                    href="/"
+                                    href=""
                                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                     >Monthly Report</a
                                 >

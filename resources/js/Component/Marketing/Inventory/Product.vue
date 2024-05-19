@@ -48,7 +48,7 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ getProductName(product.productId) }}
+                                {{ getProductName(product.productlistId) }}
                             </th>
                             <td class="px-6 py-4">
                                 <p>{{ getCategoryName(product.categoryId) }}</p>
@@ -131,7 +131,9 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                <p>{{ getProductName(product.productId) }}</p>
+                                <p>
+                                    {{ getProductName(product.productlistId) }}
+                                </p>
                             </th>
                             <td class="px-6 py-4">
                                 <p>{{ getCategoryName(product.categoryId) }}</p>
@@ -276,9 +278,9 @@ export default {
             return delivery.qty;
         },
 
-        getProductName(productId) {
+        getProductName(productlistId) {
             const productlist = this.productlists.find(
-                (b) => b.id === productId
+                (b) => b.id === productlistId
             );
             return productlist ? productlist.name : "Unknown product";
         },
