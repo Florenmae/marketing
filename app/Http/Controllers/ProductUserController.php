@@ -212,7 +212,7 @@ public function addToDevCart(Request $request)
 
     public function deleteProduct(Request $request){
         $deleteProduct = Product::find($request->id);
-
+        //dd($deleteProduct);
         $res = $deleteProduct->delete();
         return $res;
     }
@@ -225,7 +225,7 @@ public function addToDevCart(Request $request)
 
     public function deleteItem(Request $request){
         $deleteItem = DeliveryCart::find($request->id);
-
+       
         $res = $deleteItem->delete();
         return $res;
     }

@@ -19,6 +19,10 @@ return new class extends Migration
             $table->float('qty')->nullable();
             $table->float('actualQty')->nullable();
             $table->float('stocks')->nullable();
+            $table->float('totalprice')->nullable();
+            $table->float('amountGiven')->nullable();
+            $table->float('changeAmount')->nullable();
+            $table->float('balance')->nullable();
             $table->timestamps();
         });
     }

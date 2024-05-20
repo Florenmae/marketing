@@ -22,8 +22,9 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->longText('description')->nullable();
             $table->float('qty')->nullable();
+            $table->float('price')->nullable();
             $table->float('total')->nullable();
-            $table->boolean('paymentMethod')->default('1'); //1 for cash 2 credit
+            $table->boolean('paymentMethod')->default('1'); 
             $table->float('balance')->nullable();
             $table->float('changeAmount')->nullable();
             $table->boolean('status')->default('1');

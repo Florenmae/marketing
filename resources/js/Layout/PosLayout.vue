@@ -82,12 +82,16 @@
             </div>
         </header>
 
-        <!-- Main content -->
-        <main class="flex-1 flex">
-            <section class="flex-1 p-4">
+        <!-- <main class="flex-3">
+            <section class="flex-">
                 <slot></slot>
             </section>
-        </main>
+        </main> -->
+        <div class="px-5">
+            <div class="flex flex-col items-center pb-20 pt-5 min-h-screen">
+                <slot></slot>
+            </div>
+        </div>
     </div>
 </template>
 

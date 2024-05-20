@@ -1,8 +1,8 @@
 <template>
     <posLayout>
-        <div class="h-screen flex">
-            <div class="flex-1 p-4 relative">
-                <h2 class="text-2xl font-semibold mb-4">Categories</h2>
+        <div class="flex justify-between w-full">
+            <div class="flex-6 p-4 relative">
+                <h2 class="text-2xl font-semibold mb-5">Categories</h2>
                 <div class="absolute top-10 right-3 mt-2 mr-2">
                     <button @click="prevPage" class="text-gray-500">
                         <svg
@@ -42,7 +42,7 @@
                     </button>
                 </div>
 
-                <div class="flex mt-6 mb-5">
+                <!-- <div class="flex mt-6 mb-5">
                     <div
                         v-for="category in visibleCategories"
                         :key="category.id"
@@ -52,33 +52,48 @@
                     >
                         <p>{{ category.name }}</p>
                     </div>
+                </div> -->
+
+                <div class="flex flex-wrap">
+                    <div
+                        v-for="category in visibleCategories"
+                        :key="category.id"
+                        class="w-1/5 p-2"
+                    >
+                        <div
+                            class="bg-white shadow-md mb-4 category-item hover:bg-gray-100 cursor-pointer p-2 rounded-md"
+                            @click="filterByCategory(category.id)"
+                        >
+                            <p>{{ category.name }}</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="flex flex mt-6 mb-5 space-x-5">
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-2"
+                >
                     <div
                         v-for="product in filteredProducts"
-                        :key="product.productId"
-                        class="p-4 border rounded-md text-center"
-                        style="width: 250px; height: 250px"
+                        :key="product.id"
+                        class="p-2 border rounded-md text-center"
                     >
-                        <img
-                            :src="product.image"
-                            alt="Product Image"
-                            class="w-full h-32 object-cover mb-4 rounded-md"
-                        />
-                        <h2 class="text-lg font-semibold">
-                            {{ getProductName(product.productId) }}
+                        <div class="relative h-30">
+                            <img
+                                :src="product.image"
+                                alt="Product Image"
+                                class="w-40 h-40 object-cover rounded-md"
+                            />
+                        </div>
+                        <h2 class="text-lg font-semibold mt-2">
+                            {{ getProductName(product.productlistId) }}
                         </h2>
-                        <!-- <p class="text-gray-600">
-                            Stocks: {{ product.stocks }}
-                        </p> -->
+                        <span class="text-lg font-bold text-green-500"
+                            >Php {{ product.price }}.00</span
+                        >
                         <div class="mt-2">
-                            <span class="text-lg font-bold text-blue-500">{{
-                                product.price
-                            }}</span>
                             <button
                                 @click="addToCart(product)"
-                                class="ml-2 bg-green-500 text-white px-3 py-1 rounded-md"
+                                class="ml-2 bg-green-500 text-white px-5 py-1 rounded-md"
                             >
                                 Add to Cart
                             </button>
@@ -87,7 +102,7 @@
                 </div>
             </div>
 
-            <div class="flex-2 p-4">
+            <div class="flex-1 p-4">
                 <div class="bg-gray-100 p-4 mb-4 rounded-md">
                     <h2 class="text-xl font-semibold mb-2">
                         Welcome Customer!
@@ -117,7 +132,7 @@
                 <div v-else>
                     <div
                         v-for="product in cart"
-                        :key="product.productId"
+                        :key="product.productlistId"
                         class="flex items-center justify-between p-2 border-b"
                     >
                         <div class="flex items-center space-x-2">
@@ -150,7 +165,7 @@
                             >₱{{ product.price }}.00</span
                         >
                         <span class="text-gray-600"
-                            >Total: ₱{{ product.total.toFixed(2) }}</span
+                            >Total: ₱{{ product.total}}.00</span
                         >
                         <button @click="deleteItem(product.id)">
                             <svg
@@ -287,7 +302,8 @@ export default {
         addToCart(product) {
             console.log("Adding to Cart:", product);
             const cartItem = {
-                productId: product.productId,
+                id: product.id,
+                productlistId: product.productlistId,
                 customerId: this.selectedCustomerType,
                 image: product.image,
                 price: product.price,
@@ -413,6 +429,7 @@ export default {
         fetchCategories() {
             axios.get("/fetch-categories").then(({ data }) => {
                 this.categories = data;
+        
             });
         },
         nextPage() {

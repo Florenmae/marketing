@@ -193,7 +193,7 @@ export default {
             amountGiven: 0,
             status: 0,
             productlists: [],
-            selectedCategoryId: null, // Added selected category state
+            selectedCategoryId: null, 
         };
     },
     methods: {

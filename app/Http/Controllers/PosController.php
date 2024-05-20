@@ -42,25 +42,29 @@ class PosController extends Controller{
         return Categories::all();
     }
 
-   public function addToCart(Request $request)
-{
-    $productId = $request->input('productId');
-    $customerId = $request->input('customerId');
+    public function addToCart(Request $request)
+{   
+    $id = $request->input('id');
     $qty = $request->input('qty', 1);
-    
-    $product = Product::find($productId);
-    // dd($product);
-    $cartItem = Cart::where('productId', $productId)
-                    ->where('customerId', $customerId) 
-                    ->first();
+    $customerId = $request->input('customerId');
+    $productlistId = $request->input('productlistId');
+
+    $product = Product::find($id);
+    $price = $product->price;
+
+    $cartItem = Cart::where('productId', $id)
+                            ->where('productlistId', $productlistId)
+                            ->where('customerId', $customerId)
+                            ->first();
 
     if ($cartItem) {
         $cartItem->qty += $qty;
-        $cartItem->total = $cartItem->qty * $product->price;
+        $cartItem->price = $product->price * $cartItem->qty;
         $cartItem->save();
     } else {
         Cart::create([
-            'productId' => $productId,
+            'productId' => $id,
+            'productlistId' => $productlistId,
             'customerId' => $customerId, 
             'image' => $request->input('image'),
             'price' => $product->price ,
@@ -70,7 +74,39 @@ class PosController extends Controller{
             'qty' => $qty,
         ]);
     }
+
+    return response()->json(['message' => 'Cart updated successfully'], 200);
 }
+
+//    public function addToCart(Request $request)
+// {
+//     $productId = $request->input('id');
+//     $customerId = $request->input('customerId');
+//     $qty = $request->input('qty', 1);
+    
+//     $product = Product::find($productId);
+//     dd($productId);
+//     $cartItem = Cart::where('productId', $productId)
+//                     ->where('customerId', $customerId) 
+//                     ->first();
+
+//     if ($cartItem) {
+//         $cartItem->qty += $qty;
+//         $cartItem->total = $cartItem->qty * $product->price;
+//         $cartItem->save();
+//     } else {
+//         Cart::create([
+//             'productId' => $productId,
+//             'customerId' => $customerId, 
+//             'image' => $request->input('image'),
+//             'price' => $product->price ,
+//             'unit' => $request->input('unit'),
+//             'description' => $request->input('description'),
+//             'total' => $product->price * $qty,
+//             'qty' => $qty,
+//         ]);
+//     }
+// }
 
 //     public function addToCart(Request $request)
 // {
@@ -146,8 +182,8 @@ public function checkout(Request $request)
     $lastCashReg = CashRegistry::latest()->first();
     if ($lastCashReg) {
 
-        $updatedCashOnHand = $lastCashReg->CashOnHand + $amountGiven;
-        $lastCashReg->CashOnHand = $updatedCashOnHand;
+        $updatedCashOnHand = $lastCashReg->amount + $amountGiven;
+        $lastCashReg->amount = $updatedCashOnHand;
         $lastCashReg->save();
 
         

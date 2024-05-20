@@ -71,7 +71,7 @@
                                 <Approve :product="product" />
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
-                                    @click="returnAll(productlistId)"
+                                    @click="returnAll(product)"
                                 >
                                     Return
                                 </button>
@@ -193,7 +193,7 @@ export default {
             outForDelivery: [],
             editProduct: {
                 item_code: "",
-                name: "",
+                productlistId: "",
                 userId: "",
                 price: "",
                 stocks: "",
@@ -257,9 +257,27 @@ export default {
             this.modalStatus = true;
         },
 
-        returnAll(productlistId) {
+        // returnAll(productlistId) {
+        //     axios
+        //         .post("/returnAll-product", { product: { productlistId } })
+        //         .then(({ data }) => {
+        //             window.location.reload("Reloading");
+        //         })
+        //         .catch((error) => {
+        //             console.error("Error returning all products:", error);
+        //         });
+        // },
+        returnAll(product) {
+            console.log(product);
             axios
-                .post("/returnAll-product", { product: { productlistId } })
+                .post("/returnAll-product", {
+                    id: product.id,
+                    productlistId: product.productlistId,
+                    userId: product.userId,
+                    item_code: product.item_code,
+                    qty: product.qty,
+                    description: product.description,
+                })
                 .then(({ data }) => {
                     window.location.reload("Reloading");
                 })
