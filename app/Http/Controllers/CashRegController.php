@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\CashRegistry;
 use App\Models\CashAdmin;
 use App\Models\CashLogs;
+use Carbon\Carbon;
+
 
 class CashRegController extends Controller
 {

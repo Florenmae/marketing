@@ -3,6 +3,7 @@
         <div
             class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10 content-between w-full h-full"
         >
+            <!-- Left Side: Cash On Hand Section -->
             <div
                 class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
             >
@@ -38,34 +39,26 @@
                                 </div>
                             </div>
                         </table>
-
                         <div
-                            class="flex flex-col items-center justify-center w-full"
+                            class="flex flex-row items-center justify-center w-full"
                         >
                             <input
+                                v-if="showInput && !cashAdded"
                                 v-model="amount"
                                 type="number"
-                                class="border border-gray-300 rounded-md px-4 py-2 mb-2"
+                                class="border border-gray-300 rounded-md px-4 py-2 mr-2"
                                 placeholder="Enter amount"
-                                v-if="showInput"
                             />
                             <button
-                                v-if="showInput"
+                                v-if="showInput && !cashAdded"
                                 @click="addCash"
-                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md mb-2 mr-2"
-                            >
-                                Add Cash
-                            </button>
-                            <button
-                                v-else
-                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md mb-2 mr-2"
-                                disabled
+                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 w-full rounded-md mr-2"
                             >
                                 Add Cash
                             </button>
                             <button
                                 @click="remitToAdmin"
-                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mb-2"
+                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 w-full rounded-md"
                             >
                                 Remit To Admin
                             </button>
@@ -73,6 +66,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Right Side: Cash Flow Logs Section -->
             <div
                 class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
             >
@@ -90,49 +85,77 @@
                                 <tr>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
                                         Transaction Id
                                     </th>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
                                         Inflow
                                     </th>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
                                         Outflow
                                     </th>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
                                         Date
                                     </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                <tr
-                                    v-for="(cashlog, index) in cashlogs"
-                                    :key="index"
-                                >
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                <tr v-for="(cashlog, id) in cashlogs" :key="id">
+                                    <td
+                                        class="px-6 py-4 whitespace-nowrap text-center"
+                                    >
                                         {{ cashlog.transactionId }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td
+                                        class="px-6 py-4 whitespace-nowrap text-center"
+                                    >
                                         {{ cashlog.inflow }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td
+                                        class="px-6 py-4 whitespace-nowrap text-center"
+                                    >
                                         {{ cashlog.outflow }}
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 whitespace-nowrap text-center"
+                                    >
+                                        {{ cashlog.created_at }}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-
-                        <div class="mt-4"></div>
+                        <div class="mt-4">
+                            <div
+                                class="px-4 text-right text-s font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                <button
+                                    @click="prevPage"
+                                    :disabled="pagination.currentPage === 1"
+                                >
+                                    Prev
+                                </button>
+                                <span> / </span>
+                                <button
+                                    @click="nextPage"
+                                    :disabled="
+                                        pagination.currentPage ===
+                                        pagination.lastPage
+                                    "
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -157,8 +180,13 @@ export default {
             cashlogs: [],
             cashlog: {
                 transactionId: "",
-                inflow: " ",
-                outflow: "",
+                inflow: "",
+                outflow: " ",
+                created_at: " ",
+            },
+            pagination: {
+                currentPage: 1,
+                lastPage: 1,
             },
         };
     },
@@ -187,16 +215,28 @@ export default {
             });
         },
 
-        getCashLogs() {
-            axios.post("/get-cash-logs").then(({ data }) => {
-                this.cashlogs = data;
+        getCashLogs(page) {
+            axios.post(`/get-cashlogs?page=${page}`).then(({ data }) => {
+                this.cashlogs = data.data;
+                this.pagination = data.pagination;
             });
+        },
+
+        prevPage() {
+            if (this.pagination.currentPage > 1) {
+                this.getCashLogs(this.pagination.currentPage - 1);
+            }
+        },
+        nextPage() {
+            if (this.pagination.currentPage < this.pagination.lastPage) {
+                this.getCashLogs(this.pagination.currentPage + 1);
+            }
         },
     },
 
     mounted() {
         this.getCash();
-        this.getCashLogs();
+        this.getCashLogs(1);
     },
 };
 </script>

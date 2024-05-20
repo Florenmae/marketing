@@ -526,9 +526,6 @@ export default {
                     this.soldItems = response.data.soldItems;
                     this.totalSoldAmount = response.data.totalSoldAmount;
                     this.pagination = response.data.pagination;
-                })
-                .catch((error) => {
-                    console.error("Error fetching sold items:", error);
                 });
         },
         prevPage() {
