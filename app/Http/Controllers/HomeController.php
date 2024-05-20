@@ -54,13 +54,12 @@ class HomeController extends Controller
 
     public function getSoldItems()
 {
-    $userId = 1; // Assuming the user ID is 1
+    $userId = 1; 
     $transactions = Transaction::where('userId', $userId)->paginate(5);
 
     $soldItems = [];
     $totalSoldAmount = 0; 
 
-    // Iterate over all transactions to calculate total sold amount
     foreach (Transaction::where('userId', $userId)->get() as $transaction) {
         $totalSoldAmount += $transaction->totalprice; 
     }

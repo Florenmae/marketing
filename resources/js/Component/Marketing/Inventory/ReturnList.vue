@@ -13,7 +13,7 @@
 
             <div class="overflow-x-auto border border-gray-300">
                 <table
-                    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                    class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400"
                 >
                     <thead
                         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -49,7 +49,7 @@
                                 {{ returnedProduct.item_code }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ returnedProduct.userId }}
+                                {{ getSupplierName(returnedProduct.userId) }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ returnedProduct.qty }}
@@ -57,12 +57,12 @@
                             <td class="px-6 py-4">
                                 {{ returnedProduct.description }}
                             </td>
-                            <td class="flex space-x-4">
+                            <td class="flex justify-center space-x-4">
                                 <editReturn
                                     :returnedProduct="returnedProduct"
                                 />
                                 <button
-                                    class="bg-red-500 px-4 py-2 rounded-md text-white my-4 text-sm hover:bg-red-700"
+                                    class="bg-red-500 px-6 py-2 rounded-md text-white my-3 text-sm hover:bg-red-700"
                                     @click="deleteReturn(returnedProduct.id)"
                                 >
                                     Delete
@@ -79,8 +79,6 @@
 <script>
 import axios from "axios";
 import Modal from "@/Component/Modal.vue";
-// import returnForm from "@/Component/returnForm.vue";
-// import editReturn from "@/Component/editReturn.vue";
 
 export default {
     components: {
@@ -130,10 +128,22 @@ export default {
                 this.productlists = data;
             });
         },
+
+        getUsers() {
+            axios.get("/get-users").then(({ data }) => {
+                this.users = data;
+            });
+        },
+        getSupplierName(userId) {
+            userId = Number(userId);
+            const user = this.users.find((user) => user.id === userId);
+            return user ? user.name : "Unknown User";
+        },
     },
     mounted() {
         this.getReturnedProducts();
         this.getProductLists();
+        this.getUsers();
     },
 };
 </script>

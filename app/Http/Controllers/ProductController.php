@@ -195,10 +195,10 @@ class ProductController extends Controller{
 
     // public function ReturnAll(Request $request){
     //     $returnedProduct = Product::find($request->product['productId']);
-
+    //     dd($returnedProduct);
     //     ReturnedProduct::create([
-    //         'name' => $returnedProduct->productId,
-    //         'supplier' => $returnedProduct->userId,
+    //         'productlistId' => $returnedProduct->productlistId,
+    //         'userId' => $returnedProduct->userId,
     //         'qty' => $returnedProduct->qty,
     //         'description' => $returnedProduct->description,
 
@@ -211,22 +211,20 @@ class ProductController extends Controller{
     public function ReturnAll(Request $request){
     try {
         // Find the product by ID
-        $returnedProduct = Product::findOrFail($request->product['productId']);
-
+        $returnedProduct = Product::findOrFail($request->product['productlistId']);
+        dd($returnedProduct);
         // Create a new ReturnedProduct instance
         ReturnedProduct::create([
-            'name' => $returnedProduct->productId,
+            'productlistId' => $returnedProduct->productlistId,
             'supplier' => $returnedProduct->userId,
             'qty' => $returnedProduct->qty,
             'description' => $returnedProduct->description,
         ]);
 
-        // Delete the product
         $returnedProduct->delete();
 
         return response()->json(['success' => 'Product returned successfully'], 200);
     } catch (ModelNotFoundException $exception) {
-        // Handle the case where the product with the given ID is not found
         return response()->json(['error' => 'Product not found'], 404);
     } catch (Exception $exception) {
         // Handle any other exceptions
@@ -234,10 +232,8 @@ class ProductController extends Controller{
     }
 }
 
-
-
     public function deleteProduct(Request $request){
-        //dd($request->productId);
+
         $deleteProduct = Product::find($request->productId);
 
         $res = $deleteProduct->delete();

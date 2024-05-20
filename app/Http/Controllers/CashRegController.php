@@ -17,11 +17,15 @@ class CashRegController extends Controller
     }
 
     public function addCash(Request $request){
+
+        $request->validate([
+            'amount' => 'required|numeric',
+        ]);
+
         $newCash = CashRegistry::create([
         'amount' => $request->amount
     ]);
 
-   
     return $newCash;
 
     }
@@ -29,12 +33,12 @@ class CashRegController extends Controller
     public function remitToAdmin(Request $request)
     {
     
-        // $request->validate([
-        //     'cashOnHand' => 'required|numeric',
-        // ]);
+        $request->validate([
+            'amount' => 'required|numeric',
+        ]);
       
         $cashAdmin = new CashAdmin();
-        $cashAdmin->amount = $request->input('cashOnHand');
+        $cashAdmin->amount = $request->input('amount');
         $cashAdmin->save();
 
         
@@ -42,6 +46,7 @@ class CashRegController extends Controller
     }
 
     public function getCashLogs(){
+    
         return CashLogs::all();
     }
 

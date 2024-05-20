@@ -13,7 +13,7 @@ return new class extends Migration
     {
          Schema::create('cashAdmin', function (Blueprint $table) {
             $table->id();
-            $table->string('CashRemit')->nullable();
+            $table->float('amount_remit')->nullable();
             $table->timestamps();
         });
     }

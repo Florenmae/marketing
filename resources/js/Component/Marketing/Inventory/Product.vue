@@ -71,7 +71,7 @@
                                 <Approve :product="product" />
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
-                                    @click="returnAll(product)"
+                                    @click="returnAll(productlistId)"
                                 >
                                     Return
                                 </button>
@@ -257,9 +257,9 @@ export default {
             this.modalStatus = true;
         },
 
-        returnAll(productId) {
+        returnAll(productlistId) {
             axios
-                .post("/returnAll-product", { product: { productId } })
+                .post("/returnAll-product", { product: { productlistId } })
                 .then(({ data }) => {
                     window.location.reload("Reloading");
                 })

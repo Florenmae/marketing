@@ -106,11 +106,30 @@
                                     >
                                         Outflow
                                     </th>
+                                    <th
+                                        scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                    >
+                                        Date
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody
-                                class="bg-white divide-y divide-gray-200"
-                            ></tbody>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr
+                                    v-for="(cashlog, index) in cashlogs"
+                                    :key="index"
+                                >
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ cashlog.transactionId }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ cashlog.inflow }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ cashlog.outflow }}
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
 
                         <div class="mt-4"></div>
@@ -135,7 +154,12 @@ export default {
             cashregs: [],
             showInput: true,
             cashAdded: false,
-            cashLogs: [],
+            cashlogs: [],
+            cashlog: {
+                transactionId: "",
+                inflow: " ",
+                outflow: "",
+            },
         };
     },
     methods: {
@@ -164,8 +188,8 @@ export default {
         },
 
         getCashLogs() {
-            axios.get("/get-cashlogs").then(({ data }) => {
-                this.cashLogs = data;
+            axios.post("/get-cash-logs").then(({ data }) => {
+                this.cashlogs = data;
             });
         },
     },

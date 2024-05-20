@@ -13,8 +13,9 @@ return new class extends Migration
     {
          Schema::create('cashlogs', function (Blueprint $table) {
             $table->id();
-            $table->string('inflow')->nullable();
-            $table->string('outflow')->nullable();
+            $table->integer('transactionId')->nullable();
+            $table->float('inflow')->nullable();
+            $table->float('outflow')->nullable();
             $table->boolean('type')->nullable();
             $table->timestamps();
         });

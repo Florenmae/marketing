@@ -13,7 +13,7 @@ return new class extends Migration
     {
          Schema::create('cashRegs', function (Blueprint $table) {
             $table->id();
-            $table->string('CashOnHand')->nullable();
+            $table->float('amount')->nullable();
             $table->timestamps();
         });
     }

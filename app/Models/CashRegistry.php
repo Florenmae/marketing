@@ -12,11 +12,7 @@ class CashRegistry extends Model
     protected $table = "cashregs";
 
     protected $fillable = [
-        'transactionId',
-        'cashOnHand',
-        'type',
-        'total',
-        'paymentMethod',
+        'amount',
 
     ];
 }
