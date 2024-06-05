@@ -65,7 +65,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{ transaction.userId }}
+                                    {{ getUserRole(transaction.userId) }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -75,9 +75,10 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{ transaction.type }}
+                                    {{ transaction.type === 2 ? 'Sales' : transaction.type }}
                                 </div>
                             </td>
+
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
                                     {{ transaction.qty }}
@@ -137,6 +138,19 @@ export default {
             axios.get("/fetch-transactions").then(({ data }) => {
                 this.transactions = data;
             });
+        },
+
+        getUserRole(userId) {
+            switch (userId) {
+                case 1:
+                    return 'Admin';
+                case 2:
+                    return 'IGP';
+                case 3:
+                    return 'Project';
+                default:
+                    return 'Unknown';
+            }
         },
     },
     mounted() {
