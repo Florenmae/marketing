@@ -48,8 +48,27 @@ class CashRegController extends Controller
     }
 
     public function getCashLogs(){
-    
-        return CashLogs::all();
+        $cashlogs = CashLogs::all();
+
+       $cashlogs = $cashlogs->map(function($log) {
+            $log->formatted_date = Carbon::parse($log->created_at)->format('F d, Y');
+            return $log;
+        });
+
+        return response()->json($cashlogs);
+
+    }
+
+    public function getCashadmins(){
+        $cashadmins = CashAdmin::all();
+
+       $cashadmins = $cashadmins->map(function($remit) {
+            $remit->formatted_date = Carbon::parse($remit->created_at)->format('F d, Y');
+            return $remit;
+        });
+
+        return response()->json($cashadmins);
+
     }
 
 }

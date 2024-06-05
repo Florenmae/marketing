@@ -41,7 +41,7 @@ Route::get("/get-category-count", [HomeController::class, 'getCategoryCount']);
 Route::get("/get-return-count", [HomeController::class, 'getReturnCount']);
 Route::get("/recent-products", [HomeController::class, 'recentProducts']);
 Route::get("/get-sold-items", [HomeController::class, 'getSoldItems']);
-Route::get("/get-returnedProd", [HomeController::class, 'getReturnedItems']);
+Route::get("/get-returns", [HomeController::class, 'getReturnedItems']);
 
 //User
 Route::post("/submit-user", [UserController::class, 'createUser'])->name("createUser");
@@ -130,6 +130,7 @@ Route::get("/get-cash", [CashRegController::class, 'getCash']);
 Route::post("/add-cash", [CashRegController::class, 'addCash']);
 Route::post("/save-to-admin", [CashRegController::class, 'remitToAdmin']);
 Route::post("/get-cashlogs", [CashRegController::class, 'getCashLogs']);
+Route::post("/get-admins", [CashRegController::class, 'getCashadmins']);
 
 Route::get('/{vue?}', function(){
     return view('app');

@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\ReturnedProduct;
+use Carbon\Carbon;
 
 
 class HomeController extends Controller
@@ -30,8 +31,6 @@ class HomeController extends Controller
 
         return response()->json(['count' => $productCount]);
     }
-
-
     
     public function getCategoryCount()
     {
@@ -39,12 +38,14 @@ class HomeController extends Controller
         // dd($categoryCount);
         return response()->json(['count' => $categoryCount]);
     }
+
     public function getReturnCount()
     {
         $returnCount = ReturnedProduct::count();
 
         return response()->json(['count' => $returnCount]);
     }
+
     public function recentProducts()
     {
         $recentProducts = Product::latest()->take(5)->get();
@@ -87,27 +88,18 @@ class HomeController extends Controller
 }
 
 
+    public function getReturnedItems (Request $request){
+        $returnedProducts = ReturnedProduct::all();
 
-    public function getReturnedItems()
-{
-    $returnedProducts = ReturnedProduct::all();
-    $returnedProducts = [];
-    
-    foreach ($returnedProducts as $returnedProduct) {
-        $returnedProduct = [
-            'productId' => $returnedProduct->productId,
-            'quantity' => $returnedProduct->qty,
-            'createdAt' => $returnedProduct->created_at,
-        ];
-
-        $returnedProducts[] = $returnedProduct;
+        $return = $returnedProducts->map(function ($returns) {
+            return [
+                'productlistId' => $returns->productlistId,
+                'quantity' => $returns->qty,
+                'created_at' => Carbon::parse($returns->created_at)->format('F d, Y'),
+            ];
+        });
+        return response()->json($return);
     }
-
-    return [
-        'returnedProducts' => $returnedProducts,
-    ];
-}
-
 
 
 

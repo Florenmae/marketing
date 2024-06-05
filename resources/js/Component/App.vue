@@ -342,10 +342,10 @@
                     <div class="bg-gray-50 w-full">
                         <label
                             class="px-6 py-3 text-left text-s font-medium text-black-500 uppercase tracking-wider"
-                            >Recently Added</label
+                            >Returned Products</label
                         >
                     </div>
-                    <!-- <div class="mt-1 w-full">
+                    <div class="mt-1 w-full">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -365,57 +365,51 @@
                                         scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Total Price
+                                        Date
                                     </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr
-                                    v-for="(soldItem, index) in soldItems"
+                                    v-for="(returned, index) in returnedProducts"
                                     :key="index"
                                 >
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ soldItem.productId }}
+                                        {{ returned.productlistId }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ soldItem.qty }}
+                                        {{ returned.qty }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ soldItem.totalPrice }}
+                                        {{ returned.created_at }}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
 
                         <div class="mt-4">
-                            <span
-                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >Total Items:</span
-                            >
-                            <span>{{ totalSoldAmount }}</span>
                             <div
                                 class="px-4 text-right text-s font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 <button
-                                    @click="prevPage"
-                                    :disabled="pagination.currentPage === 1"
+                                    @click="prevPageReturned"
+                                    :disabled="paginationReturned.currentPage === 1"
                                 >
                                     Prev
                                 </button>
                                 <span> / </span>
                                 <button
-                                    @click="nextPage"
+                                    @click="nextPageReturned"
                                     :disabled="
-                                        pagination.currentPage ===
-                                        pagination.lastPage
+                                        paginationReturned.currentPage ===
+                                        paginationReturned.lastPage
                                     "
                                 >
                                     Next
                                 </button>
-                               
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -464,6 +458,10 @@ export default {
             totalSoldAmount: 0,
             returnedProducts: [],
             pagination: {
+                currentPage: 1,
+                lastPage: 1,
+            },
+            paginationReturned: {
                 currentPage: 1,
                 lastPage: 1,
             },
@@ -540,8 +538,11 @@ export default {
         },
 
         getReturnedProducts() {
-            axios.get("/get-returnedProd").then((response) => {
-                this.returnedProducts = response.data.returnedProducts;
+            axios.get("/get-returns").then(({ data }) => {
+                console.log("Returned products:", data);
+                this.returnedProducts = data;
+            }).catch(error => {
+                console.error("Error fetching returned products:", error);
             });
         },
     },
