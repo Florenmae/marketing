@@ -36,6 +36,8 @@ import orderDashboard from "@/Component/OnlineOrder/orderDashboard.vue";
 import pendingOrder from "@/Component/OnlineOrder/pendingOrder.vue";
 import ApproveOrder from "@/Component/OnlineOrder/ApproveOrder.vue";
 
+import Pagination from "@/Component/Tools/Pagination.vue";
+
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "./routes";
 
@@ -91,5 +93,7 @@ app.component("Layout", Layout);
 app.component("userLayout", userLayout);
 app.component("posLayout", PosLayout);
 app.component("OrderLayout", OrderLayout);
+
+app.component("Pagination", Pagination);
 
 app.mount("#app");
