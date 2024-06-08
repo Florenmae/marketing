@@ -1,130 +1,5 @@
 <template>
     <Layout>
-        <!-- <div
-            class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4 content-between w-full"
-        >
-            <div
-                class="bg-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full border border-red-600"
-            >
-                <div class="p-4 flex flex-col items-center w-full">
-                    <div class="flex justify-between items-center w-full">
-                        <div class="text-4xl leading-7 font-semibold">
-                            <span>{{ userCounts }}</span>
-                            <div class="pb-1">
-                                <label class="text-sm">Users</label>
-                            </div>
-                        </div>
-                        <svg
-                            class="w-12 h-12 ml-4"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                            />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="bg-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full border border-blue-600"
-            >
-                <div class="p-4 flex flex-col items-center w-full">
-                    <div class="flex justify-between items-center w-full">
-                        <div class="text-4xl leading-7 font-semibold">
-                            <span>{{ userCounts }}</span>
-                            <div class="pb-1">
-                                <label class="text-sm">Users</label>
-                            </div>
-                        </div>
-                        <svg
-                            class="w-12 h-12 ml-4"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                            />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="bg-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full border border-blue-900"
-            >
-                <div class="p-4 flex flex-col items-center w-full">
-                    <div class="flex justify-between items-center w-full">
-                        <div class="text-4xl leading-7 font-semibold">
-                            <span>{{ userCounts }}</span>
-                            <div class="pb-1">
-                                <label class="text-sm">Users</label>
-                            </div>
-                        </div>
-                        <svg
-                            class="w-12 h-12 ml-4"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                            />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="bg-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full border border-green-600"
-            >
-                <div class="p-4 flex flex-col items-center w-full">
-                    <div class="flex justify-between items-center w-full">
-                        <div class="text-4xl leading-7 font-semibold">
-                            <span>{{ userCounts }}</span>
-                            <div class="pb-1">
-                                <label class="text-sm">Users</label>
-                            </div>
-                        </div>
-                        <svg
-                            class="w-12 h-12 ml-4"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                            />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
         <div
             class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-12 content-between w-full"
         >
@@ -289,8 +164,8 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr
-                                    v-for="(soldItem, index) in soldItems"
-                                    :key="index"
+                                    v-for="(soldItem, id) in paginatedSoldItems"
+                                    :key="id"
                                 >
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ soldItem.productId }}
@@ -311,25 +186,15 @@
                                 >Total Sold Amount:</span
                             >
                             <span>Php {{ totalSoldAmount }}.00</span>
-                            <div
-                                class="px-4 text-right text-s font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                                <button
-                                    @click="prevPage"
-                                    :disabled="pagination.currentPage === 1"
-                                >
-                                    Prev
-                                </button>
-                                <span> / </span>
-                                <button
-                                    @click="nextPage"
-                                    :disabled="
-                                        pagination.currentPage ===
-                                        pagination.lastPage
+                            <div class="flex justify-end">
+                                <Pagination
+                                    :current_page="
+                                        solditemsPagination.currentPage
                                     "
-                                >
-                                    Next
-                                </button>
+                                    :last_page="solditemsPagination.lastPage"
+                                    @next="nextPage"
+                                    @back="prevPage"
+                                />
                             </div>
                         </div>
                     </div>
@@ -371,8 +236,8 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr
-                                    v-for="(returned, index) in returnedProducts"
-                                    :key="index"
+                                    v-for="(returned, id) in paginatedReturns"
+                                    :key="id"
                                 >
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ returned.productlistId }}
@@ -381,51 +246,19 @@
                                         {{ returned.qty }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ returned.created_at }}
+                                        {{ returned.formatted_date }}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-
-                        <div class="mt-4">
-                            <div
-                                class="px-4 text-right text-s font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                                <button
-                                    @click="prevPageReturned"
-                                    :disabled="paginationReturned.currentPage === 1"
-                                >
-                                    Prev
-                                </button>
-                                <span> / </span>
-                                <button
-                                    @click="nextPageReturned"
-                                    :disabled="
-                                        paginationReturned.currentPage ===
-                                        paginationReturned.lastPage
-                                    "
-                                >
-                                    Next
-                                </button>
-                            </div>
+                        <div class="mt-6 flex justify-end">
+                            <Pagination
+                                :current_page="returnPagination.currentPage"
+                                :last_page="returnPagination.lastPage"
+                                @next="nextReturnPage"
+                                @back="prevReturnPage"
+                            />
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div
-            class="grid grid-cols-1 md:grid-cols-1 gap-4 mt-4 content-between w-full h-full"
-        >
-            <div
-                class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
-            >
-                <div class="p-4 flex flex-col items-center w-full h-full">
-                    <div class="bg-gray-50 w-full">
-                        <label
-                            class="px-6 py-3 text-left text-s font-medium text-black-500 uppercase tracking-wider"
-                            >Recently Added</label
-                        >
                     </div>
                 </div>
             </div>
@@ -436,6 +269,7 @@
 <script>
 import Layout from "../Layout/Layout.vue";
 import Modal from "../Component/Modal.vue";
+import Pagination from "@/Component/Tools/Pagination.vue";
 
 // import { Bar } from "vue-chartjs";
 
@@ -445,6 +279,7 @@ export default {
     components: {
         Layout,
         Modal,
+        Pagination,
     },
     data() {
         return {
@@ -457,14 +292,15 @@ export default {
             soldItems: [],
             totalSoldAmount: 0,
             returnedProducts: [],
-            pagination: {
+            solditemsPagination: {
                 currentPage: 1,
                 lastPage: 1,
             },
-            paginationReturned: {
+            returnPagination: {
                 currentPage: 1,
                 lastPage: 1,
             },
+            itemsPerPage: 5,
         };
     },
     methods: {
@@ -517,23 +353,29 @@ export default {
             });
         },
 
-        getSoldItems(page) {
-            axios
-                .get(`/get-sold-items?page=${page}`)
-                .then((response) => {
-                    this.soldItems = response.data.soldItems;
-                    this.totalSoldAmount = response.data.totalSoldAmount;
-                    this.pagination = response.data.pagination;
-                });
+        getSoldItems() {
+            axios.get("/get-sold-items").then((data) => {
+                this.soldItems = data.data.soldItems;
+                this.totalSoldAmount = data.data.totalSoldAmount;
+                // this.pagination = response.data.pagination;
+                this.solditemsPagination.lastPage = Math.ceil(
+                    this.soldItems.length / this.itemsPerPage
+                );
+            });
         },
+
         prevPage() {
-            if (this.pagination.currentPage > 1) {
-                this.getSoldItems(this.pagination.currentPage - 1);
+            if (this.solditemsPagination.currentPage > 1) {
+                this.solditemsPagination.currentPage--;
             }
         },
+
         nextPage() {
-            if (this.pagination.currentPage < this.pagination.lastPage) {
-                this.getSoldItems(this.pagination.currentPage + 1);
+            if (
+                this.solditemsPagination.currentPage <
+                this.solditemsPagination.lastPage
+            ) {
+                this.solditemsPagination.currentPage++;
             }
         },
 
@@ -541,9 +383,25 @@ export default {
             axios.get("/get-returns").then(({ data }) => {
                 console.log("Returned products:", data);
                 this.returnedProducts = data;
-            }).catch(error => {
-                console.error("Error fetching returned products:", error);
+                this.returnPagination.lastPage = Math.ceil(
+                    this.returnedProducts.length / this.itemsPerPage
+                );
             });
+        },
+
+        prevReturnPage() {
+            if (this.returnPagination.currentPage > 1) {
+                this.returnPagination.currentPage--;
+            }
+        },
+
+        nextReturnPage() {
+            if (
+                this.returnPagination.currentPage <
+                this.returnPagination.lastPage
+            ) {
+                this.returnPagination.currentPage++;
+            }
         },
     },
     mounted() {
@@ -555,6 +413,20 @@ export default {
         this.getRecentProducts();
         this.getSoldItems(1);
         this.getReturnedProducts();
+    },
+    computed: {
+        paginatedSoldItems() {
+            const startIndex =
+                (this.solditemsPagination.currentPage - 1) * this.itemsPerPage;
+            const endIndex = startIndex + this.itemsPerPage;
+            return this.soldItems.slice(startIndex, endIndex);
+        },
+        paginatedReturns() {
+            const startIndex =
+                (this.returnPagination.currentPage - 1) * this.itemsPerPage;
+            const endIndex = startIndex + this.itemsPerPage;
+            return this.returnedProducts.slice(startIndex, endIndex);
+        },
     },
 };
 </script>

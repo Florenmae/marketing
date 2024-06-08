@@ -56,16 +56,16 @@ class HomeController extends Controller
     public function getSoldItems()
 {
     $userId = 1; 
-    $transactions = Transaction::where('userId', $userId)->paginate(5);
 
-    $soldItems = [];
+    $transactions = Transaction::where('userId', $userId)->get();
+
+
     $totalSoldAmount = 0; 
-
-    foreach (Transaction::where('userId', $userId)->get() as $transaction) {
-        $totalSoldAmount += $transaction->totalprice; 
-    }
-
+    $soldItems = [];
+    
     foreach ($transactions as $transaction) {
+        $totalSoldAmount += $transaction->totalprice;
+
         $soldItem = [
             'productId' => $transaction->productId,
             'qty' => $transaction->actualQty,
@@ -75,31 +75,30 @@ class HomeController extends Controller
         $soldItems[] = $soldItem;
     }
 
-    return [
+    $response = [
         'soldItems' => $soldItems,
         'totalSoldAmount' => $totalSoldAmount,
-        'pagination' => [
-            'currentPage' => $transactions->currentPage(),
-            'totalItems' => $transactions->total(),
-            'itemsPerPage' => $transactions->perPage(),
-            'lastPage' => $transactions->lastPage(),
-        ],
     ];
+
+    return response()->json($response);
 }
 
 
-    public function getReturnedItems (Request $request){
-        $returnedProducts = ReturnedProduct::all();
+    public function getReturnedItems(Request $request)
+{
+    $returnedProducts = ReturnedProduct::all();
 
-        $return = $returnedProducts->map(function ($returns) {
-            return [
-                'productlistId' => $returns->productlistId,
-                'quantity' => $returns->qty,
-                'created_at' => Carbon::parse($returns->created_at)->format('F d, Y'),
-            ];
-        });
-        return response()->json($return);
-    }
+    $return = $returnedProducts->map(function ($returns) {
+        return [
+            'productlistId' => $returns->productlistId,
+            'quantity' => $returns->qty,
+            'formatted_date' => Carbon::parse($returns->created_at)->format('F d, Y'),
+        ];
+    });
+
+    return response()->json($return);
+}
+
 
 
 
