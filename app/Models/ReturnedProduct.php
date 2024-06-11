@@ -16,6 +16,7 @@ class ReturnedProduct extends Model
         'item_code',
         'qty',
         'description',
+        'created_at',
     ];
 
     public function product()

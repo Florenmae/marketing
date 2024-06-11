@@ -14,7 +14,7 @@ class TransactionController extends Controller
         $trans = $transactions->map(function ($transaction) {
             return [
                 'id' => $transaction->id,
-                'productId' => $transaction->productId,
+                'productlistId' => $transaction->productlistId,
                 'userId' => $transaction->userId,
                 'type' => $transaction->type,
                 'qty' => $transaction->qty,
@@ -27,7 +27,7 @@ class TransactionController extends Controller
 
     public function getTransactionId()
     {
-         $product = Product::find($productId);
+         $product = Product::find($productlistId);
     if ($product) {
         $transaction = $product->transaction;
         if ($transaction) {

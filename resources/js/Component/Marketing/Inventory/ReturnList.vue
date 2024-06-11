@@ -5,7 +5,7 @@
                 <div class="mt-6 mb-6">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
-                        >Product List</span
+                        >Returned Product List</span
                     >
                 </div>
                 <div><returnForm /></div>

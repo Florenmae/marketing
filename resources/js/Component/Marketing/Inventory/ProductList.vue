@@ -36,7 +36,7 @@
                             :key="productlist.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-2">
                                 <img
                                     :src="productlist.image"
                                     alt="Product Image"
@@ -45,26 +45,28 @@
                             </td>
                             <th
                                 scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
                                 {{ productlist.name }}
                             </th>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-2">
                                 <p>
                                     {{
                                         getCategoryName(productlist.categoryId)
                                     }}
                                 </p>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-2">
                                 {{ productlist.item_code }}
                             </td>
-                            <td class="px-6 py-4">{{ productlist.price }}</td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-2">
+                                {{ productlist.price }}
+                            </td>
+                            <td class="px-6 py-2">
                                 {{ productlist.description }}
                             </td>
                             <td
-                                class="px-2 py-7 flex justify-center items-center space-x-3"
+                                class="px-6 py-4 flex justify-center items-center space-x-3"
                             >
                                 <editProductList :productlist="productlist" />
                                 <button
@@ -78,25 +80,16 @@
                     </tbody>
                 </table>
             </div>
-            <div class="mt-4">
+            <div class="flex justify-end mt-4 mr-4">
                 <div
                     class="px-4 text-right text-s font-medium text-gray-500 uppercase tracking-wider"
                 >
-                    <button
-                        @click="prevPage"
-                        :disabled="pagination.currentPage === 1"
-                    >
-                        Prev
-                    </button>
-                    <span> / </span>
-                    <button
-                        @click="nextPage"
-                        :disabled="
-                            pagination.currentPage === pagination.lastPage
-                        "
-                    >
-                        Next
-                    </button>
+                    <Pagination
+                        :current_page="pagination.currentPage"
+                        :last_page="pagination.lastPage"
+                        @next="nextPage"
+                        @back="prevPage"
+                    />
                 </div>
             </div>
         </div>
@@ -107,6 +100,7 @@
 import Modal from "@/Component/Modal.vue";
 import editProductList from "@/Component/Marketing/inventory/editProductList.vue";
 import addProductList from "@/Component/Marketing/inventory/addProductList.vue";
+import Pagination from "@/Component/Tools/Pagination.vue";
 import axios from "axios";
 
 export default {
@@ -115,6 +109,7 @@ export default {
         Modal,
         editProductList,
         addProductList,
+        Pagination,
     },
     data() {
         return {

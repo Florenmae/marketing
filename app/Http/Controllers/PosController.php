@@ -200,7 +200,7 @@ public function checkout(Request $request)
     }
 
     foreach ($cartItems as $cartItem) {
-        $product = Product::find($cartItem->productId);
+        $product = Product::find($cartItem->productlistId);
         if ($product && $cartItem->userId == 1) {
             $product->decrement('stocks', $cartItem->qty);
         }
@@ -211,7 +211,8 @@ public function checkout(Request $request)
     $now = now();
     foreach ($cartItems as $cartItem) {
         $orderItems[] = [
-            'productId' => $cartItem->productId,
+            'productlistId' => $cartItem->productlistId,
+            'transactionId' => $cartItem->transactionId,
             'customerId' => $cartItem->customerId,
             'price' => $cartItem->price,
             'qty' => $cartItem->qty,
@@ -226,7 +227,7 @@ public function checkout(Request $request)
 
       
         $transaction = new Transaction();
-        $transaction->productId = $cartItem->productId;
+        $transaction->productlistId = $cartItem->productlistId;
         $transaction->userId = Auth::id();
         $transaction->qty = $cartItem->qty;
         $transaction->actualQty = $cartItem->qty;

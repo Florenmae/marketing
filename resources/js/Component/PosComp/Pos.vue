@@ -345,7 +345,7 @@ export default {
                 amountGiven: this.amountGiven,
                 customerId: this.selectedCustomerType,
                 items: this.cart.map((product) => ({
-                    productId: product.productId,
+                    productlistId: product.productlistId,
                     customerId: this.selectedCustomerType,
                     qty: product.qty,
                     price: product.price,

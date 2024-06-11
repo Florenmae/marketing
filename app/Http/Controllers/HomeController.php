@@ -67,7 +67,7 @@ class HomeController extends Controller
         $totalSoldAmount += $transaction->totalprice;
 
         $soldItem = [
-            'productId' => $transaction->productId,
+            'productlistId' => $transaction->productlistId,
             'qty' => $transaction->actualQty,
             'totalPrice' => $transaction->totalprice,
         ];
@@ -92,12 +92,13 @@ class HomeController extends Controller
         return [
             'productlistId' => $returns->productlistId,
             'quantity' => $returns->qty,
-            'formatted_date' => Carbon::parse($returns->created_at)->format('F d, Y'),
+            'created_at' => Carbon::parse($returns->created_at)->format('F d, Y'),
         ];
     });
 
     return response()->json($return);
 }
+
 
 
 

@@ -168,7 +168,7 @@
                                     :key="id"
                                 >
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ soldItem.productId }}
+                                        {{ soldItem.productlistId }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ soldItem.qty }}
@@ -246,7 +246,7 @@
                                         {{ returned.qty }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ returned.formatted_date }}
+                                        {{ returned.created_at }}
                                     </td>
                                 </tr>
                             </tbody>
