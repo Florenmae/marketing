@@ -126,7 +126,7 @@
         </div>
 
         <div
-            class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 content-between w-full h-full"
+            class="justify item-center grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 content-between w-full h-full"
         >
             <div
                 class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
@@ -135,8 +135,9 @@
                     <div class="bg-gray-50 w-full">
                         <label
                             class="px-6 py-3 text-left text-s font-medium text-black-500 uppercase tracking-wider"
-                            >Sold Items</label
                         >
+                            Sold Items
+                        </label>
                     </div>
                     <div class="mt-1 w-full">
                         <table class="min-w-full divide-y divide-gray-200">
@@ -144,19 +145,19 @@
                                 <tr>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
                                         Product Id
                                     </th>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
                                         Quantity
                                     </th>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
                                         Total Price
                                     </th>
@@ -167,13 +168,23 @@
                                     v-for="(soldItem, id) in paginatedSoldItems"
                                     :key="id"
                                 >
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ soldItem.productlistId }}
+                                    <td
+                                        class="px-6 py-4 text-center whitespace-nowrap"
+                                    >
+                                        {{
+                                            getProductName(
+                                                soldItem.productlistId
+                                            )
+                                        }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td
+                                        class="px-6 py-4 text-center whitespace-nowrap"
+                                    >
                                         {{ soldItem.qty }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td
+                                        class="px-6 py-4 text-center whitespace-nowrap"
+                                    >
                                         {{ soldItem.totalPrice }}
                                     </td>
                                 </tr>
@@ -183,8 +194,9 @@
                         <div class="mt-4">
                             <span
                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >Total Sold Amount:</span
                             >
+                                Total Sold Amount:
+                            </span>
                             <span>Php {{ totalSoldAmount }}.00</span>
                             <div class="flex justify-end">
                                 <Pagination
@@ -200,6 +212,7 @@
                     </div>
                 </div>
             </div>
+
             <div
                 class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
             >
@@ -207,8 +220,9 @@
                     <div class="bg-gray-50 w-full">
                         <label
                             class="px-6 py-3 text-left text-s font-medium text-black-500 uppercase tracking-wider"
-                            >Returned Products</label
                         >
+                            Returned Products
+                        </label>
                     </div>
                     <div class="mt-1 w-full">
                         <table class="min-w-full divide-y divide-gray-200">
@@ -216,19 +230,25 @@
                                 <tr>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
                                         Product Id
                                     </th>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
                                         Quantity
                                     </th>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                    >
+                                        Returned To
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
                                         Date
                                     </th>
@@ -239,14 +259,29 @@
                                     v-for="(returned, id) in paginatedReturns"
                                     :key="id"
                                 >
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ returned.productlistId }}
+                                    <td
+                                        class="px-6 py-4 text-center whitespace-nowrap"
+                                    >
+                                        {{
+                                            getProductName(
+                                                returned.productlistId
+                                            )
+                                        }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td
+                                        class="px-6 py-4 text-center whitespace-nowrap"
+                                    >
                                         {{ returned.qty }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ returned.created_at }}
+                                    <td
+                                        class="px-6 py-4 text-center whitespace-nowrap"
+                                    >
+                                        {{ getSupplierName(returned.userId) }}
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-center whitespace-nowrap"
+                                    >
+                                        {{ formatDate(returned.created_at) }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -270,6 +305,7 @@
 import Layout from "../Layout/Layout.vue";
 import Modal from "../Component/Modal.vue";
 import Pagination from "@/Component/Tools/Pagination.vue";
+import moment from "moment";
 
 // import { Bar } from "vue-chartjs";
 
@@ -280,6 +316,7 @@ export default {
         Layout,
         Modal,
         Pagination,
+        moment,
     },
     data() {
         return {
@@ -357,7 +394,7 @@ export default {
             axios.get("/get-sold-items").then((data) => {
                 this.soldItems = data.data.soldItems;
                 this.totalSoldAmount = data.data.totalSoldAmount;
-                // this.pagination = response.data.pagination;
+
                 this.solditemsPagination.lastPage = Math.ceil(
                     this.soldItems.length / this.itemsPerPage
                 );
@@ -403,6 +440,32 @@ export default {
                 this.returnPagination.currentPage++;
             }
         },
+        getProductlists() {
+            axios.get("/get-productlists").then(({ data }) => {
+                this.productlists = data;
+            });
+        },
+
+        getProductName(productlistId) {
+            const productlist = this.productlists.find(
+                (b) => b.id === productlistId
+            );
+            return productlist ? productlist.name : "Unknown product";
+        },
+        getUsers() {
+            axios.get("/get-users").then(({ data }) => {
+                this.users = data;
+            });
+        },
+        getSupplierName(userId) {
+            userId = Number(userId);
+            const user = this.users.find((user) => user.id === userId);
+            return user ? user.name : "Unknown User";
+        },
+
+        formatDate(date) {
+            return moment(date).format("MMMM D, YYYY");
+        },
     },
     mounted() {
         this.checkAuth();
@@ -413,6 +476,8 @@ export default {
         this.getRecentProducts();
         this.getSoldItems(1);
         this.getReturnedProducts();
+        this.getProductlists();
+        this.getUsers();
     },
     computed: {
         paginatedSoldItems() {

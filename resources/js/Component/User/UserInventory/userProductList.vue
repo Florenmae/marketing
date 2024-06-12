@@ -10,7 +10,7 @@
                 </div>
                 <div><addProduct></addProduct></div>
             </div>
-            <div class="overflow-x-auto border border-gray-300">
+            <div class="mt-4 overflow-x-auto border border-gray-300">
                 <table
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                 >
@@ -32,7 +32,7 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="product in products"
+                            v-for="(product, id) in paginatedProducts"
                             :key="product.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
@@ -40,12 +40,12 @@
                                 <img
                                     :src="product.image"
                                     alt="Product Image"
-                                    class="w-20 h-20 rounded-lg"
+                                    class="w-15 h-14 rounded-lg"
                                 />
                             </td>
                             <th
                                 scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
                                 {{ getProductlistName(product.productlistId) }}
                             </th>
@@ -84,7 +84,7 @@
                                 </p>
                             </td>
                             <td
-                                class="space-x-2 px-6 py-6 flex justify-center items-center"
+                                class="space-x-2 px-6 py-5 flex justify-center items-center"
                             >
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-red-600"
@@ -97,6 +97,16 @@
                     </tbody>
                 </table>
             </div>
+            <div
+                class="fixed bottom-12 right-4 w-full bg-white p-4 flex justify-end"
+            >
+                <Pagination
+                    :current_page="pagination.currentPage"
+                    :last_page="lastPage"
+                    @next="nextPage"
+                    @back="prevPage"
+                />
+            </div>
         </div>
     </userLayout>
 </template>
@@ -107,6 +117,7 @@ import addProduct from "@/Component/User/UserInventory/addProduct.vue";
 import SendToAdmin from "@/Component/User/UserInventory/SendToAdmin.vue";
 import axios from "axios";
 import UserLayout from "../../../Layout/userLayout.vue";
+import Pagination from "@/Component/Tools/Pagination.vue";
 
 export default {
     components: {
@@ -114,6 +125,7 @@ export default {
         addProduct,
         UserLayout,
         SendToAdmin,
+        Pagination,
     },
     data() {
         return {
@@ -131,6 +143,11 @@ export default {
             categories: [],
             editingProductId: null,
             modalStatus: false,
+            pagination: {
+                currentPage: 1,
+                lastPage: 1,
+            },
+            itemsPerPage: 5,
         };
     },
     methods: {
@@ -140,6 +157,9 @@ export default {
         getProductUsers() {
             axios.get("/get-productsUser").then(({ data }) => {
                 this.products = data;
+                this.pagination.lastPage = Math.ceil(
+                    this.products.length / this.itemsPerPage
+                );
             });
         },
         editProduct(product) {
@@ -212,11 +232,31 @@ export default {
             );
             return productList ? productList.name : "Unknown Name";
         },
+
+        prevPage() {
+            if (this.pagination.currentPage > 1) {
+                this.pagination.currentPage--;
+            }
+        },
+
+        nextPage() {
+            if (this.pagination.currentPage < this.pagination.lastPage) {
+                this.pagination.currentPage++;
+            }
+        },
     },
     mounted() {
         this.getProductUsers();
         this.getCategories();
         this.getProductList();
+    },
+    computed: {
+        paginatedProducts() {
+            const startIndex =
+                (this.pagination.currentPage - 1) * this.itemsPerPage;
+            const endIndex = startIndex + this.itemsPerPage;
+            return this.products.slice(startIndex, endIndex);
+        },
     },
 };
 </script>

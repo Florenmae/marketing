@@ -31,7 +31,7 @@
         :class="{ hovered: clicked }"
     >
         <div
-            class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800"
+            class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 border border-gray-300"
         >
             <div class="flex items-center ps-2.5 mb-5 gap-2">
                 <img
@@ -357,8 +357,10 @@
             </ul>
         </div>
     </aside>
-
-    <div class="ml-64 px-5">
+    <div
+        class="fixed w-screen ml-64 h-14 bg-white border-b border-gray-300"
+    ></div>
+    <div class="ml-64 px-10">
         <div class="flex flex-col items-center pb-20 pt-10 min-h-screen">
             <slot></slot>
         </div>

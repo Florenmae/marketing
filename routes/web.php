@@ -39,6 +39,7 @@ Route::get("/get-user-count", [HomeController::class, 'getUserCount']);
 Route::get("/get-product-count", [HomeController::class, 'getProductCount']);
 Route::get("/get-category-count", [HomeController::class, 'getCategoryCount']);
 Route::get("/get-return-count", [HomeController::class, 'getReturnCount']);
+Route::get("/get-sales-count", [HomeController::class, 'getSalesCount']);
 Route::get("/recent-products", [HomeController::class, 'recentProducts']);
 Route::get("/get-sold-items", [HomeController::class, 'getSoldItems']);
 Route::get("/get-returns", [HomeController::class, 'getReturnedItems']);

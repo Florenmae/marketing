@@ -72,53 +72,6 @@ class ProductUserController extends Controller
         return $products;
     }
 
-// public function submitAdmin(Request $request)
-// {
-//         DB::beginTransaction();
-
-//         $products = $request->input('products');
-
-//         foreach ($products as $productData) {
-//             $id = $productData['id'];
-
-//             $product = Product::findOrFail($id);
-
-//             $originalStock = $product->stocks;
-
-//             $subtractedQty = $productData['qty'];
-//             $product->stocks -= $subtractedQty;
-
-//             if ($product->stocks < 0) {
-//                 $product->stocks = 0;
-//             }
-
-//             $product->price;
-//             $product->status = 2;
-
-//             $product->save();
-            
-
-//             $transaction = new Transaction();
-//             $transaction->productId = $product->id;
-//             $transaction->userId = Auth::id();
-//             $transaction->qty = $subtractedQty; 
-//             $transaction->save();
-
-           
-//             $delivery = new Delivery();
-//             $delivery->userId = Auth::id();
-//             $delivery->transactionId = $transaction->id;
-//             $delivery->productId = $product->id;
-//             $delivery->qty = $subtractedQty; 
-//             $delivery->status = 3;
-//             $delivery->save();
-//         }
-
-//         DB::commit();
-//         DeliveryCart::truncate();
-
-// }
-
 public function addToDevCart(Request $request)
 {   
     $id = $request->input('id');
@@ -179,6 +132,7 @@ public function addToDevCart(Request $request)
 
                 $transaction = new Transaction();
                 $transaction->productId = $product->id;
+                $transaction->productlistId = $product->productlistId;
                 $transaction->userId = Auth::id();
                 $transaction->qty = $subtractedQty;
                 $transaction->type = 2;

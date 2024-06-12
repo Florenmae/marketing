@@ -163,11 +163,15 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr
-                                    v-for="(soldItem, index) in soldItems"
-                                    :key="index"
+                                    v-for="(soldItem, id) in paginatedSoldItems"
+                                    :key="id"
                                 >
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ soldItem.productId }}
+                                        {{
+                                            getProductName(
+                                                soldItem.productlistId
+                                            )
+                                        }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ soldItem.qty }}
@@ -185,25 +189,15 @@
                                 >Total Sold Amount:</span
                             >
                             <span>Php {{ totalSoldAmount }}.00</span>
-                            <div
-                                class="px-4 text-right text-s font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                                <button
-                                    @click="prevPage"
-                                    :disabled="pagination.currentPage === 1"
-                                >
-                                    Prev
-                                </button>
-                                <span> / </span>
-                                <button
-                                    @click="nextPage"
-                                    :disabled="
-                                        pagination.currentPage ===
-                                        pagination.lastPage
+                            <div class="flex justify-end">
+                                <Pagination
+                                    :current_page="
+                                        solditemsPagination.currentPage
                                     "
-                                >
-                                    Next
-                                </button>
+                                    :last_page="solditemsPagination.lastPage"
+                                    @next="nextPage"
+                                    @back="prevPage"
+                                />
                             </div>
                         </div>
                     </div>
@@ -216,10 +210,10 @@
                     <div class="bg-gray-50 w-full">
                         <label
                             class="px-6 py-3 text-left text-s font-medium text-black-500 uppercase tracking-wider"
-                            >Recently Added</label
+                            >Returned Products</label
                         >
                     </div>
-                    <!-- <div class="mt-1 w-full">
+                    <div class="mt-1 w-full">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -239,57 +233,40 @@
                                         scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Total Price
+                                        Date
                                     </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr
-                                    v-for="(soldItem, index) in soldItems"
-                                    :key="index"
+                                    v-for="(returned, id) in paginatedReturns"
+                                    :key="id"
                                 >
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ soldItem.productId }}
+                                        {{
+                                            getProductName(
+                                                returned.productlistId
+                                            )
+                                        }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ soldItem.qty }}
+                                        {{ returned.qty }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ soldItem.totalPrice }}
+                                        {{ formatDate(returned.created_at) }}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-
-                        <div class="mt-4">
-                            <span
-                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >Total Items:</span
-                            >
-                            <span>{{ totalSoldAmount }}</span>
-                            <div
-                                class="px-4 text-right text-s font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                                <button
-                                    @click="prevPage"
-                                    :disabled="pagination.currentPage === 1"
-                                >
-                                    Prev
-                                </button>
-                                <span> / </span>
-                                <button
-                                    @click="nextPage"
-                                    :disabled="
-                                        pagination.currentPage ===
-                                        pagination.lastPage
-                                    "
-                                >
-                                    Next
-                                </button>
-                               
-                            </div>
+                        <div class="mt-6 flex justify-end">
+                            <Pagination
+                                :current_page="returnPagination.currentPage"
+                                :last_page="returnPagination.lastPage"
+                                @next="nextReturnPage"
+                                @back="prevReturnPage"
+                            />
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -299,10 +276,13 @@
 <script>
 import userLayout from "../Layout/userLayout.vue";
 import Modal from "../Component/Modal.vue";
+import moment from "moment";
+
 export default {
     components: {
         userLayout,
         Modal,
+        moment,
     },
     data() {
         return {
@@ -311,14 +291,20 @@ export default {
             productCount: null,
             categoryCount: null,
             returnCount: null,
+            salesCount: null,
             recentProducts: null,
             soldItems: [],
             totalSoldAmount: 0,
             returnedProducts: [],
-            pagination: {
+            solditemsPagination: {
                 currentPage: 1,
                 lastPage: 1,
             },
+            returnPagination: {
+                currentPage: 1,
+                lastPage: 1,
+            },
+            itemsPerPage: 5,
         };
     },
     methods: {
@@ -365,6 +351,12 @@ export default {
                 this.returnCount = response.data.count;
             });
         },
+        getSalesCount() {
+            axios.get("/get-sales-count").then((response) => {
+                console.log("Return count response:", response.data);
+                this.salesCount = response.data.count;
+            });
+        },
         getRecentProducts() {
             axios
                 .get("/recent-products")
@@ -375,27 +367,70 @@ export default {
                     console.error("Error fetching recent items:", error);
                 });
         },
-        getSoldItems(page) {
-            axios
-                .get(`/get-sold-items?page=${page}`)
-                .then((response) => {
-                    this.soldItems = response.data.soldItems;
-                    this.totalSoldAmount = response.data.totalSoldAmount;
-                    this.pagination = response.data.pagination;
-                })
-                .catch((error) => {
-                    console.error("Error fetching sold items:", error);
-                });
+        getSoldItems() {
+            axios.get("/get-sold-items").then((data) => {
+                this.soldItems = data.data.soldItems;
+                this.totalSoldAmount = data.data.totalSoldAmount;
+                this.solditemsPagination.lastPage = Math.ceil(
+                    this.soldItems.length / this.itemsPerPage
+                );
+            });
         },
+
         prevPage() {
-            if (this.pagination.currentPage > 1) {
-                this.getSoldItems(this.pagination.currentPage - 1);
+            if (this.solditemsPagination.currentPage > 1) {
+                this.solditemsPagination.currentPage--;
             }
         },
+
         nextPage() {
-            if (this.pagination.currentPage < this.pagination.lastPage) {
-                this.getSoldItems(this.pagination.currentPage + 1);
+            if (
+                this.solditemsPagination.currentPage <
+                this.solditemsPagination.lastPage
+            ) {
+                this.solditemsPagination.currentPage++;
             }
+        },
+
+        getReturnedProducts() {
+            axios.get("/get-returns").then(({ data }) => {
+                console.log("Returned products:", data);
+                this.returnedProducts = data;
+                this.returnPagination.lastPage = Math.ceil(
+                    this.returnedProducts.length / this.itemsPerPage
+                );
+            });
+        },
+
+        prevReturnPage() {
+            if (this.returnPagination.currentPage > 1) {
+                this.returnPagination.currentPage--;
+            }
+        },
+
+        nextReturnPage() {
+            if (
+                this.returnPagination.currentPage <
+                this.returnPagination.lastPage
+            ) {
+                this.returnPagination.currentPage++;
+            }
+        },
+        formatDate(date) {
+            return moment(date).format("MMMM D, YYYY");
+        },
+
+        getProductlists() {
+            axios.get("/get-productlists").then(({ data }) => {
+                this.productlists = data;
+            });
+        },
+
+        getProductName(productlistId) {
+            const productlist = this.productlists.find(
+                (b) => b.id === productlistId
+            );
+            return productlist ? productlist.name : "Unknown product";
         },
     },
     mounted() {
@@ -404,8 +439,26 @@ export default {
         this.getProductCount();
         this.getCategoryCount();
         this.getReturnCount();
+        this.getSalesCount();
         this.getRecentProducts();
         this.getSoldItems(1);
+        this.getReturnedProducts(1);
+        this.getProductlists();
+    },
+
+    computed: {
+        paginatedSoldItems() {
+            const startIndex =
+                (this.solditemsPagination.currentPage - 1) * this.itemsPerPage;
+            const endIndex = startIndex + this.itemsPerPage;
+            return this.soldItems.slice(startIndex, endIndex);
+        },
+        paginatedReturns() {
+            const startIndex =
+                (this.returnPagination.currentPage - 1) * this.itemsPerPage;
+            const endIndex = startIndex + this.itemsPerPage;
+            return this.returnedProducts.slice(startIndex, endIndex);
+        },
     },
 };
 </script>

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('order_cart', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('orderId')->nullable();
-            $table->integer('productId')->nullable();
+            $table->integer('productlistId')->nullable();
             $table->float('qty')->nullable();
             $table->timestamps();
         });

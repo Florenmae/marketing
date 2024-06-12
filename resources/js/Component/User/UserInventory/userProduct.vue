@@ -1,6 +1,6 @@
 <template>
     <userLayout>
-        <div class="flex justify-between w-full">
+        <div class="mt-5 flex justify-between w-full">
             <div class="flex-3 p-4 relative">
                 <h2 class="text-2xl font-semibold mb-4">Categories</h2>
                 <div class="absolute top-10 right-3 mt-2 mr-2">
@@ -193,7 +193,7 @@ export default {
             amountGiven: 0,
             status: 0,
             productlists: [],
-            selectedCategoryId: null, 
+            selectedCategoryId: null,
         };
     },
     methods: {

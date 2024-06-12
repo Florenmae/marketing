@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->integer('productId')->nullable();
+            $table->integer('productlistId')->nullable();
             $table->integer('userId')->nullable();
             $table->boolean('type')->nullable();
             $table->float('qty')->nullable();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -10,7 +11,7 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\ReturnedProduct;
-use Carbon\Carbon;
+
 
 
 class HomeController extends Controller
@@ -46,6 +47,13 @@ class HomeController extends Controller
         return response()->json(['count' => $returnCount]);
     }
 
+    public function getSalesCount()
+    {
+        $salesCount = Transaction::count();
+
+        return response()->json(['count' => $salesCount]);
+    }
+
     public function recentProducts()
     {
         $recentProducts = Product::latest()->take(5)->get();
@@ -55,7 +63,7 @@ class HomeController extends Controller
 
     public function getSoldItems()
 {
-    $userId = 1; 
+    $userId = Auth::id();
 
     $transactions = Transaction::where('userId', $userId)->get();
 
@@ -68,7 +76,7 @@ class HomeController extends Controller
 
         $soldItem = [
             'productlistId' => $transaction->productlistId,
-            'qty' => $transaction->actualQty,
+            'qty' => $transaction->qty,
             'totalPrice' => $transaction->totalprice,
         ];
 
@@ -84,21 +92,22 @@ class HomeController extends Controller
 }
 
 
-    public function getReturnedItems(Request $request)
+   public function getReturnedItems(Request $request)
 {
-    $returnedProducts = ReturnedProduct::all();
+    $userId = Auth::id();
+    $returnedProducts = ReturnedProduct::where('userId', $userId)->get();
 
     $return = $returnedProducts->map(function ($returns) {
         return [
             'productlistId' => $returns->productlistId,
-            'quantity' => $returns->qty,
+            'qty' => $returns->qty,
             'created_at' => Carbon::parse($returns->created_at)->format('F d, Y'),
+            'updated_at' => Carbon::parse($returns->updated_at)->format('F d, Y'),
         ];
     });
 
     return response()->json($return);
 }
-
 
 
 
