@@ -27,9 +27,11 @@ import Orders from "@/Component/PosComp/Orders.vue";
 import userHome from "@/Component/userHome.vue";
 import userProduct from "@/Component/User/UserInventory/userProduct.vue";
 import addProduct from "@/Component/User/UserInventory/addProduct.vue";
+import UserTransaction from "@/Component/User/UserInventory/UserTransaction.vue";
 
 import Return from "@/Component/Marketing/Inventory/Return.vue";
 import ReturnList from "@/Component/Marketing/Inventory/ReturnList.vue";
+import userReturnlist from "@/Component/User/UserInventory/userReturnlist.vue";
 
 import orderDashboard from "@/Component/OnlineOrder/orderDashboard.vue";
 
@@ -65,6 +67,7 @@ app.component("productlist", ProductList);
 app.component("editproduct", editProduct);
 
 app.component("transaction", Transaction);
+app.component("usertransaction", UserTransaction);
 app.component("orderlist", OrderList);
 
 app.component("category", Category);
@@ -73,6 +76,7 @@ app.component("addcategory", addCategory);
 
 app.component("return", Return);
 app.component("returnlist", ReturnList);
+app.component("userReturnlist", userReturnlist);
 
 app.component("modal", Modal);
 app.component("modal1", Modal1);

@@ -9,11 +9,13 @@ import ProductList from "@/Component/Marketing/Inventory/ProductList.vue";
 import OrderList from "@/Component/Marketing/Inventory/OrderList.vue";
 
 import Transaction from "@/Component/Marketing/Inventory/Transaction.vue";
+import UserTransaction from "@/Component/User/UserInventory/UserTransaction.vue";
 
 import CashReg from "@/Component/Marketing/Cash/CashReg.vue";
 
 import Return from "@/Component/Marketing/Inventory/Return.vue";
 import ReturnList from "@/Component/Marketing/Inventory/ReturnList.vue";
+import userReturnlist from "@/Component/User/UserInventory/userReturnlist.vue";
 // import returnForm from "@/Component/ProdComp/returnForm.vue";
 // import addReturn from "@/Component/ProdComp/addReturn.vue";
 
@@ -75,6 +77,11 @@ export const routes = [
         name: "transaction",
         component: Transaction,
     },
+    {
+        path: "/usertransaction",
+        name: "usertransaction",
+        component: UserTransaction,
+    },
 
     {
         path: "/cashreg",
@@ -101,12 +108,6 @@ export const routes = [
         name: "userProductList",
         component: userProductList,
     },
-
-    // {
-    //     path: "/returnForm",
-    //     name: "returnForm",
-    //     component: returnForm,
-    // },
     {
         path: "/return",
         name: "return",
@@ -117,11 +118,11 @@ export const routes = [
         name: "returnlist",
         component: ReturnList,
     },
-    // {
-    //     path: "/addReturn",
-    //     name: "addReturn",
-    //     component: addReturn,
-    // },
+    {
+        path: "/userReturnlist",
+        name: "userReturnlist",
+        component: userReturnlist,
+    },
     {
         path: "/pos",
         name: "pos",
@@ -137,16 +138,6 @@ export const routes = [
         name: "pendingOrder",
         component: pendingOrder,
     },
-    // {
-    //     path: "/view",
-    //     name: "view",
-    //     component: View,
-    // },
-    // {
-    //     path: "/vieworder",
-    //     name: "vieworder",
-    //     component: ViewOrder,
-    // },
     {
         path: "/signup",
         name: "signup",

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('productlistId')->nullable();
             $table->integer('userId')->nullable();
+            $table->integer('roleId')->nullable();
             $table->boolean('type')->nullable();
             $table->float('qty')->nullable();
             $table->float('actualQty')->nullable();

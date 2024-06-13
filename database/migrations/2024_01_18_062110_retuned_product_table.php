@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('productlistId')->nullable();
             $table->string('item_code')->nullable();
             $table->integer('userId')->nullable();
+            $table->integer('returnedBy')->nullable();
             $table->float('qty')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
