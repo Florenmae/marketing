@@ -32,6 +32,7 @@ import UserTransaction from "@/Component/User/UserInventory/UserTransaction.vue"
 import Return from "@/Component/Marketing/Inventory/Return.vue";
 import ReturnList from "@/Component/Marketing/Inventory/ReturnList.vue";
 import userReturnlist from "@/Component/User/UserInventory/userReturnlist.vue";
+import InventoryReport from "@/Component/User/UserInventory/InventoryReport.vue";
 
 import orderDashboard from "@/Component/OnlineOrder/orderDashboard.vue";
 
@@ -77,6 +78,7 @@ app.component("addcategory", addCategory);
 app.component("return", Return);
 app.component("returnlist", ReturnList);
 app.component("userReturnlist", userReturnlist);
+app.component("InventoryReport", InventoryReport);
 
 app.component("modal", Modal);
 app.component("modal1", Modal1);

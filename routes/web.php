@@ -80,6 +80,7 @@ Route::post('/delete-item', [ProductUserController::class, 'deleteItem']);
 Route::post('/delete-product', [ProductUserController::class, 'deleteProduct']);
 Route::post('/checkout', [ProductUserController::class, 'checkout']);
 Route::get("/getproductlists", [ProductUserController::class, 'getProductLists']);
+Route::get("/fetch-inventories", [ProductUserController::class, 'fetchInventories']);
 
 //Route::get('/get-transaction-id/{productId}', [ProductUserController::class, 'getTransactionId']);
 

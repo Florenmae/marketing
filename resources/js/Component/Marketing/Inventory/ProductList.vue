@@ -13,7 +13,7 @@
                 </div>
             </div>
 
-            <div class="overflow-x-auto border border-gray-300">
+            <div class="mt-4 overflow-x-auto border border-gray-300">
                 <table
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                 >
@@ -82,7 +82,7 @@
             </div>
             <div class="flex justify-end mt-4 mr-4">
                 <div
-                    class="px-4 text-right text-s font-medium text-gray-500 uppercase tracking-wider"
+                    class="fixed bottom-12 right-4 w-full bg-white p-4 flex justify-end"
                 >
                     <Pagination
                         :current_page="pagination.currentPage"

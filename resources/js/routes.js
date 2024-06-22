@@ -16,8 +16,7 @@ import CashReg from "@/Component/Marketing/Cash/CashReg.vue";
 import Return from "@/Component/Marketing/Inventory/Return.vue";
 import ReturnList from "@/Component/Marketing/Inventory/ReturnList.vue";
 import userReturnlist from "@/Component/User/UserInventory/userReturnlist.vue";
-// import returnForm from "@/Component/ProdComp/returnForm.vue";
-// import addReturn from "@/Component/ProdComp/addReturn.vue";
+import InventoryReport from "@/Component/User/UserInventory/InventoryReport.vue";
 
 import userProduct from "@/Component/User/UserInventory/userProduct.vue";
 import userProductList from "@/Component/User/UserInventory/userProductList.vue";
@@ -107,6 +106,11 @@ export const routes = [
         path: "/userProductList",
         name: "userProductList",
         component: userProductList,
+    },
+    {
+        path: "/InventoryReport",
+        name: "InventoryReport",
+        component: InventoryReport,
     },
     {
         path: "/return",

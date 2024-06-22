@@ -9,13 +9,13 @@ use App\Models\Delivery;
 use App\Models\DeliveryCart;
 use App\Models\Transaction;
 use App\Models\ProductList;
+use App\Models\Inventory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
 class ProductUserController extends Controller
 {
-
 
     public function createProduct(Request $request)
     {
@@ -47,22 +47,23 @@ class ProductUserController extends Controller
     
     $res = $newProduct->save();
 
-    return $res;
+    if ($res) {
+            $inventory = new Inventory();
+            $inventory->productId = $newProduct->id;
+            $inventory->productlistId = $newProduct->productlistId;
+            $inventory->categoryId = $newProduct->categoryId;
+            $inventory->item_code = $newProduct->item_code;
+            $inventory->userId = Auth::id();
+            $inventory->image = $newProduct->image;
+            $inventory->unit = $newProduct->unit;
+            $inventory->description = $newProduct->description;
+            $inventory->stocks = $newProduct->stocks;
+            $inventory->save();
+        }
+        
+        return $res;
+        
 }
-
-
-//     public function uploadImage(Request $request) {
-//     $request->validate([
-//         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-//     ]);
-
-//     $imageName = $request->image->getClientOriginalName();
-//     $request->image->move(public_path('images'), $imageName);
-
-//     return response()->json(['imagePath' => $imageName]);
-// }
-
-
 
     public function getProductsUser()
     {
