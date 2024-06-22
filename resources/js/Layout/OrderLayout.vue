@@ -40,29 +40,13 @@
             </div>
 
             <!-- Cart and profile buttons -->
-            <div class="flex items-center space-x-4">
-                <button class="text-black flex items-center space-x-4">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="currentColor"
-                        class="bi bi-cart"
-                        viewBox="0 0 20 20"
-                    >
-                        <path
-                            d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
-                        />
-                    </svg>
-                </button>
-
-                <!-- Profile dropdown -->
+            <div class="flex items-center space-x-4 relative">
                 <div class="relative" @click="toggleDropdown">
-                    <button class="text-black flex items-center space-x-2">
+                    <button class="text-black flex items-center space-x-4">
                         <img
                             src="../../../public/user.webp"
                             alt=""
-                            class="w-10 h-10"
+                            class="w-10 h-10 mr-5"
                         />
                     </button>
                     <div
@@ -70,12 +54,11 @@
                         class="absolute right-0 mt-2 bg-white rounded-md shadow-md"
                     >
                         <a
-                            href=""
+                            href="orders"
                             class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                         >
                             Orders
                         </a>
-
                         <a
                             href="/"
                             class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
@@ -87,9 +70,10 @@
             </div>
         </header>
 
-        <!-- Main content -->
-        <div class="ml-5 px-10">
-            <slot></slot>
+        <div class="px-5">
+            <div class="flex flex-col items-center pb-20 pt-5 min-h-screen">
+                <slot></slot>
+            </div>
         </div>
     </div>
 </template>

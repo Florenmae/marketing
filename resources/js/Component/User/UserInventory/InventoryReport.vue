@@ -20,6 +20,12 @@
                                 scope="col"
                                 class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
+                                Inventory Id
+                            </th>
+                            <th
+                                scope="col"
+                                class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                                 Product
                             </th>
                             <th
@@ -76,16 +82,17 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{ getUserRole(inventory.roleId) }}
+                                    {{ getCategory(inventory.categoryId) }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{
-                                        inventory.type === 2
-                                            ? "Sales"
-                                            : inventory.type
-                                    }}
+                                    {{ getUserRole(inventory.userId) }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    {{ inventory.item_code }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -95,13 +102,8 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    {{ inventory.created_at }}
+                                    {{ formatCreatedAt(inventory.created_at) }}
                                 </div>
-                            </td>
-                            <td
-                                class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
-                            >
-                                <!-- View Order button or link can go here -->
                             </td>
                         </tr>
                     </tbody>
@@ -129,17 +131,20 @@
 
 <script>
 import Pagination from "@/Component/Tools/Pagination.vue";
+import moment from "moment";
 
 export default {
     components: {
         Pagination,
     },
-    props: ["inventory"],
+
     data() {
         return {
             inventories: [],
             loading: false,
             error: null,
+            productlists: [],
+            categories: [],
             inventoryDetails: this.inventory,
             inventory: {
                 id: "",
@@ -172,12 +177,25 @@ export default {
         getUserRole(userId) {
             switch (userId) {
                 case 1:
-                    return "IGP";
+                    return "admin";
                 case 2:
+                    return "IGP";
+                case 3:
                     return "Project";
                 default:
                     return "Unknown";
             }
+        },
+
+        getCategories() {
+            axios.get("/get-categories").then(({ data }) => {
+                this.categories = data;
+            });
+        },
+
+        getCategory(categoryId) {
+            const category = this.categories.find((c) => c.id === categoryId);
+            return category ? category.name : "Unknown category";
         },
 
         getProductlists() {
@@ -188,7 +206,7 @@ export default {
 
         getProductName(productlistId) {
             const productlist = this.productlists.find(
-                (b) => b.id === productlistId
+                (d) => d.id === productlistId
             );
             return productlist ? productlist.name : "Unknown product";
         },
@@ -204,10 +222,14 @@ export default {
                 this.pagination.currentPage++;
             }
         },
+        formatCreatedAt(date) {
+            return moment(date).format("MMMM D, YYYY");
+        },
     },
     mounted() {
         this.fetchInventories();
         this.getProductlists();
+        this.getCategories();
     },
     computed: {
         paginatedInventories() {

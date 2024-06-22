@@ -23,10 +23,9 @@ class PosController extends Controller{
    
     public function fetchProducts()
 {
-    // $userId = Auth::id();
+    $userId = Auth::id();
 
-    $products = Product::where('userId', 1)
-                        ->where('status', 3)
+    $products = Product::where('status', 3)
                         ->where('stocks','>', 0)
                         ->get();
 
@@ -77,81 +76,6 @@ class PosController extends Controller{
 
     return response()->json(['message' => 'Cart updated successfully'], 200);
 }
-
-//    public function addToCart(Request $request)
-// {
-//     $productId = $request->input('id');
-//     $customerId = $request->input('customerId');
-//     $qty = $request->input('qty', 1);
-    
-//     $product = Product::find($productId);
-//     dd($productId);
-//     $cartItem = Cart::where('productId', $productId)
-//                     ->where('customerId', $customerId) 
-//                     ->first();
-
-//     if ($cartItem) {
-//         $cartItem->qty += $qty;
-//         $cartItem->total = $cartItem->qty * $product->price;
-//         $cartItem->save();
-//     } else {
-//         Cart::create([
-//             'productId' => $productId,
-//             'customerId' => $customerId, 
-//             'image' => $request->input('image'),
-//             'price' => $product->price ,
-//             'unit' => $request->input('unit'),
-//             'description' => $request->input('description'),
-//             'total' => $product->price * $qty,
-//             'qty' => $qty,
-//         ]);
-//     }
-// }
-
-//     public function addToCart(Request $request)
-// {
-//     $id = $request->input('id');
-//     $userId = 1; 
-//     $customerId = $request->input('customerId');
-//     $qty = $request->input('qty', 1);
-    
-//     $user = User::find($userId);
-//     if ($user) {
-//         $product = $user->products()->find($id);
-        
-//         if ($product) {
-//             $cartItem = Cart::where('id', $id)
-//                             ->where('customerId', $customerId) 
-//                             ->first();
-
-//             if ($cartItem) {
-//                 $cartItem->qty += $qty;
-//                 $cartItem->total = $cartItem->qty * $product->price;
-//                 $cartItem->save();
-//             } else {
-//                 Cart::create([
-//                     'id' => $id,
-//                     'customerId' => $customerId, 
-//                     'userId' => $userId,
-//                     'image' => $product->image, 
-//                     'price' => $product->price,
-//                     'unit' => $product->unit, 
-//                     'description' => $product->description, 
-//                     'total' => $product->price * $qty,
-//                     'qty' => $qty,
-//                 ]);
-//             }
-//         } else {
-            
-//             return response()->json(['error' => 'Product is not associated with the user'], 404);
-//         }
-//     } else {
-       
-//         return response()->json(['error' => 'User with ID 1 not found'], 404);
-//     }
-// }
-
-
 
     public function showCartItem(Request $request){
         return Cart::all();

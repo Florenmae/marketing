@@ -47,7 +47,7 @@
                                 scope="row"
                                 class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ getProductlistName(product.productlistId) }}
+                                {{ getProductName(product.productlistId) }}
                             </th>
                             <td class="px-6 py-4">
                                 {{ getCategoryName(product.categoryId) }}
@@ -102,7 +102,6 @@
             >
                 <Pagination
                     :current_page="pagination.currentPage"
-                    :last_page="lastPage"
                     @next="nextPage"
                     @back="prevPage"
                 />
@@ -139,7 +138,7 @@ export default {
                 status: "",
             },
             products: [],
-            productLists: [],
+            productlists: [],
             categories: [],
             editingProductId: null,
             modalStatus: false,
@@ -151,15 +150,13 @@ export default {
         };
     },
     methods: {
-        changeModalStatus() {
-            this.modalStatus = !this.modalStatus;
-        },
         getProductUsers() {
             axios.get("/get-productsUser").then(({ data }) => {
                 this.products = data;
                 this.pagination.lastPage = Math.ceil(
                     this.products.length / this.itemsPerPage
                 );
+                console.log("Products:", this.products);
             });
         },
         editProduct(product) {
@@ -167,7 +164,7 @@ export default {
             this.editingProductId = product.id;
             this.modalContent.title = "Edit Product";
             this.modalStatus = true;
-            this.getProducts();
+            this.getProductUsers();
         },
         updateProduct(data) {
             const { product, editingProductId } = this;
@@ -176,7 +173,7 @@ export default {
             axios
                 .post("/update-product", { prodPayload, editingProductId })
                 .then(({ data }) => {
-                    this.getProducts();
+                    this.getProductUsers();
                     this.changeModalStatus();
                 })
                 .catch((error) => {
@@ -193,7 +190,7 @@ export default {
         },
         deleteProduct(id) {
             axios.post("/delete-product", { id }).then(({ data }) => {
-                this.getProducts();
+                this.getProductUsers();
             });
         },
         getCategories() {
@@ -201,15 +198,14 @@ export default {
                 this.categories = data;
             });
         },
-        getProductList() {
+        getProductlists(page = 1) {
             axios
-                .get("/get-product-lists")
+                .get(`/get-product-lists?page=${page}`)
                 .then(({ data }) => {
-                    if (data && Array.isArray(data.data)) {
-                        this.productLists = data.data;
-                    } else {
-                        console.error("Expected array but got:", data);
-                    }
+                    this.productlists = data.data;
+                    this.pagination.currentPage = data.pagination.currentPage;
+                    this.pagination.lastPage = data.pagination.lastPage;
+                    console.log("Product Lists:", this.productlists);
                 })
                 .catch((error) => {
                     console.error("Error fetching product lists:", error);
@@ -219,36 +215,34 @@ export default {
             const category = this.categories.find((c) => c.id === categoryId);
             return category ? category.name : "Unknown Category";
         },
-        getProductlistName(productlistId) {
-            if (!Array.isArray(this.productLists)) {
-                console.error(
-                    "productLists is not an array:",
-                    this.productLists
-                );
-                return "Unknown Name";
+        getProductName(productlistId) {
+            console.log("Product List ID:", productlistId);
+            if (!this.productlists || !this.productlists.length) {
+                return "Loading...";
             }
-            const productList = this.productLists.find(
-                (d) => d.id === productlistId
+            const productlist = this.productlists.find(
+                (b) => b.id === productlistId
             );
-            return productList ? productList.name : "Unknown Name";
+            console.log("Matched Product List:", productlist);
+            return productlist ? productlist.name : "Unknown product";
         },
-
         prevPage() {
             if (this.pagination.currentPage > 1) {
                 this.pagination.currentPage--;
+                this.getProductlists(this.pagination.currentPage);
             }
         },
-
         nextPage() {
             if (this.pagination.currentPage < this.pagination.lastPage) {
                 this.pagination.currentPage++;
+                this.getProductlists(this.pagination.currentPage);
             }
         },
     },
     mounted() {
         this.getProductUsers();
         this.getCategories();
-        this.getProductList();
+        this.getProductlists(1);
     },
     computed: {
         paginatedProducts() {

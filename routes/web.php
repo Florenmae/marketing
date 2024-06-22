@@ -15,6 +15,7 @@ use App\Http\Controllers\ReturnedProductController;
 use App\Http\Controllers\ProductUserController;
 use App\Http\Controllers\ProductListController;
 use App\Http\Controllers\CashRegController;
+use App\Http\Controllers\InventoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,7 +81,8 @@ Route::post('/delete-item', [ProductUserController::class, 'deleteItem']);
 Route::post('/delete-product', [ProductUserController::class, 'deleteProduct']);
 Route::post('/checkout', [ProductUserController::class, 'checkout']);
 Route::get("/getproductlists", [ProductUserController::class, 'getProductLists']);
-Route::get("/fetch-inventories", [ProductUserController::class, 'fetchInventories']);
+
+Route::get("/fetch-inventories", [InventoryController::class, 'fetchInventories']);
 
 //Route::get('/get-transaction-id/{productId}', [ProductUserController::class, 'getTransactionId']);
 

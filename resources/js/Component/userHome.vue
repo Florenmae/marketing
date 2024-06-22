@@ -294,6 +294,7 @@ export default {
             salesCount: null,
             recentProducts: null,
             soldItems: [],
+            productlists: [],
             totalSoldAmount: 0,
             returnedProducts: [],
             solditemsPagination: {
@@ -333,38 +334,35 @@ export default {
                     console.error("Error fetching user count:", error);
                 });
         },
+
         getProductCount() {
             axios.get("/get-product-count").then((response) => {
-                console.log("Product count response:" + response.data);
                 this.productCount = response.data.count;
             });
         },
+
         getCategoryCount() {
             axios.get("/get-category-count").then((response) => {
-                console.log("Category count response:", response.data);
                 this.categoryCount = response.data.count;
             });
         },
+
         getReturnCount() {
             axios.get("/get-return-count").then((response) => {
-                console.log("Return count response:", response.data);
                 this.returnCount = response.data.count;
             });
         },
         getSalesCount() {
             axios.get("/get-sales-count").then((response) => {
-                console.log("Return count response:", response.data);
                 this.salesCount = response.data.count;
             });
         },
+
         getRecentProducts() {
             axios
                 .get("/recent-products")
                 .then((response) => {
                     this.recentProducts = response.data.recentProducts;
-                })
-                .catch((error) => {
-                    console.error("Error fetching recent items:", error);
                 });
         },
         getSoldItems() {
@@ -394,7 +392,6 @@ export default {
 
         getReturnedProducts() {
             axios.get("/get-returns").then(({ data }) => {
-                console.log("Returned products:", data);
                 this.returnedProducts = data;
                 this.returnPagination.lastPage = Math.ceil(
                     this.returnedProducts.length / this.itemsPerPage

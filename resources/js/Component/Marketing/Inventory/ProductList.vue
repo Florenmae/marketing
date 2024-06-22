@@ -104,7 +104,6 @@ import Pagination from "@/Component/Tools/Pagination.vue";
 import axios from "axios";
 
 export default {
-    props: ["productlist"],
     components: {
         Modal,
         editProductList,

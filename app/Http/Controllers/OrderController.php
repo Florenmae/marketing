@@ -173,9 +173,10 @@ class OrderController extends Controller
 
         $order = new Order();
         $order->productId = $product->id;        
-        $order->customerId = Auth::id(); 
+        $order->userId = Auth::id(); 
         $order->qty = $productData['qty'];
         $order->price = $price;
+        $order->description = $description;
         $order->total = $price * $productData['qty'];
         $order->status = 2; 
         $order->save();

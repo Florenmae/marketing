@@ -23,6 +23,7 @@ class HomeController extends Controller
 
         return response()->json(['count' => $userCounts]);
     }
+    
     public function getProductCount()
     {
         $userId = Auth::id();
