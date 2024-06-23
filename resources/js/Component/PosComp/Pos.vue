@@ -126,13 +126,13 @@
                 </div>
 
                 <h2 class="text-2xl font-semibold mb-4">Shopping Cart</h2>
-                <div v-if="cart.length === 0" class="text-gray-600">
+                <div v-if="carts.length === 0" class="text-gray-600">
                     Your cart is empty.
                 </div>
                 <div v-else>
                     <div
-                        v-for="product in cart"
-                        :key="product.productlistId"
+                        v-for="product in carts"
+                        :key="product.id"
                         class="flex items-center justify-between p-2 border-b"
                     >
                         <div class="flex items-center space-x-2">
@@ -165,7 +165,7 @@
                             >₱{{ product.price }}.00</span
                         >
                         <span class="text-gray-600"
-                            >Total: ₱{{ product.total}}.00</span
+                            >Total: ₱{{ product.total }}.00</span
                         >
                         <button @click="deleteItem(product.id)">
                             <svg
@@ -285,7 +285,7 @@ export default {
         return {
             products: [],
             productlists: [],
-            cart: [],
+            carts: [],
             categories: [],
             currentPage: 0,
             itemsPerPage: 4,
@@ -301,24 +301,26 @@ export default {
     methods: {
         addToCart(product) {
             console.log("Adding to Cart:", product);
-            const cartItem = {
-                id: product.id,
-                productlistId: product.productlistId,
-                customerId: this.selectedCustomerType,
-                image: product.image,
-                price: product.price,
-                qty: 1,
-                description: product.description,
-                total: product.price * 1,
-            };
-
-            axios.post("/addToCart", cartItem).then((data) => {
-                this.showCartItem();
-            });
+            axios
+                .post("/addToCart", {
+                    id: product.id,
+                    productlistId: product.productlistId,
+                    categoryId: product.categoryId,
+                    customerId: this.selectedCustomerType,
+                    userId: product.userId,
+                    image: product.image,
+                    price: product.price,
+                    qty: 1,
+                    description: product.description,
+                    total: product.price * 1,
+                })
+                .then((data) => {
+                    this.showCartItem();
+                });
         },
 
         calculateTotal() {
-            return this.cart.reduce((total, product) => {
+            return this.carts.reduce((total, product) => {
                 return total + product.total;
             }, 0);
         },
@@ -334,7 +336,7 @@ export default {
 
         showCartItem() {
             axios.get("/showCartItem").then(({ data }) => {
-                this.cart = data;
+                this.carts = data;
             });
         },
 
@@ -357,55 +359,16 @@ export default {
                 .post("/checkout", orderPayload)
                 .then((response) => {
                     const { status, remainingBalance } = response.data;
-                    this.cart = [];
+                    this.carts = [];
                     this.amountGiven = 0;
                     this.receipt = response.data.receipt;
                     this.showReceiptModal = true;
                 })
                 .catch((error) => {
                     console.error("Error during checkout:", error);
-                    this.cart = originalCart;
+                    this.carts = originalCart;
                 });
         },
-
-        // checkout() {
-        //     const originalCart = [...this.cart];
-        //     const orderPayload = {
-        //         paymentMethod: this.paymentMethod,
-        //         amountGiven: this.amountGiven,
-        //         customerId: this.selectedCustomerType,
-        //         items: this.cart.map((product) => ({
-        //             productId: product.productId,
-        //             customerId: this.selectedCustomerType,
-        //             qty: product.qty,
-        //             price: product.price,
-        //             total: product.total,
-        //         })),
-        //     };
-
-        //     axios
-        //         .post("/checkout", orderPayload)
-        //         .then((response) => {
-        //             const { status, remainingBalance } = response.data;
-        //             this.cart = [];
-        //             this.amountGiven = 0;
-        //             this.receipt = response.data.receipt;
-        //             this.showReceiptModal = true;
-
-        //             // Print receipt
-        //             setTimeout(() => {
-        //                 window.print();
-        //             }, 500);
-        //         })
-        //         .catch((error) => {
-        //             console.error("Error during checkout:", error);
-        //             this.cart = originalCart;
-        //         });
-        // },
-
-        // printReceiptModal() {
-        //     this.$refs.receiptModal.printReceipt();
-        // },
 
         fetchProducts() {
             axios.get("/getProducts").then(({ data }) => {
@@ -429,7 +392,6 @@ export default {
         fetchCategories() {
             axios.get("/fetch-categories").then(({ data }) => {
                 this.categories = data;
-        
             });
         },
         nextPage() {
@@ -458,7 +420,7 @@ export default {
             return this.categories.slice(start, end);
         },
         totalAmount() {
-            return this.cart.reduce(
+            return this.carts.reduce(
                 (total, product) => total + product.total,
                 0
             );

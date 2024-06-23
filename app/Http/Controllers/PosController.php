@@ -41,7 +41,7 @@ class PosController extends Controller{
         return Categories::all();
     }
 
-    public function addToCart(Request $request)
+  public function addToCart(Request $request)
 {   
     $id = $request->input('id');
     $qty = $request->input('qty', 1);
@@ -66,7 +66,7 @@ class PosController extends Controller{
             'productlistId' => $productlistId,
             'customerId' => $customerId, 
             'image' => $request->input('image'),
-            'price' => $product->price ,
+            'price' => $product->price,
             'unit' => $request->input('unit'),
             'description' => $request->input('description'),
             'total' => $product->price * $qty,
@@ -74,8 +74,10 @@ class PosController extends Controller{
         ]);
     }
 
-    return response()->json(['message' => 'Cart updated successfully'], 200);
+    return ;
 }
+
+
 
     public function showCartItem(Request $request){
         return Cart::all();

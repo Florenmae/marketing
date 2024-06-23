@@ -8,6 +8,8 @@ use App\Models\Categories;
 use App\Models\Productlist;
 use App\Models\Delivery;
 use App\Models\User;
+use App\Models\Order;
+use App\Models\Cart;
 
 class Product extends Model
 {
@@ -48,6 +50,16 @@ class Product extends Model
     }
 
     public function deliveries()
+    {
+        return $this->hasMany(Delivery::class, 'id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Delivery::class, 'id');
+    }
+
+    public function carts()
     {
         return $this->hasMany(Delivery::class, 'id');
     }

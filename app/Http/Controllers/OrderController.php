@@ -32,33 +32,69 @@ class OrderController extends Controller
     return ProductList::all();
     }
 
-    public function addCart(Request $request){
+//     public function addCart(Request $request){
 
-    $customerId = Auth::id();
-    $productId = $request->input('productId');
+//     $customerId = Auth::id();
+//     $productId = $request->input('productId');
+//     $qty = $request->input('qty', 1);
+
+//     $cartItem = Cart::where('productId', $productId)
+//                     ->where('customerId', $customerId) 
+//                     ->first();
+
+//     if ($cartItem) {
+//         $cartItem->qty += $qty;
+//         $cartItem->total = $cartItem->qty * $cartItem->price;
+//         $cartItem->save();
+//     } else {
+        
+//         Cart::create([
+//             'productId' => $productId,
+//             'customerId' => $customerId, 
+//             'image' => $request->input('image'),
+//             'price' => $request->input('price'),
+//             'unit' => $request->input('unit'),
+//             'description' => $request->input('description'),
+//             'total' => $request->input('price') * $qty,
+//             'qty' => $qty,
+//         ]);
+//     }
+// }
+
+public function addCart(Request $request)
+{   
+    $id = $request->input('id');
     $qty = $request->input('qty', 1);
+    $customerId = Auth::id();
+    $productlistId = $request->input('productlistId');
 
-    $cartItem = Cart::where('productId', $productId)
-                    ->where('customerId', $customerId) 
-                    ->first();
+    $product = Product::find($id);
+    $price = $product->price;
+
+    $cartItem = Cart::where('productId', $id)
+                            ->where('productlistId', $productlistId)
+                            ->where('customerId', $customerId)
+                            ->first();
 
     if ($cartItem) {
         $cartItem->qty += $qty;
-        $cartItem->total = $cartItem->qty * $cartItem->price;
+        $cartItem->price = $product->price * $cartItem->qty;
         $cartItem->save();
     } else {
-        
         Cart::create([
-            'productId' => $productId,
+            'productId' => $id,
+            'productlistId' => $productlistId,
             'customerId' => $customerId, 
             'image' => $request->input('image'),
-            'price' => $request->input('price'),
+            'price' => $product->price,
             'unit' => $request->input('unit'),
             'description' => $request->input('description'),
-            'total' => $request->input('price') * $qty,
+            'total' => $product->price * $qty,
             'qty' => $qty,
         ]);
     }
+
+    return ;
 }
 
 //     public function checkOutOrder(Request $request)
@@ -176,7 +212,7 @@ class OrderController extends Controller
         $order->userId = Auth::id(); 
         $order->qty = $productData['qty'];
         $order->price = $price;
-        $order->description = $description;
+        // $order->description = $description;
         $order->total = $price * $productData['qty'];
         $order->status = 2; 
         $order->save();

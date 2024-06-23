@@ -80,7 +80,7 @@ public function addToDevCart(Request $request)
     $productlistId = $request->input('productlistId');
 
     $product = Product::find($id);
-    
+    //dd($product);
     $cartItem = DeliveryCart::where('productId', $id)
                             ->where('productlistId', $productlistId)
                             ->first();
