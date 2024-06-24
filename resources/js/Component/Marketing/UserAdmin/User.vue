@@ -10,7 +10,7 @@
                 </div>
                 <div><addUser /></div>
             </div>
-            <div class="overflow-x-auto border border-gray-300">
+            <div class="mt-4 overflow-x-auto border border-gray-300">
                 <table
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                 >
@@ -154,7 +154,7 @@ export default {
                 "Are you sure you want to delete this user?"
             );
             if (confirmed) {
-                this.deleteUser(user.id); 
+                this.deleteUser(user.id);
             }
         },
 

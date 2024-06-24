@@ -140,6 +140,7 @@ export default {
     data() {
         return {
             transactions: [],
+            productlists: [],
             loading: false,
             error: null,
             transactionDetails: this.transaction,

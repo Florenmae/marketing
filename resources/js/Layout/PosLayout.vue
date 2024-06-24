@@ -1,6 +1,5 @@
 <template>
     <div class="flex flex-col h-screen border-gray-300">
-        <!-- Header -->
         <header
             class="bg-slate-500 text-black p-4 border-b border-gray-300 flex justify-between items-center"
         >
@@ -12,7 +11,7 @@
                     class="w-10 h-10"
                 />
                 <h1 class="text-lg mr-4">Point of Sale System</h1>
-                <!-- Search input -->
+
                 <div class="relative rounded-full bg-gray-200">
                     <input
                         type="text"
@@ -39,15 +38,12 @@
                 </div>
             </div>
 
-            <!-- Cart and profile buttons -->
             <div class="flex items-center space-x-4 relative">
                 <div class="relative" @click="toggleDropdown">
-                    <button class="text-black flex items-center space-x-4">
-                        <img
-                            src="../../../public/user.webp"
-                            alt=""
-                            class="w-10 h-10 mr-5"
-                        />
+                    <button
+                        class="relative right-5 text-black flex items-center space-x-4"
+                    >
+                        <img src="../../../public/user.png" class="w-10 h-10" />
                     </button>
                     <div
                         v-if="showDropdown"

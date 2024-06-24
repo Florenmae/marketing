@@ -135,6 +135,7 @@ public function addToDevCart(Request $request)
                 $transaction->productId = $product->id;
                 $transaction->productlistId = $product->productlistId;
                 $transaction->userId = Auth::id();
+                $transaction->roleId = 1;
                 $transaction->qty = $subtractedQty;
                 $transaction->type = 2;
                 $transaction->totalprice = $subtotal; 
@@ -144,6 +145,8 @@ public function addToDevCart(Request $request)
                 $delivery->userId = Auth::id();
                 $delivery->transactionId = $transaction->id;
                 $delivery->productId = $product->id;
+                $delivery->productlistId = $product->productlistId;
+                $delivery->description = $product->description;
                 $delivery->qty = $subtractedQty; 
                 $delivery->status = 3;
                 $delivery->save();

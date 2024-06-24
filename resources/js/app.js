@@ -1,6 +1,10 @@
 import "./bootstrap";
 import { createApp } from "vue/dist/vue.esm-bundler";
 import "vue-toast-notification/dist/theme-default.css";
+import PrimeVue from "primevue/config";
+import "primevue/resources/themes/saga-blue/theme.css";
+import "primevue/resources/primevue.min.css";
+import "primeicons/primeicons.css";
 
 import App from "@/Component/App.vue";
 import Modal from "@/Component/Modal.vue";
@@ -56,6 +60,7 @@ const router = createRouter({
 const app = createApp({});
 
 app.use(router);
+app.use(PrimeVue);
 
 app.component("app", App);
 

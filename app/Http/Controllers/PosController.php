@@ -26,6 +26,7 @@ class PosController extends Controller{
     $userId = Auth::id();
 
     $products = Product::where('status', 3)
+                        ->where('userId', $userId)
                         ->where('stocks','>', 0)
                         ->get();
 
@@ -153,11 +154,13 @@ public function checkout(Request $request)
 
       
         $transaction = new Transaction();
+        $transaction->productId = $cartItem->productId;
         $transaction->productlistId = $cartItem->productlistId;
         $transaction->userId = Auth::id();
         $transaction->qty = $cartItem->qty;
         $transaction->actualQty = $cartItem->qty;
         $transaction->type = 2; 
+        $transaction->roleId = $cartItem->customerId;
         $transaction->amountGiven = $amountGiven; 
         $transaction->balance = $balance; 
         $transaction->totalprice = $cartItem->total; 

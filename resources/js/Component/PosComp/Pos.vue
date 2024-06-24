@@ -341,12 +341,13 @@ export default {
         },
 
         checkout() {
-            const originalCart = [...this.cart];
+            const originalCart = [...this.carts];
             const orderPayload = {
                 paymentMethod: this.paymentMethod,
                 amountGiven: this.amountGiven,
                 customerId: this.selectedCustomerType,
-                items: this.cart.map((product) => ({
+                items: this.carts.map((product) => ({
+                    productId: product.productId,
                     productlistId: product.productlistId,
                     customerId: this.selectedCustomerType,
                     qty: product.qty,

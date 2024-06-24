@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
     public function fetchTransactions(Request $request) {
     
-    $userId = auth()->id();
+    $userId = Auth::id();
 
     $transactions = Transaction::where('userId', $userId)->get();
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('transactionId')->nullable();
             $table->float('inflow')->nullable();
             $table->float('outflow')->nullable();
-            $table->boolean('type')->nullable();
+            // $table->boolean('type')->nullable();
             $table->timestamps();
         });
     }
