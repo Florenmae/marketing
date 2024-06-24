@@ -31,7 +31,7 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="returnedProduct in returnedProducts"
+                            v-for="returnedProduct in paginatedReturnedProducts"
                             :key="returnedProduct.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
@@ -51,9 +51,7 @@
                             <td class="px-6 py-4">
                                 {{ getSupplierName(returnedProduct.userId) }}
                             </td>
-                            <td class="px-6 py-4">
-                                {{ returnedProduct.qty }}
-                            </td>
+                            <td class="px-6 py-4">{{ returnedProduct.qty }}</td>
                             <td class="px-6 py-4">
                                 {{ returnedProduct.description }}
                             </td>
@@ -72,6 +70,16 @@
                     </tbody>
                 </table>
             </div>
+            <div
+                class="fixed bottom-6 right-4 w-full bg-white p-4 flex justify-end"
+            >
+                <Pagination
+                    :current_page="currentPage"
+                    :last_page="lastPage"
+                    @next="nextPage"
+                    @back="previousPage"
+                />
+            </div>
         </div>
     </Layout>
 </template>
@@ -79,10 +87,12 @@
 <script>
 import axios from "axios";
 import Modal from "@/Component/Modal.vue";
+import Pagination from "@/Component/Tools/Pagination.vue";
 
 export default {
     components: {
         Modal,
+        Pagination,
     },
     data() {
         return {
@@ -95,9 +105,22 @@ export default {
             },
             returnedProducts: [],
             productlists: [],
+            users: [],
             editingReturnedProductId: null,
             modalStatus: false,
+            currentPage: 1,
+            perPage: 10,
         };
+    },
+    computed: {
+        paginatedReturnedProducts() {
+            const start = (this.currentPage - 1) * this.perPage;
+            const end = start + this.perPage;
+            return this.returnedProducts.slice(start, end);
+        },
+        lastPage() {
+            return Math.ceil(this.returnedProducts.length / this.perPage);
+        },
     },
     methods: {
         changeModalStatus() {
@@ -134,10 +157,23 @@ export default {
                 this.users = data;
             });
         },
+
         getSupplierName(userId) {
             userId = Number(userId);
             const user = this.users.find((user) => user.id === userId);
             return user ? user.name : "Unknown User";
+        },
+
+        nextPage() {
+            if (this.currentPage < this.lastPage) {
+                this.currentPage++;
+            }
+        },
+
+        previousPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
         },
     },
     mounted() {

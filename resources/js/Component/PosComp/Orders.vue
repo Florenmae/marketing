@@ -70,9 +70,7 @@
                                 >
                                     Paid
                                 </span>
-                                <span v-else>
-                                    Php {{ order.balance.toFixed(2) }}
-                                </span>
+                                <span v-else> Php {{ order.balance }}.00 </span>
                             </div>
                         </td>
                         <td

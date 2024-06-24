@@ -327,6 +327,8 @@ export default {
             returnCount: null,
             recentProducts: null,
             soldItems: [],
+            productlists: [],
+            users: [],
             totalSoldAmount: 0,
             returnedProducts: [],
             solditemsPagination: {

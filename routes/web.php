@@ -128,6 +128,7 @@ Route::get("/getProdlist", [OrderController::class, 'getProdlist']);
 Route::post('/add-cart', [OrderController::class, 'addCart'])->name("addCart");
 Route::post('/checkOutOrder', [OrderController::class, 'checkOutOrder']);
 Route::post("/approve-order", [OrderController::class, 'approveOrder']);
+Route::post('/reject-order/{id}', [OrderController::class, 'rejectOrder']);
 
 //CashReg
 Route::get("/get-cash", [CashRegController::class, 'getCash']);

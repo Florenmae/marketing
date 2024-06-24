@@ -121,7 +121,9 @@
             >
                 No transaction recorded.
             </div>
-            <div class="mt-2 flex justify-end">
+            <div
+                class="fixed bottom-6 right-4 w-full bg-white p-4 flex justify-end"
+            >
                 <Pagination
                     :current_page="pagination.currentPage"
                     :last_page="pagination.lastPage"
@@ -144,6 +146,7 @@ export default {
     data() {
         return {
             transactions: [],
+            productlists: [],
             loading: false,
             error: null,
             transactionDetails: this.transaction,

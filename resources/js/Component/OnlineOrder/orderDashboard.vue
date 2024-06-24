@@ -1,5 +1,5 @@
 <template>
-    <posLayout>
+    <OrderLayout>
         <div class="flex justify-between w-full">
             <div class="flex-6 p-4 relative">
                 <h2 class="text-2xl font-semibold mb-5">Categories</h2>
@@ -211,7 +211,7 @@
                 </div>
             </div>
         </div>
-    </posLayout>
+    </OrderLayout>
 </template>
 
 <script>

@@ -209,10 +209,12 @@ public function addCart(Request $request)
 
         $order = new Order();
         $order->productId = $product->id;        
+        $order->productlistId = $product->productlistId;        
         $order->userId = Auth::id(); 
+        $order->customerId = Auth::id(); 
         $order->qty = $productData['qty'];
         $order->price = $price;
-        // $order->description = $description;
+        //$order->description = $description;
         $order->total = $price * $productData['qty'];
         $order->status = 2; 
         $order->save();
@@ -245,64 +247,6 @@ public function addCart(Request $request)
     }
 
 
-//     public function approveOrder(Request $request)
-// {
-//     DB::beginTransaction();
-
-//     try {
-//         $id = $request->editingOrderId;
-//         $order = Order::findOrFail($id);
-
-        
-//         $order->status = $request->prodPayload["status"];
-//         $order->status = $request->prodPayload["status"];
-//         $order->status = $request->prodPayload["status"];
-//         $order->approved_by = $request->prodPayload["approved_by"];
-
-//         // Check if the status is set to 3 (which typically indicates approval)
-//         if ($order->status == 3) {
-//             // Get the actual quantity from the request
-//             $actualQty = $request->prodPayload["actualQty"];
-           
-//             // Calculate total price based on actual quantity and order price
-//             $totalPrice = $actualQty * $order->price;
-
-//             // Create a new transaction record
-//             $transaction = new Transaction();
-//             $transaction->orderId = $order->id; // Assuming you have an orderId field in your Transaction model
-//             $transaction->userId = Auth::id();
-//             $transaction->type = $request->prodPayload["type"];
-//             $transaction->totalprice = $totalPrice;
-//             $transaction->actualQty = $actualQty;
-
-//             // Subtract the actual quantity from available stocks
-//             $order->qty -= $actualQty;
-
-//             // Save the transaction and update order stocks
-//             $transaction->save();
-//             $order->save();
-//         }
-
-//         // If the order is being approved by the admin, update the stocks accordingly
-//         if ($order->userId == 1) {
-//             $order->qty += $request->prodPayload["actualQty"];
-//             $order->save();
-//         }
-
-//         // Commit the transaction
-//         DB::commit();
-
-//         // Return the updated order
-//         return response()->json($order);
-//     } catch (\Exception $e) {
-//         // Roll back the transaction if an error occurs
-//         DB::rollBack();
-
-//         // Return an error response
-//         return response()->json(['error' => $e->getMessage()], 500);
-//     }
-// }
-
     public function approveOrder(Request $request)
     {
         $id = $request->editingOrderId;
@@ -315,6 +259,17 @@ public function addCart(Request $request)
 
         return $order;
 
+    }
+
+    public function rejectOrder(Request $request, $id)
+    {
+        $order = Order::find($id);
+
+        $order->status = 4; 
+
+        $order->save();
+
+        return response()->json(['success' => true, 'message' => 'Order rejected successfully']);
     }
 
 }

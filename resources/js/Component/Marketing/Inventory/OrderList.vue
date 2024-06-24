@@ -42,8 +42,11 @@
                             >
                                 Balance
                             </th>
-                            <th scope="col" class="relative px- py-2">
-                                <span class="sr-only">View Details</span>
+                            <th
+                                scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Action
                             </th>
                         </tr>
                     </thead>
@@ -78,29 +81,14 @@
                                         Paid
                                     </span>
                                     <span v-else>
-                                        Php {{ order.balance.toFixed(2) }}
+                                        Php {{ order.balance }}.00
                                     </span>
                                 </div>
                             </td>
                             <td
-                                class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                                class="px-2 py-2 whitespace-nowrap text-right text-sm font-medium"
                             >
-                                <!-- <RouterLink to="/ViewOrder">
-                                <button
-                                    :order="order"
-                                    class="bg-green-500 px-2 py-1 rounded-md text-white my-1 text-sm hover:bg-green-600"
-                                >
-                                    View Details
-                                </button>
-                            </RouterLink> -->
-
                                 <viewOrder :order="order"></viewOrder>
-                                <!-- <router-link
-                                :to="'/view'"
-                                class="bg-green-500 px-2 py-1 rounded-md text-white my-1 text-sm hover:bg-green-600"
-                            >
-                                View Order
-                            </router-link> -->
                             </td>
                         </tr>
                     </tbody>

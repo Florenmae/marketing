@@ -13,8 +13,9 @@ class Categories extends Model
     use HasFactory;
 
     protected  $fillable=[
-        'categoryId',
-        'categoryName',
+        'id',
+        'name',
+        'cat_code',
         'product_count'
 
     ];

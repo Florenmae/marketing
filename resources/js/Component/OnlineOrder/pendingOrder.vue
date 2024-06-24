@@ -17,12 +17,13 @@
                         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                     >
                         <tr>
+                            <th scope="col" class="px-6 py-3">Order Id</th>
                             <th scope="col" class="px-6 py-3">Image</th>
                             <th scope="col" class="px-6 py-3">Product Name</th>
-                            <!-- <th scope="col" class="px-6 py-3">Customer</th> -->
+                            <th scope="col" class="px-6 py-3">Customer</th>
                             <th scope="col" class="px-6 py-3">Quantity</th>
                             <th scope="col" class="px-6 py-3">Total</th>
-                            <th scope="col" class="px-6 py-3">Order Id</th>
+
                             <th scope="col" class="px-6 py-3">Status</th>
                             <th scope="col" class="px-20 py-3">Action</th>
                         </tr>
@@ -33,6 +34,9 @@
                             :key="order.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
+                            <td class="px-6 py-4">
+                                {{ order.id }}
+                            </td>
                             <td class="px-6 py-4">
                                 <img
                                     :src="order.image"
@@ -47,14 +51,11 @@
                                 {{ getProductName(order.productId) }}
                             </th>
 
-                            <!-- <td class="px-6 py-4">
-                                <p>{{ getSupplierName(order.customerId) }}</p>
-                            </td> -->
+                            <td class="px-6 py-4">
+                                <p>{{ getSupplierName(order.userId) }}</p>
+                            </td>
                             <td class="px-6 py-4">{{ order.qty }}</td>
                             <td class="px-6 py-4">{{ order.total }}</td>
-                            <td class="px-6 py-4">
-                                {{ filteredDeliveries(order.id) }}
-                            </td>
                             <td class="px-6 py-4">{{ order.status }}</td>
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
@@ -62,10 +63,10 @@
                                 <!-- <editProduct :product="product" /> -->
                                 <ApproveOrder :order="order" />
                                 <button
-                                    class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
-                                    @click="returnAll(order)"
+                                    class="bg-red-500 px-4 py-2 rounded-md text-white my-2 text-sm hover:bg-red-600"
+                                    @click="reject(order)"
                                 >
-                                    Return
+                                    Reject
                                 </button>
                             </td>
                         </tr>
@@ -90,14 +91,14 @@
                         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                     >
                         <tr>
+                            <th scope="col" class="px-6 py-3">Order Id</th>
                             <th scope="col" class="px-6 py-3">Image</th>
                             <th scope="col" class="px-6 py-3">Product Name</th>
-                            <!-- <th scope="col" class="px-6 py-3">Customer</th> -->
+                            <th scope="col" class="px-6 py-3">Customer</th>
                             <th scope="col" class="px-6 py-3">Quantity</th>
                             <th scope="col" class="px-6 py-3">Total</th>
-                            <th scope="col" class="px-6 py-3">Order Id</th>
+
                             <th scope="col" class="px-6 py-3">Status</th>
-                            <th scope="col" class="px-20 py-3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -106,6 +107,9 @@
                             :key="order.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
+                            <td class="px-6 py-4">
+                                {{ order.id }}
+                            </td>
                             <td class="px-6 py-4">
                                 <img
                                     :src="order.image"
@@ -117,17 +121,14 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ getProductName (order.productId) }}
+                                {{ getProductName(order.productId) }}
                             </th>
 
-                            <!-- <td class="px-6 py-4">
-                                <p>{{ getSupplierName(order.customerId) }}</p>
-                            </td> -->
+                            <td class="px-6 py-4">
+                                <p>{{ getSupplierName(order.userId) }}</p>
+                            </td>
                             <td class="px-6 py-4">{{ order.qty }}</td>
                             <td class="px-6 py-4">{{ order.total }}</td>
-                            <td class="px-6 py-4">
-                                {{ filteredDeliveries(order.id) }}
-                            </td>
                             <td class="px-6 py-4">
                                 <p
                                     v-if="order.status === 3"
@@ -135,11 +136,6 @@
                                 >
                                     Approve
                                 </p>
-                            </td>
-                            <td
-                                class="px-6 py-4 flex justify-center items-center"
-                            >
-                                <Return :order="order" />
                             </td>
                         </tr>
                     </tbody>
@@ -237,32 +233,17 @@ export default {
                 });
         },
 
-        // editProduct(product) {
-        //     this.editProduct = { ...product };
-        //     this.editingProductId = product.id;
-        //     this.modalContent.title = "Edit Product";
-        //     this.modalStatus = true;
-        // },
-
-        // returnAll(product) {
-        //     axios
-        //         .post("/returnAll-product", { product })
-        //         .then(({ data }) => {
-        //             window.location.reload("Reloading");
-        //         })
-        //         .catch((error) => {
-        //             console.error("Error returning all products:", error);
-        //         });
-        // },
-
-        filteredDeliveries(productId) {
-            const delivery = this.deliveries.find(
-                (delivery) => delivery.productId === productId
-            );
-            if (!delivery) {
-                return "No delivery information";
-            }
-            return delivery.qty;
+        reject(order) {
+            axios
+                .post(`/reject-order/${order.id}`)
+                .then((response) => {
+                    if (response.data.success) {
+                        this.getOrders();
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error rejecting order:", error);
+                });
         },
 
         getProductName(productId) {

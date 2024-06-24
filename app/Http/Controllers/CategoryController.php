@@ -26,7 +26,7 @@ class CategoryController extends Controller
             'products as product_count' => function (Builder $query) {
                 $query->select(DB::raw('count(*)'))
                       ->from('products')
-                      ->whereColumn('products.productlistId', '=', 'categories.id');
+                      ->whereColumn('products.id', '=', 'categories.id');
             }
         ])->get();
 

@@ -56,12 +56,12 @@ class Product extends Model
 
     public function orders()
     {
-        return $this->hasMany(Delivery::class, 'id');
+        return $this->hasMany(Order::class, 'id');
     }
 
     public function carts()
     {
-        return $this->hasMany(Delivery::class, 'id');
+        return $this->hasMany(Cart::class, 'id');
     }
 
     public function returnedProduct()
