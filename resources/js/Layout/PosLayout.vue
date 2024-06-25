@@ -78,11 +78,6 @@
             </div>
         </header>
 
-        <!-- <main class="flex-3">
-            <section class="flex-">
-                <slot></slot>
-            </section>
-        </main> -->
         <div class="px-5">
             <div class="flex flex-col items-center pb-20 pt-5 min-h-screen">
                 <slot></slot>

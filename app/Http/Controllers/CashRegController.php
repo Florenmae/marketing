@@ -28,6 +28,12 @@ class CashRegController extends Controller
         'amount' => $request->amount
     ]);
 
+        $newCash = CashLogs::create([
+        'transactionId' => $request->transactionId,
+        'inflow' => $request->amount,
+        'outflow' => 0,
+    ]);
+
     return $newCash;
 
     }

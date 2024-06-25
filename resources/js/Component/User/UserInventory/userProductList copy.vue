@@ -243,9 +243,6 @@ export default {
             try {
                 const { data } = await axios.get("/get-productsUser");
                 this.products = data;
-                this.pagination.lastPage = Math.ceil(
-                    this.products.length / this.itemsPerPage
-                );
             } catch (error) {
                 console.error("Error fetching products:", error);
             }

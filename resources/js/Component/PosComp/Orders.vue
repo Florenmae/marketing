@@ -1,9 +1,9 @@
 <template>
-    <posLayout>
-        <div>
+    <posLayout class="w-full h-full">
+        <div class="w-full h-full px-6">
             <h2 class="text-lg font-semibold mb-4">Existing Orders</h2>
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="w-full border border-gray-300 divide-gray-200">
+                <thead class="border border-gray-300 bg-gray-50">
                     <tr>
                         <th
                             scope="col"
@@ -76,22 +76,7 @@
                         <td
                             class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
                         >
-                            <!-- <RouterLink to="/ViewOrder">
-                                <button
-                                    :order="order"
-                                    class="bg-green-500 px-2 py-1 rounded-md text-white my-1 text-sm hover:bg-green-600"
-                                >
-                                    View Details
-                                </button>
-                            </RouterLink> -->
-
                             <viewOrder :order="order"></viewOrder>
-                            <!-- <router-link
-                                :to="'/view'"
-                                class="bg-green-500 px-2 py-1 rounded-md text-white my-1 text-sm hover:bg-green-600"
-                            >
-                                View Order
-                            </router-link> -->
                         </td>
                     </tr>
                 </tbody>
@@ -107,6 +92,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import Modal from "@/Component/Modal.vue";
 import ViewOrder from "@/Component/PosComp/ViewOrder.vue";
 import View from "@/Component/PosComp/View.vue";
@@ -146,16 +132,9 @@ export default {
         toggleViewOrder() {
             this.showViewOrder = !this.showViewOrder;
         },
-
-        // viewOrder(order) {
-        //     axios.get(`/view-order/${order.id}`).then((response) => {
-        //         this.orderDetails = response.data;
-        //     });
-        // },
     },
     mounted() {
         this.fetchOrders();
-        //this.viewOrder();
     },
 };
 </script>

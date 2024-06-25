@@ -82,7 +82,7 @@
             </div>
             <div class="flex justify-end mt-4 mr-4">
                 <div
-                    class="fixed bottom-12 right-4 w-full bg-white p-4 flex justify-end"
+                    class="fixed bottom-6 right-4 w-full bg-white p-4 flex justify-end"
                 >
                     <Pagination
                         :current_page="pagination.currentPage"
