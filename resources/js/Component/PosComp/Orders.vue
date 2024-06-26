@@ -41,7 +41,7 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="order in orders" :key="order.id">
+                    <tr v-for="(order, id) in paginatedOrders" :key="id">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-900">
                                 {{ order.id }}
@@ -87,6 +87,16 @@
             >
                 No orders available.
             </div>
+            <div
+                class="fixed bottom-6 right-4 w-full bg-white p-4 flex justify-end"
+            >
+                <Pagination
+                    :current_page="pagination.currentPage"
+                    :last_page="pagination.lastPage"
+                    @next="nextPage"
+                    @back="prevPage"
+                />
+            </div>
         </div>
     </posLayout>
 </template>
@@ -96,6 +106,7 @@ import axios from "axios";
 import Modal from "@/Component/Modal.vue";
 import ViewOrder from "@/Component/PosComp/ViewOrder.vue";
 import View from "@/Component/PosComp/View.vue";
+import Pagination from "@/Component/Tools/Pagination.vue";
 
 export default {
     props: ["order"],
@@ -103,6 +114,7 @@ export default {
         Modal,
         ViewOrder,
         View,
+        Pagination,
     },
     data() {
         return {
@@ -121,20 +133,49 @@ export default {
                 paymentMethod: "",
                 balance: "",
             },
+            pagination: {
+                currentPage: 1,
+                lastPage: 1,
+            },
+            itemsPerPage: 6,
         };
     },
     methods: {
         fetchOrders() {
             axios.get("/fetch-orders").then(({ data }) => {
                 this.orders = data;
+                this.pagination.lastPage = Math.ceil(
+                    this.orders.length / this.itemsPerPage
+                );
             });
         },
+
+        prevPage() {
+            if (this.pagination.currentPage > 1) {
+                this.pagination.currentPage--;
+            }
+        },
+
+        nextPage() {
+            if (this.pagination.currentPage < this.pagination.lastPage) {
+                this.pagination.currentPage++;
+            }
+        },
+
         toggleViewOrder() {
             this.showViewOrder = !this.showViewOrder;
         },
     },
     mounted() {
         this.fetchOrders();
+    },
+    computed: {
+        paginatedOrders() {
+            const startIndex =
+                (this.pagination.currentPage - 1) * this.itemsPerPage;
+            const endIndex = startIndex + this.itemsPerPage;
+            return this.orders.slice(startIndex, endIndex);
+        },
     },
 };
 </script>

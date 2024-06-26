@@ -274,25 +274,13 @@
                         Checkout
                     </button>
                 </div>
-                <Receipt
-                    v-if="showReceiptModal"
-                    :receipt="receipt"
-                    @close="showReceiptModal = false"
-                />
             </div>
         </div>
     </posLayout>
 </template>
 
 <script>
-import Receipt from "@/Component/PosComp/Receipt.vue";
-import moment from "moment";
-
 export default {
-    components: {
-        Receipt,
-    },
-
     data() {
         return {
             products: [],
@@ -307,8 +295,7 @@ export default {
             selectedCustomerType: "",
             selectedCategory: null,
             showReceiptModal: false,
-            orders: {},
-            receipt: null,
+            receipt: {},
         };
     },
     methods: {
@@ -354,59 +341,12 @@ export default {
             });
         },
 
-        // checkout() {
-        //     const originalCart = [...this.carts];
-        //     const orderPayload = {
-        //         paymentMethod: this.paymentMethod,
-        //         amountGiven: this.amountGiven,
-        //         customerId: this.selectedCustomerType,
-        //         items: this.carts.map((product) => ({
-        //             productId: product.productId,
-        //             productlistId: product.productlistId,
-        //             customerId: this.selectedCustomerType,
-        //             qty: product.qty,
-        //             price: product.price,
-        //             total: product.total,
-        //         })),
-        //     };
-
-        //     axios
-        //         .post("/checkout", orderPayload)
-        //         .then((response) => {
-        //             const { status, remainingBalance, receipt } = response.data;
-        //             this.carts = [];
-        //             this.amountGiven = 0;
-        //             this.receipt = {
-        //                 paymentMethod: orderPayload.paymentMethod,
-        //                 amountGiven: orderPayload.amountGiven,
-        //                 totalAmount: this.calculateTotal(),
-        //                 created_at: orderPayload.created_at,
-        //                 items: orderPayload.items.map((item) => ({
-        //                     productName: this.getProductName(
-        //                         item.productlistId
-        //                     ),
-        //                     qty: item.qty,
-        //                     total: item.total,
-        //                     price: item.price,
-        //                 })),
-        //             };
-        //             this.showReceiptModal = true;
-        //         })
-        //         .catch((error) => {
-        //             console.error("Error during checkout:", error);
-        //             this.carts = originalCart;
-        //         });
-        // },
-
         checkout() {
             const originalCart = [...this.carts];
-            const formattedDate = moment().format("MM-DD-YYYY"); // Format as MM-DD-YYYY
-
             const orderPayload = {
                 paymentMethod: this.paymentMethod,
                 amountGiven: this.amountGiven,
                 customerId: this.selectedCustomerType,
-                created_at: formattedDate,
                 items: this.carts.map((product) => ({
                     productId: product.productId,
                     productlistId: product.productlistId,
@@ -420,26 +360,10 @@ export default {
             axios
                 .post("/checkout", orderPayload)
                 .then((response) => {
-                    const { status, remainingBalance, receipt } = response.data;
-                    const change = this.amountGiven - this.calculateTotal();
+                    const { status, remainingBalance } = response.data;
                     this.carts = [];
                     this.amountGiven = 0;
-                    this.receipt = {
-                        paymentMethod: orderPayload.paymentMethod,
-                        amountGiven: orderPayload.amountGiven,
-                        totalAmount: this.calculateTotal(),
-                        created_at: orderPayload.created_at,
-                        customerId: orderPayload.customerId,
-                        change: change,
-                        items: orderPayload.items.map((item) => ({
-                            productName: this.getProductName(
-                                item.productlistId
-                            ),
-                            qty: item.qty,
-                            total: item.total,
-                            price: item.price,
-                        })),
-                    };
+                    this.receipt = response.data.receipt;
                     this.showReceiptModal = true;
                 })
                 .catch((error) => {

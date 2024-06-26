@@ -1,21 +1,7 @@
 <template>
-    <Modal1
-        :modalContent="{
-            title: '',
-            disablebtn: true,
-        }"
-        :buttonLabel="'View '"
-        :cancelLabel="'Close'"
-        :saveLabel="'Print'"
-        :save-option="false"
-        @save="printReceipt"
-    >
+    <Modal>
         <div class="flex items-center justify-center">
             <div class="w-80 rounded bg-white px-6">
-                <img
-                    src="../../../../public/mmsu_logo.png"
-                    class="mx-auto w-10"
-                />
                 <div class="flex flex-col justify-center items-center gap-2">
                     <h4 class="font-semibold">Marketing POS</h4>
                     <p class="text-xs">Mariano Marcos State Univerity</p>
@@ -62,7 +48,6 @@
                         </tbody>
                     </table>
                     <div class="border-b border border-dashed"></div>
-
                     <div class="flex flex-col gap-3 border-b py-6 text-xs">
                         <p class="flex justify-between">
                             <span class="text-gray-400">Total:</span>
@@ -76,16 +61,22 @@
                 </div>
             </div>
         </div>
-    </Modal1>
+    </Modal>
 </template>
 
 <script>
-import Modal1 from "@/Component/Modal1.vue";
+import Modal from "@/Component/Modal.vue";
+import Receipt from "@/Component/PosComp/Receipt.vue";
 
 export default {
+    name: "ReceiptModal",
+    props: {
+        receipt: Object,
+    },
     props: ["order"],
     components: {
-        Modal1,
+        Modal,
+        Receipt,
     },
     data() {
         return {

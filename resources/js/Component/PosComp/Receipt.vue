@@ -1,89 +1,104 @@
 <template>
-    <Modal>
-        <div class="flex items-center justify-center">
+    <div
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+    >
+        <div class="mt-4 flex items-center justify-center">
             <div class="w-80 rounded bg-white px-6">
-                <div class="flex flex-col justify-center items-center gap-2">
+                <img
+                    src="../../../../public/mmsu_logo.png"
+                    class="mt-4 mx-auto w-10"
+                />
+                <div
+                    class="mt-2 flex flex-col justify-center items-center gap-2"
+                >
                     <h4 class="font-semibold">Marketing POS</h4>
-                    <p class="text-xs">Mariano Marcos State Univerity</p>
+                    <p class="text-xs">Mariano Marcos State University</p>
                 </div>
-                <div class="flex flex-col gap-3 border-b py-6 text-xs">
-                    <p class="flex justify-between">
-                        <span class="text-gray-400">Receipt No.:</span>
-                        <span>{{ orderProduct.id }}</span>
-                    </p>
-                    <p class="flex justify-between">
-                        <span class="text-gray-400">Customer:</span>
-                        <span>{{ orderProduct.customerId }}</span>
-                    </p>
-                    <p class="flex justify-between">
-                        <span class="text-gray-400">Date:</span>
-                        <span>{{ orderProduct.created_at }}</span>
-                    </p>
-                    <p class="flex justify-between">
-                        <span class="text-gray-400">Payment:</span>
-                        <span>{{ orderProduct.paymentMethod }}</span>
-                    </p>
-                </div>
-                <div class="flex flex-col gap-3 pb-6 pt-2 text-xs">
-                    <table class="w-full text-left">
+                <div class="flex flex-col gap-2 border-b py-6 text-xs">
+                    <div v-if="receipt">
+                        <p class="flex justify-between">
+                            <span class="text-gray-400">Customer:</span>
+                            <span>{{ receipt.customerId }}</span>
+                        </p>
+                        <p class="flex justify-between">
+                            <span class="text-gray-400">Date:</span>
+                            <span>{{ receipt.created_at }}</span>
+                        </p>
+                        <p class="flex justify-between">
+                            <span class="text-gray-400">Payment:</span>
+                            <span>{{ receipt.paymentMethod }}</span>
+                        </p>
+                        <p class="flex justify-between">
+                            <span class="text-gray-400">Amount:</span>
+                            <span>{{ receipt.amountGiven }}</span>
+                        </p>
+                        <p class="flex justify-between">
+                            <span class="text-gray-400">Change:</span>
+                            <span>{{ receipt.change }}</span>
+                        </p>
+                    </div>
+
+                    <table class="w-full text-left mt-2">
                         <thead>
-                            <tr class="flex">
-                                <th class="w-full py-2">Product</th>
-                                <th class="min-w-[44px] py-2">QTY</th>
-                                <th class="min-w-[44px] py-2">Total</th>
+                            <tr class="border-b">
+                                <th class="py-2">Product</th>
+                                <th class="py-2">QTY</th>
+                                <th class="py-2">Price</th>
+                                <th class="py-2">Total</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="flex">
-                                <td class="flex-1 py-1">
-                                    {{ orderProduct.productId }}
-                                </td>
-                                <td class="min-w-[44px]">
-                                    {{ orderProduct.qty }}
-                                </td>
-                                <td class="min-w-[44px]">
-                                    {{ orderProduct.price }}
-                                </td>
+                            <tr
+                                v-for="(item, index) in receipt.items"
+                                :key="index"
+                            >
+                                <td class="py-1">{{ item.productName }}</td>
+                                <td class="py-1">{{ item.qty }}</td>
+                                <td class="py-1">Php {{ item.price }}</td>
+                                <td class="py-1">Php {{ item.total }}</td>
                             </tr>
                         </tbody>
                     </table>
-                    <div class="border-b border border-dashed"></div>
-                    <div class="flex flex-col gap-3 border-b py-6 text-xs">
-                        <p class="flex justify-between">
-                            <span class="text-gray-400">Total:</span>
-                            <span>{{ orderProduct.total }}</span>
-                        </p>
-                        <p class="flex justify-between">
-                            <span class="text-gray-400">Balance:</span>
-                            <span>{{ orderProduct.balance }}</span>
-                        </p>
-                    </div>
+                    <!-- <div class="flex justify-between mt-4">
+                        <div>
+                            <p class="text-gray-400">Total:</p>
+                            <p class="font-semibold">
+                                Php {{ receipt.totalAmount }}
+                            </p>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="mt-4 flex items-center justify-center">
+                    <button
+                        @click="closeModal"
+                        class="ml-2 px-4 py-1 bg-gray-300 text-gray-700 rounded-md mb-4"
+                    >
+                        Close
+                    </button>
+                    <button
+                        @click="printReceipt"
+                        class="ml-2 px-4 py-1 bg-green-500 text-white rounded-md mb-4"
+                    >
+                        Print
+                    </button>
                 </div>
             </div>
         </div>
-    </Modal>
+    </div>
 </template>
 
 <script>
-import Modal from "@/Component/Modal.vue";
-import Receipt from "@/Component/PosComp/Receipt.vue";
-
 export default {
-    name: "ReceiptModal",
     props: {
-        receipt: Object,
-    },
-    props: ["order"],
-    components: {
-        Modal,
-        Receipt,
-    },
-    data() {
-        return {
-            orderProduct: this.order,
-        };
+        receipt: {
+            type: Object,
+            required: true,
+        },
     },
     methods: {
+        closeModal() {
+            this.$emit("close");
+        },
         printReceipt() {
             window.print();
         },

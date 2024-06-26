@@ -42,8 +42,8 @@ class PosController extends Controller{
         return Categories::all();
     }
 
-  public function addToCart(Request $request)
-{   
+    public function addToCart(Request $request)
+    {   
     $id = $request->input('id');
     $qty = $request->input('qty', 1);
     $customerId = $request->input('customerId');
@@ -59,7 +59,7 @@ class PosController extends Controller{
 
     if ($cartItem) {
         $cartItem->qty += $qty;
-        $cartItem->price = $product->price * $cartItem->qty;
+        $cartItem->total = $product->price * $cartItem->qty;
         $cartItem->save();
     } else {
         Cart::create([
@@ -77,8 +77,6 @@ class PosController extends Controller{
 
     return ;
 }
-
-
 
     public function showCartItem(Request $request){
         return Cart::all();
@@ -109,7 +107,7 @@ public function checkout(Request $request)
     $lastCashReg = CashRegistry::latest()->first();
     if ($lastCashReg) {
 
-        $updatedCashOnHand = $lastCashReg->amount + $amountGiven;
+        $updatedCashOnHand = $lastCashReg->amount + $amountGiven - $changeAmount;
         $lastCashReg->amount = $updatedCashOnHand;
         $lastCashReg->save();
 

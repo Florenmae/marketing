@@ -11,7 +11,7 @@
                     class="w-10 h-10"
                 />
                 <h1 class="text-lg mr-4">Point of Sale System</h1>
-
+                <!-- 
                 <div class="relative rounded-full bg-gray-200">
                     <input
                         type="text"
@@ -35,7 +35,7 @@
                         ></path>
                         <circle cx="10" cy="10" r="8"></circle>
                     </svg>
-                </div>
+                </div> -->
             </div>
 
             <div class="flex items-center space-x-4 relative">
