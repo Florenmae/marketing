@@ -42,18 +42,6 @@
                     </button>
                 </div>
 
-                <!-- <div class="flex mt-6 mb-5">
-                    <div
-                        v-for="category in visibleCategories"
-                        :key="category.id"
-                        class="bg-white shadow-md mb-2 category-item justify-center items-center text-center hover:bg-gray-100 cursor-pointer p-2 rounded-md mx-2"
-                        style="width: 250px"
-                        @click="filterByCategory(category.id)"
-                    >
-                        <p>{{ category.name }}</p>
-                    </div>
-                </div> -->
-
                 <div class="flex flex-wrap">
                     <div
                         v-for="category in visibleCategories"
@@ -175,11 +163,6 @@
                         <span class="font-semibold"
                             >Total: Php {{ calculateTotal() }}</span
                         >
-                        <Receipt
-                            v-if="showReceiptModal"
-                            :receipt="receipt"
-                            ref="receiptModal"
-                        />
                     </div>
                 </div>
 
@@ -211,13 +194,25 @@
                 </div>
             </div>
         </div>
+
+        <Receipt
+            v-if="showReceiptModal"
+            :receipt="receipt"
+            @close="showReceiptModal = false"
+        />
     </OrderLayout>
 </template>
 
 <script>
 import OrderLayout from "../../Layout/OrderLayout.vue";
+import Receipt from "@/Component/PosComp/Receipt.vue";
+import moment from "moment";
 
 export default {
+    components: {
+        Receipt,
+    },
+
     data() {
         return {
             products: [],
@@ -231,6 +226,7 @@ export default {
             customerId: "",
             selectedCategory: null,
             showReceiptModal: false,
+            receipt: null,
         };
     },
     methods: {
@@ -282,6 +278,27 @@ export default {
                     this.carts = [];
                 });
         },
+
+        // checkOutOrder() {
+        //     axios
+        //         .post("/checkOutOrder", {
+        //             products: this.carts,
+        //             customerId: this.customerId, // Assuming you have this data availabl
+        //             paymentMethod: this.paymentMethod, // Assuming you have this data available
+        //         })
+        //         .then((response) => {
+        //             console.log("Cart submitted to admin:", response.data);
+        //             this.receipt = {
+        //                 products: this.carts,
+        //                 total: this.calculateTotal(),
+        //                 customerId: this.customerId,
+        //                 date: new Date().toLocaleString(), // Get the current date and time
+        //                 paymentMethod: this.paymentMethod, // Assuming you have this data available
+        //             };
+        //             this.carts = [];
+        //             this.showReceiptModal = true;
+        //         });
+        // },
 
         getProd() {
             axios.get("/getProd").then(({ data }) => {

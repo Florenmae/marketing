@@ -8,13 +8,47 @@
                         >Product List</span
                     >
                 </div>
-                <div>
+                <div class="flex items-center space-x-6">
+                    <form class="max-w-md mx-auto">
+                        <label
+                            for="default-search"
+                            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                            >Search</label
+                        >
+                        <div class="relative">
+                            <input
+                                type="search"
+                                id="default-search"
+                                v-model="searchQuery"
+                                @input="performSearch"
+                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Search Products..."
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="absolute top-0 end-0 p-2 text-sm font-medium h-full text-white bg-blue-600 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            >
+                                <i
+                                    class="pi pi-search"
+                                    style="font-size: 1rem"
+                                ></i>
+                            </button>
+                        </div>
+                    </form>
                     <addProductList></addProductList>
                 </div>
             </div>
 
             <div class="mt-4 overflow-x-auto border border-gray-300">
+                <div
+                    v-if="productlists.length === 0"
+                    class="text-center border border-yellow-300 p-4 text-gray-700 dark:text-gray-400"
+                >
+                    No products matched your search.
+                </div>
                 <table
+                    v-else
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                 >
                     <thead
@@ -31,6 +65,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- <tr v-if="productlists.length === 0">
+                            <td
+                                colspan="7"
+                                class="px-6 py-4 text-center text-gray-700 dark:text-gray-300"
+                            >
+                                No products matched your search.
+                            </td>
+                        </tr> -->
                         <tr
                             v-for="productlist in productlists"
                             :key="productlist.id"
@@ -59,9 +101,7 @@
                             <td class="px-6 py-2">
                                 {{ productlist.item_code }}
                             </td>
-                            <td class="px-6 py-2">
-                                {{ productlist.price }}
-                            </td>
+                            <td class="px-6 py-2">{{ productlist.price }}</td>
                             <td class="px-6 py-2">
                                 {{ productlist.description }}
                             </td>
@@ -80,7 +120,10 @@
                     </tbody>
                 </table>
             </div>
-            <div class="flex justify-end mt-4 mr-4">
+            <div
+                class="flex justify-end mt-4 mr-4"
+                v-if="pagination.totalItems > 0"
+            >
                 <div
                     class="fixed bottom-6 right-4 w-full bg-white p-4 flex justify-end"
                 >
@@ -102,6 +145,7 @@ import editProductList from "@/Component/Marketing/inventory/editProductList.vue
 import addProductList from "@/Component/Marketing/inventory/addProductList.vue";
 import Pagination from "@/Component/Tools/Pagination.vue";
 import axios from "axios";
+import _ from "lodash";
 
 export default {
     components: {
@@ -124,11 +168,11 @@ export default {
             },
             categories: [],
             productlists: [],
-            editingProductListId: null,
-            modalStatus: false,
+            searchQuery: "",
             pagination: {
                 currentPage: 1,
                 lastPage: 1,
+                totalItems: 0,
             },
         };
     },
@@ -147,27 +191,29 @@ export default {
                 });
         },
 
-        changeModalStatus() {
-            this.modalStatus = !this.modalStatus;
-        },
+        performSearch: _.debounce(function () {
+            this.getProductlists(1);
+        }, 100),
 
         getProductlists(page = 1) {
-            axios.get(`/get-product-lists?page=${page}`).then(({ data }) => {
-                this.productlists = data.data;
-                this.pagination.currentPage = data.pagination.currentPage;
-                this.pagination.lastPage = data.pagination.lastPage;
-            });
+            axios
+                .get(`/get-product-lists`, {
+                    params: {
+                        page: page,
+                        search: this.searchQuery,
+                    },
+                })
+                .then(({ data }) => {
+                    this.productlists = data.data;
+                    this.pagination.currentPage = data.pagination.currentPage;
+                    this.pagination.lastPage = data.pagination.lastPage;
+                    this.pagination.totalItems = data.pagination.totalItems;
+                });
         },
 
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;
-            });
-        },
-
-        getUsers() {
-            axios.get("/get-users").then(({ data }) => {
-                this.users = data;
             });
         },
 

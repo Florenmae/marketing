@@ -1,8 +1,8 @@
 <template>
     <OrderLayout>
-        <div class="h-screen flex">
-            <div class="flex-1 p-4 relative">
-                <h2 class="text-2xl font-semibold mb-4">Categories</h2>
+        <div class="flex justify-between w-full">
+            <div class="flex-6 p-4 relative">
+                <h2 class="text-2xl font-semibold mb-5">Categories</h2>
                 <div class="absolute top-10 right-3 mt-2 mr-2">
                     <button @click="prevPage" class="text-gray-500">
                         <svg
@@ -42,44 +42,58 @@
                     </button>
                 </div>
 
+                <!-- <div class="flex mt-6 mb-5">
+                    <div
+                        v-for="category in visibleCategories"
+                        :key="category.id"
+                        class="bg-white shadow-md mb-2 category-item justify-center items-center text-center hover:bg-gray-100 cursor-pointer p-2 rounded-md mx-2"
+                        style="width: 250px"
+                        @click="filterByCategory(category.id)"
+                    >
+                        <p>{{ category.name }}</p>
+                    </div>
+                </div> -->
+
                 <div class="flex flex-wrap">
                     <div
                         v-for="category in visibleCategories"
                         :key="category.id"
-                        class="space-x-2 p-2"
+                        class="w-1/5 p-2"
                     >
                         <div
-                            class="bg-white shadow-md mb-3 category-item hover:bg-gray-100 cursor-pointer p-2 rounded-md"
+                            class="bg-white shadow-md mb-4 category-item hover:bg-gray-100 cursor-pointer p-2 rounded-md"
                             @click="filterByCategory(category.id)"
-                            style="width: 200px"
                         >
                             <p>{{ category.name }}</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-5 space-x-2 p-2">
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-2"
+                >
                     <div
                         v-for="product in filteredProducts"
-                        :key="product.productlistId"
-                        class="p-4 border rounded-md text-center"
+                        :key="product.id"
+                        class="p-2 border rounded-md text-center"
                     >
-                        <img
-                            :src="product.image"
-                            alt="Product Image"
-                            class="w-full h-32 object-cover mb-2 rounded-md"
-                        />
-                        <h2 class="text-lg font-semibold">
+                        <div class="relative h-30">
+                            <img
+                                :src="product.image"
+                                alt="Product Image"
+                                class="w-40 h-40 object-cover rounded-md"
+                            />
+                        </div>
+                        <h2 class="text-lg font-semibold mt-2">
                             {{ getProductNames(product.productlistId) }}
                         </h2>
-
+                        <span class="text-lg font-bold text-green-500"
+                            >Php {{ product.price }}.00</span
+                        >
                         <div class="mt-2">
-                            <span class="text-lg font-bold text-blue-500">{{
-                                product.price
-                            }}</span>
                             <button
                                 @click="addCart(product)"
-                                class="ml-2 bg-green-500 text-white px-3 py-1 rounded-md"
+                                class="ml-2 bg-green-500 text-white px-5 py-1 rounded-md"
                             >
                                 Add to Cart
                             </button>
@@ -88,94 +102,112 @@
                 </div>
             </div>
 
-            <div class="flex-2 p-4">
-                <div class="h-full overflow-auto">
-                    <div class="bg-gray-100 p-4 mb-4 rounded-md">
-                        <h2 class="text-xl font-semibold mb-2">
-                            Welcome Customer!
-                        </h2>
-                        <p class="text-gray-600">MMSU POS</p>
-                    </div>
+            <div class="flex-1 p-4">
+                <div class="bg-gray-100 p-4 mb-4 rounded-md">
+                    <h2 class="text-xl font-semibold mb-2">
+                        Welcome Customer!
+                    </h2>
+                    <p class="text-gray-600">MMSU POS</p>
+                </div>
 
-                    <h2 class="text-2xl font-semibold mb-4">Shopping Cart</h2>
-                    <div v-if="cart.length === 0" class="text-gray-600">
-                        Your cart is empty.
-                    </div>
-                    <div v-else>
-                        <div
-                            v-for="product in cart"
-                            :key="product.productlistId"
-                            class="flex items-center justify-between p-2 border-b"
-                        >
-                            <div class="flex items-center space-x-4">
-                                <img
-                                    :src="product.image"
-                                    alt="Product Image"
-                                    class="w-10 h-10 object-cover rounded-md"
-                                />
-                                <span>{{ product.name }}</span>
-                            </div>
-
-                            <div class="flex items-center space-x-0">
-                                <button
-                                    @click="decrementQuantity(product)"
-                                    class="px-2 py-1 border rounded-none"
-                                >
-                                    -
-                                </button>
-                                <span class="px-4 py-1 border-t border-b">{{
-                                    product.qty
-                                }}</span>
-                                <button
-                                    @click="incrementQuantity(product)"
-                                    class="px-2 py-1 border rounded-none"
-                                >
-                                    +
-                                </button>
-                            </div>
-                            <span class="font-semibold"
-                                >Php{{ product.price }}.00</span
-                            >
-                            <span class="text-gray-600"
-                                >Total: Php{{ product.total }}.00</span
-                            >
-                            <button @click="deleteItem(product.id)">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    fill="currentColor"
-                                    class="bi bi-trash"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path
-                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
-                                    />
-                                    <path
-                                        fill-rule="evenodd"
-                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                                    />
-                                </svg>
-                            </button>
+                <h2 class="text-2xl font-semibold mb-4">Shopping Cart</h2>
+                <div v-if="carts.length === 0" class="text-gray-600">
+                    Your cart is empty.
+                </div>
+                <div v-else>
+                    <div
+                        v-for="product in carts"
+                        :key="product.id"
+                        class="flex items-center justify-between p-2 border-b"
+                    >
+                        <div class="flex items-center space-x-2">
+                            <img
+                                :src="product.image"
+                                alt="Product Image"
+                                class="w-10 h-10 object-cover rounded-md"
+                            />
+                            <span>{{ product.name }}</span>
                         </div>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="font-semibold"
-                                >Total: Php
-                                {{ calculateTotal().toFixed(2) }}</span
-                            >
-                        </div>
-                    </div>
 
-                    <div class="mb-4 mt-4">
-                        <div class="mt-4 flex justify-between items-center">
+                        <div class="flex items-center space-x-0">
                             <button
-                                @click="checkOutOrder"
-                                class="bg-green-500 text-white w-full py-2 rounded-md"
+                                @click="decrementQuantity(product)"
+                                class="px-2 py-1 border rounded-none"
                             >
-                                Checkout
+                                -
+                            </button>
+                            <span class="px-4 py-1 border-t border-b">{{
+                                product.qty
+                            }}</span>
+                            <button
+                                @click="incrementQuantity(product)"
+                                class="px-2 py-1 border rounded-none"
+                            >
+                                +
                             </button>
                         </div>
+                        <span class="font-semibold"
+                            >₱{{ product.price }}.00</span
+                        >
+                        <span class="text-gray-600"
+                            >Total: ₱{{ product.total }}.00</span
+                        >
+                        <button @click="deleteItem(product.id)">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash"
+                                viewBox="0 0 16 16"
+                            >
+                                <path
+                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                                />
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                                />
+                            </svg>
+                        </button>
                     </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="font-semibold"
+                            >Total: Php {{ calculateTotal() }}</span
+                        >
+                        <Receipt
+                            v-if="showReceiptModal"
+                            :receipt="receipt"
+                            ref="receiptModal"
+                        />
+                    </div>
+                </div>
+
+                <div class="mb-4 mt-6">
+                    <label for="paymentMethod" class="mr-2"
+                        >Payment Method:</label
+                    >
+                    <div class="flex items-center space-x-4 mt-4">
+                        <div
+                            class="text-center payment-method-card border border-gray-300 rounded-md p-2 cursor-pointer"
+                            @click="paymentMethod = '1'"
+                            :class="{
+                                'bg-green-100': paymentMethod === '1',
+                            }"
+                            style="width: 100%"
+                        >
+                            <span class="font-semibold">Cash</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4 mt-6">
+                    <button
+                        @click="checkOutOrder"
+                        class="bg-green-600 text-white px-4 py-2 rounded-md flex items-center justify-center w-full md:w-50"
+                    >
+                        Checkout
+                    </button>
                 </div>
             </div>
         </div>
@@ -184,29 +216,31 @@
 
 <script>
 import OrderLayout from "../../Layout/OrderLayout.vue";
+import Receipt from "@/Component/PosComp/Receipt.vue";
+import moment from "moment";
 
 export default {
     data() {
         return {
             products: [],
             productlists: [],
-            cart: [],
+            carts: [],
             categories: [],
             currentPage: 0,
             itemsPerPage: 4,
             paymentMethod: "cash",
             amountGiven: 0,
             customerId: "",
-            selectedCustomerType: "",
             selectedCategory: null,
             showReceiptModal: false,
-            receipt: {},
+            receipt: null,
         };
     },
     methods: {
         addCart(product) {
             console.log("Adding to Cart:", product);
             const cartItem = {
+                id: product.id,
                 productlistId: product.productlistId,
                 image: product.image,
                 price: product.price,
@@ -221,7 +255,7 @@ export default {
         },
 
         calculateTotal() {
-            return this.cart.reduce((total, product) => {
+            return this.carts.reduce((total, product) => {
                 return total + product.total;
             }, 0);
         },
@@ -237,18 +271,18 @@ export default {
 
         showCartItem() {
             axios.get("/showCartItem").then(({ data }) => {
-                this.cart = data;
+                this.carts = data;
             });
         },
 
         checkOutOrder() {
             axios
                 .post("/checkOutOrder", {
-                    products: this.cart,
+                    products: this.carts,
                 })
                 .then((response) => {
                     console.log("Cart submitted to admin:", response.data);
-                    this.cart = [];
+                    this.carts = [];
                 });
         },
 
@@ -302,7 +336,7 @@ export default {
             return this.categories.slice(start, end);
         },
         totalAmount() {
-            return this.cart.reduce(
+            return this.carts.reduce(
                 (total, product) => total + product.total,
                 0
             );

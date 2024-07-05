@@ -59,14 +59,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <!-- <div class="flex justify-between mt-4">
-                        <div>
-                            <p class="text-gray-400">Total:</p>
-                            <p class="font-semibold">
-                                Php {{ receipt.totalAmount }}
-                            </p>
-                        </div>
-                    </div> -->
+                    <!--   -->
                 </div>
                 <div class="mt-4 flex items-center justify-center">
                     <button

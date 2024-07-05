@@ -25,8 +25,13 @@ class OrderController extends Controller
 
     public function getOrders()
 {
-    return Order::whereIn('status', [2, 3])->get();
+    $userId = Auth::id(); 
+
+    return Order::where('userId', $userId) 
+                ->whereIn('status', [2, 3]) 
+                ->get();
 }
+
 
     public function getProdlist(){
     return ProductList::all();
@@ -69,6 +74,7 @@ public function addCart(Request $request)
     $productlistId = $request->input('productlistId');
 
     $product = Product::find($id);
+
     $price = $product->price;
 
     $cartItem = Cart::where('productId', $id)
@@ -204,7 +210,7 @@ public function addCart(Request $request)
         $productId = $productData['productId'];
 
         $product = Product::findOrFail($productId);
-
+        
         $price = $product->price;
 
         $order = new Order();

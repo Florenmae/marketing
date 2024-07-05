@@ -28,6 +28,7 @@ import Orders from "@/Component/PosComp/Orders.vue";
 // import View from "@/Component/PosComp/View.vue";
 
 import pendingOrder from "@/Component/OnlineOrder/pendingOrder.vue";
+import UserOrders from "@/Component/OnlineOrder/UserOrders.vue";
 
 import userHome from "@/Component/userHome.vue";
 import orderDashboard from "@/Component/OnlineOrder/orderDashboard.vue";
@@ -136,6 +137,11 @@ export const routes = [
         path: "/orders",
         name: "orders",
         component: Orders,
+    },
+    {
+        path: "/UserOrders",
+        name: "UserOrders",
+        component: UserOrders,
     },
     {
         path: "/pendingOrder",

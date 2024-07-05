@@ -305,6 +305,7 @@ export default {
                 this.showInput = true;
                 this.cashAdded = false;
                 this.getCashadmins();
+                this.getCashLogs();
             });
         },
 

@@ -40,8 +40,31 @@ public function uploadImages(Request $request) {
 }
 
 
+    // public function getProductLists(Request $request)
+    // {   
+    //     $query = ProductList::query();
+
+    //     if ($request->has('search')) {
+    //         $search = $request->input('search');
+    //         $query->where('name', 'like', '%' . $search . '%');
+    //     }
+
+    //     $productlist = ProductList::paginate(4);
+
+    //     return [ 
+    //         'data' => $productlist->items(),
+    //         'pagination' => [
+    //         'currentPage' => $productlist->currentPage(),
+    //         'totalItems' => $productlist->total(),
+    //         'itemsPerPage' => $productlist->perPage(),
+    //         'lastPage' => $productlist->lastPage(),
+    //     ],
+    // ];
+
+    // }
+
     public function getProductLists(Request $request)
-    {   
+    {
         $query = ProductList::query();
 
         if ($request->has('search')) {
@@ -49,19 +72,21 @@ public function uploadImages(Request $request) {
             $query->where('name', 'like', '%' . $search . '%');
         }
 
-        $productlist = ProductList::paginate(4);
+        $productlists = $query->paginate(4);
 
-        return [ 
-            'data' => $productlist->items(),
+        return [
+            'data' => $productlists->items(),
             'pagination' => [
-            'currentPage' => $productlist->currentPage(),
-            'totalItems' => $productlist->total(),
-            'itemsPerPage' => $productlist->perPage(),
-            'lastPage' => $productlist->lastPage(),
-        ],
-    ];
-
+                'currentPage' => $productlists->currentPage(),
+                'totalItems' => $productlists->total(),
+                'itemsPerPage' => $productlists->perPage(),
+                'lastPage' => $productlists->lastPage(),
+            ],
+        ];
     }
+
+
+
 
     public function updateProductList(Request $request){
         DB::beginTransaction();
