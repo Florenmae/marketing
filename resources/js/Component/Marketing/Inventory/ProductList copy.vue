@@ -9,6 +9,33 @@
                     >
                 </div>
                 <div class="flex items-center space-x-6">
+                    <!-- <form class="max-w-md mx-auto">
+                        <label
+                            for="default-search"
+                            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                            >Search</label
+                        >
+                        <div class="relative">
+                            <input
+                                type="search"
+                                id="default-search"
+                                v-model="searchQuery"
+                                @input="performSearch"
+                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Search Products..."
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="absolute top-0 end-0 p-2 text-sm font-medium h-full text-white bg-blue-600 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            >
+                                <i
+                                    class="pi pi-search"
+                                    style="font-size: 1rem"
+                                ></i>
+                            </button>
+                        </div>
+                    </form> -->
                     <SearchBar @search="performSearch" />
                     <addProductList></addProductList>
                 </div>
@@ -39,6 +66,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- <tr v-if="productlists.length === 0">
+                            <td
+                                colspan="7"
+                                class="px-6 py-4 text-center text-gray-700 dark:text-gray-300"
+                            >
+                                No products matched your search.
+                            </td>
+                        </tr> -->
                         <tr
                             v-for="productlist in productlists"
                             :key="productlist.id"
@@ -158,10 +193,11 @@ export default {
                     window.location.reload("Reloading");
                 });
         },
-        performSearch(query) {
-            this.searchQuery = query;
+
+        performSearch: _.debounce(function () {
             this.getProductlists(1);
-        },
+        }, 100),
+
         getProductlists(page = 1) {
             axios
                 .get(`/get-product-lists`, {
@@ -177,11 +213,13 @@ export default {
                     this.pagination.totalItems = data.pagination.totalItems;
                 });
         },
+
         getCategories() {
             axios.get("/get-categories").then(({ data }) => {
                 this.categories = data;
             });
         },
+
         getCategoryName(categoryId) {
             const category = this.categories.find((c) => c.id === categoryId);
             return category ? category.name : "Unknown Category";
@@ -197,6 +235,7 @@ export default {
             }
         },
     },
+
     mounted() {
         this.getProductlists(1);
         this.getCategories();

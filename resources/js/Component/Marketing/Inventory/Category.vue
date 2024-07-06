@@ -8,10 +8,21 @@
                         >Category List</span
                     >
                 </div>
-                <div><addCategory /></div>
+                <div class="flex items-center space-x-6">
+                    <SearchBar @search="performSearch" />
+                    <addCategory />
+                </div>
             </div>
+
             <div class="mt-4 overflow-x-auto border border-gray-300">
+                <div
+                    v-if="categories.length === 0"
+                    class="text-center border border-yellow-300 p-4 text-gray-700 dark:text-gray-400"
+                >
+                    No categories matched your search.
+                </div>
                 <table
+                    v-else
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                 >
                     <thead
@@ -63,11 +74,15 @@
 import Modal from "@/Component/Modal.vue";
 import editCategory from "@/Component/Marketing/Inventory/editCategory.vue";
 import addCategory from "@/Component/Marketing/Inventory/addCategory.vue";
+import SearchBar from "@/Component/Tools/SearchBar.vue";
+import axios from "axios";
+
 export default {
     components: {
         Modal,
         addCategory,
         editCategory,
+        SearchBar,
     },
     data() {
         return {
@@ -78,17 +93,15 @@ export default {
                 cat_code: " ",
                 product_count: "",
             },
-            categories: [],
             editingCategoryId: null,
             modalStatus: false,
+            searchQuery: "",
         };
     },
     methods: {
         submitCategory() {
             const { editCategory } = this;
-            const catPayload = {
-                ...editCategory,
-            };
+            const catPayload = { ...editCategory };
 
             axios.post("/submit-category", catPayload).then(({ data }) => {
                 this.categories.push(data);
@@ -99,11 +112,20 @@ export default {
         changeModalStatus() {
             this.modalStatus = !this.modalStatus;
         },
-
+        performSearch(query) {
+            this.searchQuery = query;
+            this.getCategories();
+        },
         getCategories() {
-            axios.get("/get-categories").then(({ data }) => {
-                this.categories = data;
-            });
+            axios
+                .get("/get-categories", {
+                    params: {
+                        search: this.searchQuery,
+                    },
+                })
+                .then(({ data }) => {
+                    this.categories = data;
+                });
         },
         editCategory(category) {
             this.editCategory = { ...category };
@@ -111,7 +133,6 @@ export default {
             this.modalContent.title = "Edit Category";
             this.modalStatus = true;
         },
-
         updateCategory(data) {
             const { editCategory, editingCategoryId } = this;
             const catPayload = { ...editCategory };
@@ -122,7 +143,6 @@ export default {
                     this.getCategories();
                 });
         },
-
         deleteCategory(id) {
             axios.post("/delete-category", { id }).then(({ data }) => {
                 this.getCategories();

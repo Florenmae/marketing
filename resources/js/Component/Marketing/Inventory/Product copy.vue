@@ -51,11 +51,12 @@
                                 {{ getProductName(product.productlistId) }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ getCategoryName(product.categoryId) }}
+                                <p>{{ getCategoryName(product.categoryId) }}</p>
                             </td>
                             <td class="px-6 py-4">{{ product.item_code }}</td>
+
                             <td class="px-6 py-4">
-                                {{ getSupplierName(product.userId) }}
+                                <p>{{ getSupplierName(product.userId) }}</p>
                             </td>
                             <td class="px-6 py-4">{{ product.price }}</td>
                             <td class="px-6 py-4">
@@ -66,6 +67,7 @@
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
+                                <!-- <editProduct :product="product" /> -->
                                 <Approve :product="product" />
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
@@ -73,14 +75,6 @@
                                 >
                                     Return
                                 </button>
-                            </td>
-                        </tr>
-                        <tr v-if="pendingProducts.length === 0">
-                            <td
-                                colspan="10"
-                                class="px-6 py-4 font-bold text-center text-yellow-400"
-                            >
-                                No pending products to approve.
                             </td>
                         </tr>
                     </tbody>
@@ -95,6 +89,7 @@
                     >
                 </div>
             </div>
+
             <div class="overflow-x-auto border border-gray-300">
                 <table
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
@@ -136,17 +131,22 @@
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {{ getProductName(product.productlistId) }}
+                                <p>
+                                    {{ getProductName(product.productlistId) }}
+                                </p>
                             </th>
                             <td class="px-6 py-4">
-                                {{ getCategoryName(product.categoryId) }}
+                                <p>{{ getCategoryName(product.categoryId) }}</p>
                             </td>
                             <td class="px-6 py-4">{{ product.item_code }}</td>
+
                             <td class="px-6 py-4">
-                                {{ getSupplierName(product.userId) }}
+                                <p>{{ getSupplierName(product.userId) }}</p>
                             </td>
+
                             <td class="px-6 py-4">{{ product.price }}</td>
                             <td class="px-6 py-4">{{ product.stocks }}</td>
+
                             <td class="px-6 py-4">{{ product.description }}</td>
                             <td class="px-6 py-4">
                                 <p
@@ -159,15 +159,8 @@
                             <td
                                 class="px-6 py-4 flex justify-center items-center space-x-2"
                             >
+                                <!-- <Receive :product="product" /> -->
                                 <Return :product="product" />
-                            </td>
-                        </tr>
-                        <tr v-if="approvedProducts.length === 0">
-                            <td
-                                colspan="10"
-                                class="px-6 py-4 font-bold text-center text-yellow-400"
-                            >
-                                No approved products available.
                             </td>
                         </tr>
                     </tbody>
