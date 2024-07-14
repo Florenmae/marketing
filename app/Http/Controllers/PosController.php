@@ -21,17 +21,30 @@ use Illuminate\Support\Facades\Auth;
 
 class PosController extends Controller{
    
-    public function fetchProducts()
+   public function fetchProducts(Request $request)
 {
     $userId = Auth::id();
+    $search = $request->input('search');
 
-    $products = Product::where('status', 3)
-                        ->where('userId', $userId)
-                        ->where('stocks','>', 0)
-                        ->get();
+    $query = Product::join('product_lists', 'products.productlistId', '=', 'product_lists.id')
+                    ->where('products.status', 3)
+                    ->where('products.userId', $userId)
+                    ->where('products.stocks', '>', 0);
 
-    return $products;
+    if ($search) {
+        $query->where(function ($query) use ($search) {
+            $query->Where('products.description', 'like', '%' . $search . '%')
+                  ->orWhere('product_lists.name', 'like', '%' . $search . '%');
+        });
+    }
+
+    $products = $query->select('products.*', 'product_lists.name as product_list_name')->get();
+
+    return response()->json($products);
 }
+
+
+
 
     public function fetchProductLists()
 {

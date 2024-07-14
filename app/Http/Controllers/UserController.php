@@ -23,9 +23,18 @@ class UserController extends Controller
         return redirect('/user');
     }
 
-    public function getUsers(){
-        return User::all();
+    public function getUsers(Request $request) {
+        $query = User::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'like', '%' . $search . '%');
         }
+
+        return $query->get();   
+        }
+
+
 
     public function updateUser(Request $request){
         // dd($request->userPayload["name"]);

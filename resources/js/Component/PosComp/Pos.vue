@@ -2,8 +2,10 @@
     <posLayout>
         <div class="flex justify-between w-full">
             <div class="flex-6 p-4 relative">
-                <h2 class="text-2xl font-semibold mb-5">Categories</h2>
-                <div class="absolute top-10 right-3 mt-2 mr-2">
+                <div class="flex items-center mb-4">
+                    <h2 class="text-2xl font-semibold mb-2">Categories</h2>
+                    <SearchBar class="flex-1 mr-4" @search="handleSearch" />
+
                     <button @click="prevPage" class="text-gray-500">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -14,11 +16,7 @@
                             stroke-linejoin="round"
                             class="h-6 w-6"
                         >
-                            <path
-                                stroke="none"
-                                d="M0 0h24v24H0z"
-                                fill="none"
-                            ></path>
+                            <path stroke="none" d="M0 0h24v24H0z"></path>
                             <polyline points="15 6 9 12 15 18"></polyline>
                         </svg>
                     </button>
@@ -32,27 +30,11 @@
                             stroke-linejoin="round"
                             class="h-6 w-6"
                         >
-                            <path
-                                stroke="none"
-                                d="M0 0h24v24H0z"
-                                fill="none"
-                            ></path>
+                            <path stroke="none" d="M0 0h24v24H0z"></path>
                             <polyline points="9 6 15 12 9 18"></polyline>
                         </svg>
                     </button>
                 </div>
-
-                <!-- <div class="flex mt-6 mb-5">
-                    <div
-                        v-for="category in visibleCategories"
-                        :key="category.id"
-                        class="bg-white shadow-md mb-2 category-item justify-center items-center text-center hover:bg-gray-100 cursor-pointer p-2 rounded-md mx-2"
-                        style="width: 250px"
-                        @click="filterByCategory(category.id)"
-                    >
-                        <p>{{ category.name }}</p>
-                    </div>
-                </div> -->
 
                 <div class="flex flex-wrap">
                     <div
@@ -286,11 +268,15 @@
 
 <script>
 import Receipt from "@/Component/PosComp/Receipt.vue";
+import Pagination from "@/Component/Tools/Pagination.vue";
+import SearchBar from "@/Component/Tools/SearchBar.vue";
 import moment from "moment";
 
 export default {
     components: {
         Receipt,
+        Pagination,
+        SearchBar,
     },
 
     data() {
@@ -300,7 +286,7 @@ export default {
             carts: [],
             categories: [],
             currentPage: 0,
-            itemsPerPage: 4,
+            itemsPerPage: 5,
             paymentMethod: "cash",
             amountGiven: 0,
             customerId: "",
@@ -309,6 +295,12 @@ export default {
             showReceiptModal: false,
             orders: {},
             receipt: null,
+            searchQuery: "",
+            // pagination: {
+            //     currentPage: 1,
+            //     lastPage: 1,
+            //     totalItems: 0,
+            // },
         };
     },
     methods: {
@@ -354,53 +346,9 @@ export default {
             });
         },
 
-        // checkout() {
-        //     const originalCart = [...this.carts];
-        //     const orderPayload = {
-        //         paymentMethod: this.paymentMethod,
-        //         amountGiven: this.amountGiven,
-        //         customerId: this.selectedCustomerType,
-        //         items: this.carts.map((product) => ({
-        //             productId: product.productId,
-        //             productlistId: product.productlistId,
-        //             customerId: this.selectedCustomerType,
-        //             qty: product.qty,
-        //             price: product.price,
-        //             total: product.total,
-        //         })),
-        //     };
-
-        //     axios
-        //         .post("/checkout", orderPayload)
-        //         .then((response) => {
-        //             const { status, remainingBalance, receipt } = response.data;
-        //             this.carts = [];
-        //             this.amountGiven = 0;
-        //             this.receipt = {
-        //                 paymentMethod: orderPayload.paymentMethod,
-        //                 amountGiven: orderPayload.amountGiven,
-        //                 totalAmount: this.calculateTotal(),
-        //                 created_at: orderPayload.created_at,
-        //                 items: orderPayload.items.map((item) => ({
-        //                     productName: this.getProductName(
-        //                         item.productlistId
-        //                     ),
-        //                     qty: item.qty,
-        //                     total: item.total,
-        //                     price: item.price,
-        //                 })),
-        //             };
-        //             this.showReceiptModal = true;
-        //         })
-        //         .catch((error) => {
-        //             console.error("Error during checkout:", error);
-        //             this.carts = originalCart;
-        //         });
-        // },
-
         checkout() {
             const originalCart = [...this.carts];
-            const formattedDate = moment().format("MM-DD-YYYY"); // Format as MM-DD-YYYY
+            const formattedDate = moment().format("MM-DD-YYYY");
 
             const orderPayload = {
                 paymentMethod: this.paymentMethod,
@@ -449,9 +397,20 @@ export default {
         },
 
         fetchProducts() {
-            axios.get("/getProducts").then(({ data }) => {
-                this.products = data;
-            });
+            axios
+                .get("/getProducts", {
+                    params: {
+                        search: this.searchQuery,
+                    },
+                })
+                .then(({ data }) => {
+                    this.products = data;
+
+                    console.log("Fetched products:", this.products); // Check if products are fetched
+                })
+                .catch((error) => {
+                    console.error("Error fetching products:", error);
+                });
         },
 
         fetchProductlists() {
@@ -460,9 +419,9 @@ export default {
             });
         },
 
-        getProductName(productId) {
+        getProductName(productlistId) {
             const productlist = this.productlists.find(
-                (d) => d.id === productId
+                (d) => d.id === productlistId
             );
             return productlist ? productlist.name : "Unknown product";
         },
@@ -473,11 +432,15 @@ export default {
             });
         },
         nextPage() {
-            this.currentPage += 1;
+            const start = (this.currentPage + 1) * this.itemsPerPage;
+            if (start < this.categories.length) {
+                this.currentPage += 1;
+            }
         },
         prevPage() {
             this.currentPage = Math.max(0, this.currentPage - 1);
         },
+
         deleteItem(id) {
             axios.post("/delete-item", { id }).then(({ data }) => {
                 this.showCartItem();
@@ -489,6 +452,10 @@ export default {
             } else {
                 this.selectedCategory = id;
             }
+        },
+        handleSearch(query) {
+            this.searchQuery = query;
+            this.fetchProductlists();
         },
     },
     computed: {
@@ -506,12 +473,35 @@ export default {
         change() {
             return this.amountGiven - this.totalAmount;
         },
+        // filteredProducts() {
+        //     if (!this.selectedCategory) {
+        //         return this.products;
+        //     }
+        //     return this.products.filter(
+        //         (product) => product.categoryId === this.selectedCategory
+        //     );
+        // },
         filteredProducts() {
-            if (!this.selectedCategory) {
-                return this.products;
+            let filtered = this.products;
+
+            if (this.selectedCategory !== null) {
+                filtered = filtered.filter(
+                    (product) => product.categoryId === this.selectedCategory
+                );
             }
-            return this.products.filter(
-                (product) => product.categoryId === this.selectedCategory
+
+            if (this.searchQuery.trim() !== "") {
+                const query = this.searchQuery.toLowerCase();
+                filtered = filtered.filter((product) =>
+                    this.getProductName(product.productlistId)
+                        .toLowerCase()
+                        .includes(query)
+                );
+            }
+
+            return filtered.slice(
+                this.currentPage * this.itemsPerPage,
+                (this.currentPage + 1) * this.itemsPerPage
             );
         },
     },

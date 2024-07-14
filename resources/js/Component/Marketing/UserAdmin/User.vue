@@ -8,7 +8,9 @@
                         >User List</span
                     >
                 </div>
-                <div><addUser /></div>
+                <div class="flex items-center space-x-6">
+                    <SearchBar @search="performSearch" /> <addUser />
+                </div>
             </div>
             <div class="mt-4 overflow-x-auto border border-gray-300">
                 <table
@@ -47,14 +49,6 @@
                                     Delete
                                 </button>
                             </td>
-                            <!-- <td class="">
-                        <button
-                            class="bg-red-500 py-2 px-4 rounded text-white"
-                            @click="deleteUser(user.id)"
-                        >
-                            Delete
-                        </button>
-                    </td> -->
                         </tr>
                     </tbody>
                 </table>
@@ -65,6 +59,7 @@
 
 <script>
 import axios from "axios";
+import SearchBar from "@/Component/Tools/SearchBar.vue";
 import Modal from "@/Component/Modal.vue";
 import EditUser from "@/Component/Marketing/UserAdmin/EditUser.vue";
 import addUser from "@/Component/Marketing/UserAdmin/addUser.vue";
@@ -74,6 +69,7 @@ export default {
         Modal,
         EditUser,
         addUser,
+        SearchBar,
     },
     data() {
         return {
@@ -91,6 +87,7 @@ export default {
                 content: "Please fill in the user details",
                 disablebtn: false,
             },
+            searchQuery: "",
         };
     },
 
@@ -115,15 +112,20 @@ export default {
             this.modalStatus = !this.modalStatus;
         },
 
+        performSearch(query) {
+            this.searchQuery = query;
+            this.getUsers();
+        },
+
         getUsers() {
             axios
-                .get("/get-users")
+                .get("/get-users", {
+                    params: {
+                        search: this.searchQuery,
+                    },
+                })
                 .then(({ data }) => {
                     this.users = data;
-                    console.log(data);
-                })
-                .catch((error) => {
-                    console.error("Error fetching users:", error);
                 });
         },
         updateExistingUser(data) {
