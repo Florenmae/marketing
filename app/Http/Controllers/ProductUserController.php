@@ -73,6 +73,8 @@ class ProductUserController extends Controller
         return $products;
     }
 
+
+
 public function addToDevCart(Request $request)
 {   
     $id = $request->input('id');
@@ -103,34 +105,101 @@ public function addToDevCart(Request $request)
 
 
 
-    public function submitAdmin(Request $request){
-        DB::beginTransaction();
+    // public function submitAdmin(Request $request){
+    //     DB::beginTransaction();
 
-            $products = $request->input('products');
-            $totalPrice = 0;
+    //         $products = $request->input('products');
+    //         $totalPrice = 0;
 
-            foreach ($products as $productData) {
-                $productId = $productData['productId'];
+    //         foreach ($products as $productData) {
+    //             $productId = $productData['productId'];
 
-                $product = Product::findOrFail($productId);
+    //             $product = Product::findOrFail($productId);
             
-                $originalStock = $product->stocks;
+    //             $originalStock = $product->stocks;
 
-                $subtractedQty = $productData['qty'];
+    //             $subtractedQty = $productData['qty'];
+    //             $product->stocks -= $subtractedQty;
+
+    //             if ($product->stocks < 0) {
+    //                 $product->stocks = 0;
+    //             }
+
+    //             $product->price;
+    //             $product->status = 2;
+
+    //             $subtotal = $product->price * $subtractedQty;
+    //             $totalPrice += $subtotal;
+                
+    //             $product->save();
+
+    //             $transaction = new Transaction();
+    //             $transaction->productId = $product->id;
+    //             $transaction->productlistId = $product->productlistId;
+    //             $transaction->userId = Auth::id();
+    //             $transaction->roleId = 1;
+    //             $transaction->qty = $subtractedQty;
+    //             $transaction->type = 2;
+    //             $transaction->totalprice = $subtotal; 
+    //             $transaction->save();
+
+    //             $delivery = new Delivery();
+    //             $delivery->userId = Auth::id();
+    //             $delivery->transactionId = $transaction->id;
+    //             $delivery->productId = $product->id;
+    //             $delivery->productlistId = $product->productlistId;
+    //             $delivery->remarks = $product->remarks;
+    //             $delivery->qty = $subtractedQty; 
+    //             $delivery->status = 3;
+    //             $delivery->save();
+    //         }
+
+    //         DB::commit();
+    //         DeliveryCart::truncate();
+    // }
+
+    public function submitAdmin(Request $request) {
+    DB::beginTransaction();
+
+    try {
+        $products = $request->input('products');
+        $totalPrice = 0;
+
+        foreach ($products as $productData) {
+            $productId = $productData['productId'];
+            $subtractedQty = $productData['qty'];
+
+            // Check if there's an existing transaction for this product
+            $transaction = Transaction::where('productId', $productId)
+                ->where('userId', Auth::id())
+                ->where('type', 2) // Assuming type 2 is delivery type
+                ->first();
+
+            if ($transaction) {
+                // Update existing transaction
+                $transaction->qty += $subtractedQty;
+                $transaction->totalprice += ($productData['price'] * $subtractedQty);
+                $transaction->save();
+
+                // Update delivery if it exists
+                $delivery = Delivery::where('transactionId', $transaction->id)->first();
+                if ($delivery) {
+                    $delivery->qty += $subtractedQty;
+                    $delivery->save();
+                }
+            } else {
+                // Create new transaction and delivery
+                $product = Product::findOrFail($productId);
+
+                // Update product stocks
                 $product->stocks -= $subtractedQty;
-
                 if ($product->stocks < 0) {
                     $product->stocks = 0;
                 }
-
-                $product->price;
                 $product->status = 2;
-
-                $subtotal = $product->price * $subtractedQty;
-                $totalPrice += $subtotal;
-                
                 $product->save();
 
+                // Create new transaction
                 $transaction = new Transaction();
                 $transaction->productId = $product->id;
                 $transaction->productlistId = $product->productlistId;
@@ -138,23 +207,46 @@ public function addToDevCart(Request $request)
                 $transaction->roleId = 1;
                 $transaction->qty = $subtractedQty;
                 $transaction->type = 2;
-                $transaction->totalprice = $subtotal; 
+                $transaction->totalprice = $product->price * $subtractedQty;
                 $transaction->save();
 
+                // Create new delivery
                 $delivery = new Delivery();
                 $delivery->userId = Auth::id();
                 $delivery->transactionId = $transaction->id;
                 $delivery->productId = $product->id;
                 $delivery->productlistId = $product->productlistId;
-                $delivery->description = $product->description;
-                $delivery->qty = $subtractedQty; 
-                $delivery->status = 3;
+                $delivery->remarks = $product->remarks;
+                $delivery->qty = $subtractedQty;
+                $delivery->status = 3; // Adjust status as needed
                 $delivery->save();
             }
 
-            DB::commit();
-            DeliveryCart::truncate();
+            $totalPrice += $transaction->totalprice;
+        }
+
+        // Commit transaction
+        DB::commit();
+
+        // Clear delivery cart after successful submission
+        DeliveryCart::truncate();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Products delivered successfully',
+            'totalPrice' => $totalPrice,
+        ]);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to submit to admin',
+            'error' => $e->getMessage(),
+        ], 500);
     }
+}
+
 
     public function getCategories()
         {

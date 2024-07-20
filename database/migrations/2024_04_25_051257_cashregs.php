@@ -14,6 +14,7 @@ return new class extends Migration
          Schema::create('cashRegs', function (Blueprint $table) {
             $table->id();
             $table->float('amount')->nullable();
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }

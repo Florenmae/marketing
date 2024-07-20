@@ -9,7 +9,8 @@
                     >
                 </div>
                 <div class="flex items-center space-x-6">
-                    <SearchBar @search="performSearch" /> <addUser />
+                    <SearchBar @search="performSearch" />
+                    <addUser />
                 </div>
             </div>
             <div class="mt-4 overflow-x-auto border border-gray-300">
@@ -111,12 +112,6 @@ export default {
         changeModalStatus() {
             this.modalStatus = !this.modalStatus;
         },
-
-        performSearch(query) {
-            this.searchQuery = query;
-            this.getUsers();
-        },
-
         getUsers() {
             axios
                 .get("/get-users", {
@@ -126,8 +121,17 @@ export default {
                 })
                 .then(({ data }) => {
                     this.users = data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching users:", error);
                 });
         },
+
+        performSearch(query) {
+            this.searchQuery = query;
+            this.getUsers();
+        },
+
         updateExistingUser(data) {
             const { editedUser, editingUserId } = this;
             const userPayload = { ...editedUser };

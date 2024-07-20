@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Categories;
-use App\Models\Product;
+use App\Models\ProductList;
 
 class CategoryController extends Controller
 {
@@ -26,10 +26,10 @@ class CategoryController extends Controller
         $search = $request->input('search');
 
         $categories = Categories::withCount([
-            'products as product_count' => function (Builder $query) {
+            'product_lists as product_count' => function (Builder $query) {
                 $query->select(DB::raw('count(*)'))
-                      ->from('products')
-                      ->whereColumn('products.categoryId', '=', 'categories.id');
+                      ->from('product_lists')
+                      ->whereColumn('product_lists.categoryId', '=', 'categories.id');
             }
         ]);
 

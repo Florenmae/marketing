@@ -71,6 +71,12 @@
                 </table>
             </div>
             <div
+                v-if="returnedProducts && returnedProducts.length === 0"
+                class="mt-4 text-center p-4 text-yellow-500"
+            >
+                ---------- No Returned Products Recorded. ----------
+            </div>
+            <div
                 class="fixed bottom-6 right-4 w-full bg-white p-4 flex justify-end"
             >
                 <Pagination

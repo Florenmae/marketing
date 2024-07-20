@@ -2,8 +2,10 @@
     <userLayout>
         <div class="mt-5 flex justify-between w-full">
             <div class="flex-3 p-4 relative">
-                <h2 class="text-2xl font-semibold mb-4">Categories</h2>
-                <div class="absolute top-10 right-3 mt-2 mr-2">
+                <div class="flex items-center mt-4 mb-4">
+                    <h2 class="text-2xl font-semibold">Categories</h2>
+                    <SearchBar class="flex-1 mr-4" @search="handleSearch" />
+
                     <button @click="prevPage" class="text-gray-500">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -14,11 +16,7 @@
                             stroke-linejoin="round"
                             class="h-6 w-6"
                         >
-                            <path
-                                stroke="none"
-                                d="M0 0h24v24H0z"
-                                fill="none"
-                            ></path>
+                            <path stroke="none" d="M0 0h24v24H0z"></path>
                             <polyline points="15 6 9 12 15 18"></polyline>
                         </svg>
                     </button>
@@ -32,15 +30,12 @@
                             stroke-linejoin="round"
                             class="h-6 w-6"
                         >
-                            <path
-                                stroke="none"
-                                d="M0 0h24v24H0z"
-                                fill="none"
-                            ></path>
+                            <path stroke="none" d="M0 0h24v24H0z"></path>
                             <polyline points="9 6 15 12 9 18"></polyline>
                         </svg>
                     </button>
                 </div>
+
                 <div class="flex flex-wrap">
                     <div
                         v-for="category in visibleCategories"
@@ -89,7 +84,7 @@
                 </div>
             </div>
 
-            <div class="flex-1 p-4">
+            <div class="flex-1 mt-4 p-4">
                 <h2 class="text-2xl font-semibold mb-4">Delivery Cart</h2>
                 <div v-if="deliverycarts.length === 0" class="text-gray-600">
                     Your cart is empty.
@@ -98,29 +93,28 @@
                     <div
                         v-for="product in deliverycarts"
                         :key="product.id"
-                        class="flex items-center justify-between p-2 border-b"
+                        class="flex items-center justify-evenly py-2 border-b"
                     >
-                        <div class="flex items-center space-x-4">
+                        <div class="flex justify justify-start px-4 space-x-4">
                             <span>
-                                {{
-                                    getProductName(product.productlistId)
-                                }}</span
-                            >
+                                {{ getProductName(product.productlistId) }}
+                            </span>
                         </div>
 
-                        <div class="flex items-center space-x-0">
+                        <div class="flex justify justify-start space-x-0">
                             <button
                                 @click="decrementQuantity(product)"
-                                class="px-2 py-1 border rounded-none"
+                                class="flex justify-start px-2 py-1 border rounded-none"
                             >
                                 -
                             </button>
-                            <span class="px-4 py-1 border-t border-b">{{
-                                product.qty
-                            }}</span>
+                            <span
+                                class="flex items-center px-4 py-1 border-t border-b"
+                                >{{ product.qty }}</span
+                            >
                             <button
                                 @click="incrementQuantity(product)"
-                                class="px-2 py-1 border rounded-none"
+                                class="flex items-center px-2 py-1 border rounded-none"
                             >
                                 +
                             </button>
@@ -128,9 +122,6 @@
                         <span class="font-semibold"
                             >Php {{ product.price.toFixed(2) }}</span
                         >
-                        <!-- <span class="text-gray-600"
-                            >Total: Php {{ product.total.toFixed(2) }}</span
-                        > -->
                         <button @click="deleteItem(product.id)">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -161,25 +152,28 @@
                             Deliver
                         </button>
                     </div>
-                    <toast-container />
                 </div>
             </div>
         </div>
+        <Toast />
     </userLayout>
 </template>
 
 <script>
+import axios from "axios";
 import Modal from "@/Component/Modal.vue";
 import addProduct from "@/Component/User/UserInventory/addProduct.vue";
 import SendToAdmin from "@/Component/User/UserInventory/SendToAdmin.vue";
-
-import { useToast } from "vue-toast-notification";
+import Toast from "primevue/toast";
+import SearchBar from "@/Component/Tools/SearchBar.vue";
 
 export default {
     components: {
         Modal,
         addProduct,
         SendToAdmin,
+        Toast,
+        SearchBar,
     },
     data() {
         return {
@@ -194,11 +188,11 @@ export default {
             status: 0,
             productlists: [],
             selectedCategoryId: null,
+            searchQuery: "",
         };
     },
     methods: {
         addToCart(product) {
-            console.log("Adding to Cart:", product);
             axios
                 .post("/add-Cart", {
                     id: product.id,
@@ -211,11 +205,13 @@ export default {
                     description: product.description,
                     total: product.price * 1,
                 })
-                .then((data) => {
+                .then(() => {
                     this.showCartItems();
+                })
+                .catch((error) => {
+                    console.error("Error adding to cart:", error);
                 });
         },
-
         submitToAdmin() {
             axios
                 .post("/submit-to-admin", {
@@ -224,21 +220,20 @@ export default {
                 .then((response) => {
                     console.log("Cart submitted to admin:", response.data);
                     this.deliverycarts = [];
-
-                    const toast = useToast();
-
-                    toast.success("Cart submitted successfully", {
-                        duration: 5000,
-                        position: "top-right-20",
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Success",
+                        detail: "Products delivered successfully",
+                        life: 4000,
                     });
                 })
                 .catch((error) => {
-                    console.error("Error submitting cart to admin:", error);
-                    const toast = useToast();
-
-                    toast.error("Failed to submit cart", {
-                        duration: 5000,
-                        position: "top-right-20",
+                    console.error("Error submitting to admin:", error);
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error",
+                        detail: "Failed to submit to admin",
+                        life: 4000,
                     });
                 });
         },
@@ -249,11 +244,13 @@ export default {
             }, 0);
         },
         incrementQuantity(product) {
-            product.qty = Math.max(1, product.qty + 1);
+            product.qty++;
         },
 
         decrementQuantity(product) {
-            product.qty = Math.max(1, product.qty - 1);
+            if (product.qty > 1) {
+                product.qty--;
+            }
         },
 
         showCartItems() {
@@ -309,6 +306,15 @@ export default {
                 this.selectedCategoryId = categoryId;
             }
         },
+
+        handleSearch(query) {
+            this.searchQuery = query.trim().toLowerCase();
+        },
+
+        matchesProductSearch(product) {
+            const productName = this.getProductName(product.productlistId);
+            return productName.toLowerCase().includes(this.searchQuery);
+        },
     },
     computed: {
         visibleCategories() {
@@ -322,16 +328,9 @@ export default {
                     (product) => product.categoryId === this.selectedCategoryId
                 );
             }
-            return this.products;
-        },
-        totalAmount() {
-            return this.deliveryCart.reduce(
-                (total, product) => total + product.total,
-                0
+            return this.products.filter((product) =>
+                this.matchesProductSearch(product)
             );
-        },
-        change() {
-            return this.amountGiven - this.totalAmount;
         },
     },
 

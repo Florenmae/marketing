@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
+use App\Models\ProductList;
 use App\Models\Categories;
 
 class ProductList extends Model
@@ -24,6 +25,10 @@ class ProductList extends Model
     public function products()
     {
         return $this->hasMany(Product::class, 'productId');
+    }
+    public function productlists()
+    {
+        return $this->hasMany(ProductList::class, 'productlistId');
     }
     public function categories()
     {

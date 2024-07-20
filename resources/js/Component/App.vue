@@ -14,22 +14,10 @@
                                 <label class="text-sm">Users</label>
                             </div>
                         </div>
-                        <svg
-                            class="w-12 h-12 ml-4"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                            />
-                        </svg>
+                        <i
+                            class="pi pi-objects-column"
+                            style="font-size: 2.5rem"
+                        ></i>
                     </div>
                 </div>
             </div>
@@ -44,22 +32,10 @@
                                 <label class="text-sm">Products</label>
                             </div>
                         </div>
-                        <svg
-                            class="w-12 h-12 ml-4"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                            />
-                        </svg>
+                        <i
+                            class="pi pi-shopping-bag"
+                            style="font-size: 2.5rem"
+                        ></i>
                     </div>
                 </div>
             </div>
@@ -139,7 +115,7 @@
                             Sold Items
                         </label>
                     </div>
-                    <div class="mt-1 w-full">
+                    <div v-if="soldItems.length > 0" class="mt-1 w-full">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -163,6 +139,7 @@
                                     </th>
                                 </tr>
                             </thead>
+
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr
                                     v-for="(soldItem, id) in paginatedSoldItems"
@@ -190,7 +167,12 @@
                                 </tr>
                             </tbody>
                         </table>
-
+                        <!-- <div
+                            v-if="soldItems.length === 0"
+                            class="flex justify-center items-center text-red-600 mt-4"
+                        >
+                            No sold items to display.
+                        </div> -->
                         <div class="mt-4">
                             <span
                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -198,6 +180,7 @@
                                 Total Sold Amount:
                             </span>
                             <span>Php {{ totalSoldAmount }}.00</span>
+
                             <div class="flex justify-end">
                                 <Pagination
                                     :current_page="
@@ -209,6 +192,12 @@
                                 />
                             </div>
                         </div>
+                    </div>
+                    <div
+                        v-else
+                        class="flex justify-center items-center text-red-600 mt-4"
+                    >
+                        No sold items to display.
                     </div>
                 </div>
             </div>
@@ -224,7 +213,7 @@
                             Returned Products
                         </label>
                     </div>
-                    <div class="mt-1 w-full">
+                    <div v-if="returnedProducts.length > 0" class="mt-1 w-full">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -254,6 +243,7 @@
                                     </th>
                                 </tr>
                             </thead>
+
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr
                                     v-for="(returned, id) in paginatedReturns"
@@ -286,6 +276,12 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <!-- <div
+                            v-if="returnedProducts.length === 0"
+                            class="flex justify-center items-center text-red-600 mt-4"
+                        >
+                            No returned products to display.
+                        </div> -->
                         <div class="mt-6 flex justify-end">
                             <Pagination
                                 :current_page="returnPagination.currentPage"
@@ -294,6 +290,12 @@
                                 @back="prevReturnPage"
                             />
                         </div>
+                    </div>
+                    <div
+                        v-else
+                        class="flex justify-center items-center text-red-600 mt-6"
+                    >
+                        No returned products to display.
                     </div>
                 </div>
             </div>

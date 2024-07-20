@@ -16,37 +16,37 @@
                         <tr>
                             <th
                                 scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                class="justify text-center py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Transaction No.
                             </th>
                             <th
                                 scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                class="justify text-center py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Supplier
                             </th>
                             <th
                                 scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                class="justify text-center py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Product
                             </th>
                             <th
                                 scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                class="py-3 justify text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Type
                             </th>
                             <th
                                 scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                class="justify text-center py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Quantity
                             </th>
                             <th
                                 scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                class="justify text-center py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Date
                             </th>
@@ -60,17 +60,23 @@
                             v-for="(transaction, id) in paginatedTransactions"
                             :key="id"
                         >
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td
+                                class="justify text-center py-4 whitespace-nowrap"
+                            >
                                 <div class="text-sm text-gray-900">
                                     {{ transaction.id }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td
+                                class="justify text-center py-4 whitespace-nowrap"
+                            >
                                 <div class="text-sm text-gray-900">
                                     {{ getUserRole(transaction.userId) }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td
+                                class="justify text-center py-4 whitespace-nowrap"
+                            >
                                 <div class="text-sm text-gray-900">
                                     {{
                                         getProductName(
@@ -79,7 +85,9 @@
                                     }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td
+                                class="justify text-center py-4 whitespace-nowrap"
+                            >
                                 <div class="text-sm text-gray-900">
                                     {{
                                         transaction.type === 2
@@ -89,12 +97,16 @@
                                 </div>
                             </td>
 
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td
+                                class="justify text-center py-4 whitespace-nowrap"
+                            >
                                 <div class="text-sm text-gray-900">
                                     {{ transaction.qty }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td
+                                class="justify text-center py-4 whitespace-nowrap"
+                            >
                                 <div class="text-sm text-gray-900">
                                     {{ transaction.created_at }}
                                 </div>
@@ -117,7 +129,7 @@
             </div>
             <div
                 v-if="transactions && transactions.length === 0"
-                class="text-gray-600 mt-4"
+                class="mt-4 text-center p-4 text-yellow-500"
             >
                 No transaction recorded.
             </div>

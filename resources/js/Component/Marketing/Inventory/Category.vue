@@ -116,6 +116,7 @@ export default {
             this.searchQuery = query;
             this.getCategories();
         },
+        
         getCategories() {
             axios
                 .get("/get-categories", {

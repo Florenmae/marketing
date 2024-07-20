@@ -23,7 +23,8 @@ class UserController extends Controller
         return redirect('/user');
     }
 
-    public function getUsers(Request $request) {
+   public function getUsers(Request $request)
+    {
         $query = User::query();
 
         if ($request->has('search')) {
@@ -31,8 +32,11 @@ class UserController extends Controller
             $query->where('name', 'like', '%' . $search . '%');
         }
 
-        return $query->get();   
-        }
+        $users = $query->get();
+
+        return response()->json($users);
+    }
+
 
 
 

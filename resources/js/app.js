@@ -1,10 +1,17 @@
 import "./bootstrap";
 import { createApp } from "vue/dist/vue.esm-bundler";
-import "vue-toast-notification/dist/theme-default.css";
+
+// import "vue-toast-notification/dist/theme-default.css";
+// import Toast from "vue-toast-notification";
+// import "vue-toast-notification/dist/theme-sugar.css";
+
 import PrimeVue from "primevue/config";
 import "primevue/resources/themes/saga-blue/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
+import Toast from "primevue/toast";
+import ToastService from "primevue/toastservice";
+import "primevue/resources/themes/aura-light-green/theme.css";
 
 import App from "@/Component/App.vue";
 import Modal from "@/Component/Modal.vue";
@@ -44,6 +51,7 @@ import pendingOrder from "@/Component/OnlineOrder/pendingOrder.vue";
 import ApproveOrder from "@/Component/OnlineOrder/ApproveOrder.vue";
 
 import Pagination from "@/Component/Tools/Pagination.vue";
+import ToastContainer from "@/Component/Tools/ToastContainer.vue";
 
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "./routes";
@@ -61,6 +69,8 @@ const app = createApp({});
 
 app.use(router);
 app.use(PrimeVue);
+app.use(Toast);
+app.use(ToastService);
 
 app.component("app", App);
 
@@ -106,5 +116,6 @@ app.component("posLayout", PosLayout);
 app.component("OrderLayout", OrderLayout);
 
 app.component("Pagination", Pagination);
+app.component("ToastContainer", ToastContainer);
 
 app.mount("#app");
