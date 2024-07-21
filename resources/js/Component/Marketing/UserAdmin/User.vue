@@ -18,7 +18,7 @@
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                 >
                     <thead
-                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                        class="justify text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                     >
                         <tr>
                             <th scope="col" class="px-6 py-2">Name</th>
@@ -31,7 +31,7 @@
                         <tr
                             v-for="user in users"
                             :key="user.id"
-                            class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                            class="justify text-center odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
                             <th
                                 scope="row"
@@ -41,7 +41,7 @@
                             </th>
                             <td class="px-6 py-4">{{ user.roleId }}</td>
                             <td class="px-6 py-4">{{ user.email }}</td>
-                            <td class="flex space-x-4 >">
+                            <td class="flex justify-center space-x-4 >">
                                 <EditUser :user="user" />
                                 <button
                                     class="bg-red-500 px-4 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"

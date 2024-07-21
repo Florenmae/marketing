@@ -2,7 +2,7 @@
     <userLayout>
         <div class="justify-center w-full">
             <div class="flex justify-between items-end mt-6">
-                <div class="mt-6 mb-6">
+                <div class="mt-4 mb-4">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
                         >Returned Product List</span
@@ -77,6 +77,12 @@
                     @next="nextPage"
                     @back="prevPage"
                 />
+            </div>
+            <div
+                v-if="returnedProducts && returnedProducts.length === 0"
+                class="text-center border border-t-0 w-full border-gray-200 p-4 text-gray-700 dark:text-gray-400"
+            >
+                No Returned Products Recorded.
             </div>
         </div>
     </userLayout>

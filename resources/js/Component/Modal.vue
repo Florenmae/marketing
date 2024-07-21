@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <div class="flex items-center justify-center">
+        <div class="flex">
             <button
                 @click="isOpen = true"
                 class="bg-green-500 px-4 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
@@ -25,13 +25,13 @@
                         <slot />
                         <button
                             @click="isOpen = false"
-                            class="px-4 py-2 text-green-800 border border-green-600 rounded-md text-sm"
+                            class="justify justify-end px-4 py-2 text-green-800 border border-green-600 rounded-md text-sm"
                         >
                             {{ cancelLabel }}
                         </button>
                         <button
                             @click="saveData"
-                            class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
+                            class="justify justify-end px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
                         >
                             {{ saveLabel }}
                         </button>

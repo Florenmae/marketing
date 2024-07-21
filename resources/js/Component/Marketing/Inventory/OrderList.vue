@@ -108,7 +108,7 @@
             </div>
             <div
                 v-if="orders && orders.length === 0"
-                class="text-gray-600 mt-4"
+                class="text-center  text-yellow-600 mt-4"
             >
                 No orders available.
             </div>

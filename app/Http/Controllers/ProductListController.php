@@ -72,7 +72,7 @@ public function uploadImages(Request $request) {
             $query->where('name', 'like', '%' . $search . '%');
         }
 
-        $productlists = $query->paginate(4);
+        $productlists = $query->paginate(5);
 
         return [
             'data' => $productlists->items(),

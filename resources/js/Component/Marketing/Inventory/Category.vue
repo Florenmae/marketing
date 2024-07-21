@@ -19,7 +19,7 @@
                     v-if="categories.length === 0"
                     class="text-center border border-yellow-300 p-4 text-gray-700 dark:text-gray-400"
                 >
-                    No categories matched your search.
+                    No categories redorded.
                 </div>
                 <table
                     v-else
@@ -116,7 +116,7 @@ export default {
             this.searchQuery = query;
             this.getCategories();
         },
-        
+
         getCategories() {
             axios
                 .get("/get-categories", {

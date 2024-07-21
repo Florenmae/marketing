@@ -83,13 +83,13 @@
                 class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
             >
                 <div class="p-4 flex flex-col items-center w-full h-full">
-                    <div class="bg-gray-50 w-full">
+                    <div class="border border-gray-200 bg-gray-50 w-full">
                         <label
-                            class="px-6 py-3 text-left text-s font-medium text-black-500 uppercase tracking-wider"
+                            class="px-4 text-left text-sm font-semibold text-black-500 uppercase tracking-wider"
                             >Sold Items</label
                         >
                     </div>
-                    <div class="mt-1 w-full">
+                    <div v-if="soldItems.length > 0" class="mt-1 w-full">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -134,12 +134,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div
-                            v-if="soldItems.length === 0"
-                            class="text-center border border-gray-200 p-4 text-gray-700 dark:text-gray-400"
-                        >
-                            No Returned Products Recorded.
-                        </div>
+
                         <div class="mt-4">
                             <span
                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -159,19 +154,25 @@
                             </div>
                         </div>
                     </div>
+                    <div
+                        v-else
+                        class="text-center border border-t-0 w-full border-gray-200 p-4 text-gray-700 dark:text-gray-400"
+                    >
+                        No sold items to display.
+                    </div>
                 </div>
             </div>
             <div
                 class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
             >
                 <div class="p-4 flex flex-col items-center w-full h-full">
-                    <div class="bg-gray-50 w-full">
+                    <div class="border border-gray-200 bg-gray-50 w-full">
                         <label
-                            class="px-6 py-3 text-left text-s font-medium text-black-500 uppercase tracking-wider"
+                            class="px-4 text-left text-sm font-semibold text-black-500 uppercase tracking-wider"
                             >Returned Products</label
                         >
                     </div>
-                    <div class="mt-1 w-full">
+                    <div v-if="returnedProducts > 0" class="mt-1 w-full">
                         <table
                             class="border border-gray-200 min-w-full divide-y divide-gray-200"
                         >
@@ -218,12 +219,12 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div
+                        <!-- <div
                             v-if="returnedProducts.length === 0"
                             class="text-center border border-gray-200 p-4 text-gray-700 dark:text-gray-400"
                         >
                             No Returned Products Recorded.
-                        </div>
+                        </div> -->
                         <div class="mt-6 flex justify-end">
                             <Pagination
                                 :current_page="returnPagination.currentPage"
@@ -232,6 +233,12 @@
                                 @back="prevReturnPage"
                             />
                         </div>
+                    </div>
+                    <div
+                        v-else
+                        class="text-center border w-full border-t-0 border-gray-200 p-4 text-gray-700 dark:text-gray-400"
+                    >
+                        No Returned Products Recorded.
                     </div>
                 </div>
             </div>

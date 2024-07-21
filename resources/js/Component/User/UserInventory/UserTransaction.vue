@@ -12,9 +12,11 @@
                 class="overflow-x-auto flex flex-col items-center border border-gray-300"
             >
                 <table
-                    class="w-full text-sm text-center text-gray-500 dark:text-gray-400"
+                    class="w-full text-sm text-center text-gray-700 dark:text-gray-500"
                 >
-                    <thead class="bg-gray-50">
+                    <thead
+                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                    >
                         <tr>
                             <th
                                 scope="col"
@@ -111,7 +113,7 @@
             </div>
             <div
                 v-if="transactions && transactions.length === 0"
-                class="text-gray-600 mt-4"
+                class="text-center border border-t-0 w-full border-gray-200 p-4 text-gray-700 dark:text-gray-400"
             >
                 No transaction recorded.
             </div>

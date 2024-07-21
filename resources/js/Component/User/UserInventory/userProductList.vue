@@ -1,14 +1,17 @@
 <template>
     <userLayout>
         <div class="justify-center w-full">
-            <div class="flex justify-between items-end mt-6">
-                <div class="mt-6 mb-6">
+            <div class="flex justify-between items-center mt-10 mb-4">
+                <div class="flex items-center space-x-4">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
                         >Product List</span
                     >
                 </div>
-                <div><addProduct></addProduct></div>
+                <div class="flex items-center space-x-6">
+                    <SearchBar @search="handleSearch" />
+                    <addProduct></addProduct>
+                </div>
             </div>
             <div class="mt-4 overflow-x-auto border border-gray-300">
                 <table
@@ -107,6 +110,7 @@
                 />
             </div>
         </div>
+        <Toast />
     </userLayout>
 </template>
 
@@ -117,6 +121,9 @@ import SendToAdmin from "@/Component/User/UserInventory/SendToAdmin.vue";
 import axios from "axios";
 import UserLayout from "../../../Layout/userLayout.vue";
 import Pagination from "@/Component/Tools/Pagination.vue";
+import SearchBar from "@/Component/Tools/SearchBar.vue";
+import _ from "lodash";
+import Toast from "primevue/toast";
 
 export default {
     components: {
@@ -125,6 +132,8 @@ export default {
         UserLayout,
         SendToAdmin,
         Pagination,
+        SearchBar,
+        Toast,
     },
     data() {
         return {
@@ -146,7 +155,8 @@ export default {
                 currentPage: 1,
                 lastPage: 1,
             },
-            itemsPerPage: 4,
+            itemsPerPage: 5,
+            searchQuery: "",
         };
     },
     methods: {
@@ -201,7 +211,7 @@ export default {
         },
         deleteProduct(id) {
             axios.post("/delete-product", { id }).then(({ data }) => {
-                this.getProductUsers();
+                this.fetchProducts();
             });
         },
         getCategories() {
@@ -226,22 +236,39 @@ export default {
             const category = this.categories.find((c) => c.id === categoryId);
             return category ? category.name : "Unknown Category";
         },
-
-        // getProductName(productlistId) {
-        //     console.log("Product List ID:", productlistId);
-        //     if (!this.productlists || !this.productlists.length) {
-        //         return "Loading...";
-        //     }
-        //     const productlist = this.productlists.find(
-        //         (b) => b.id === productlistId
-        //     );
-        //     console.log("Matched Product List:", productlist);
-        //     return productlist ? productlist.name : "Unknown product";
-        // },
+        submitProduct() {
+            const { product } = this;
+            axios
+                .post("/submit-product", product)
+                .then(({ data }) => {
+                    this.fetchProducts();
+                    window.location.relaod("Reloading");
+                    this.products.push(data);
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Success",
+                        detail: "Created product successfully",
+                        life: 4000,
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error submitting product:", error);
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error",
+                        detail: "Failed to create product",
+                        life: 4000,
+                    });
+                });
+        },
 
         async fetchProducts() {
             try {
-                const { data } = await axios.get("/get-productsUser");
+                const { data } = await axios.get("/get-productsUser", {
+                    params: {
+                        search: this.searchQuery,
+                    },
+                });
                 this.products = data;
                 this.pagination.lastPage = Math.ceil(
                     this.products.length / this.itemsPerPage
@@ -249,6 +276,11 @@ export default {
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
+        },
+
+        handleSearch(query) {
+            this.searchQuery = query;
+            this.fetchProducts();
         },
 
         getProductlists() {

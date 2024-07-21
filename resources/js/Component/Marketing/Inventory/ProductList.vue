@@ -19,7 +19,7 @@
                     v-if="productlists.length === 0"
                     class="text-center border border-yellow-300 p-4 text-gray-700 dark:text-gray-400"
                 >
-                    No products matched your search.
+                    No products recorded.
                 </div>
                 <table
                     v-else

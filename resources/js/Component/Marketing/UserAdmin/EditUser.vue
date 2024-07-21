@@ -11,11 +11,11 @@
         @save="updateExistingUser"
         :save-option="true"
     >
-        <div class="grid gap-4 mb-4 grid-cols-2">
+        <div class="justify justify-start grid gap-4 mb-4 grid-cols-2">
             <div class="col-span-2 border-red-500">
                 <label
                     for="name"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="justify justify-start block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Name</label
                 >
                 <input
@@ -27,10 +27,10 @@
                     placeholder="Name"
                 />
             </div>
-            <div class="col-span-2 border-red-500">
+            <div class="justify justify-start col-span-2 border-red-500">
                 <label
                     for="email"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="justify justify-start block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Email</label
                 >
                 <input
@@ -59,6 +59,8 @@
                     <option value="1">admin</option>
                     <option value="2">IGP</option>
                     <option value="3">Project</option>
+                    <option value="4">Employee</option>
+                    <option value="5">Customer</option>
                 </select>
             </div>
         </div>

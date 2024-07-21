@@ -7,8 +7,8 @@
         @save="submitCategory"
         :save-option="true"
     >
-        <form @submit.prevent="submitCategory" class="p-4 md:p-5">
-            <div class="grid gap-4 mb-4 grid-cols-2">
+        <form @submit.prevent="submitCategory" class="">
+            <div class="justify justify-end gap-4 mb-4 grid-cols-2">
                 <div class="col-span-2">
                     <label
                         for="name"

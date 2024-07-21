@@ -129,10 +129,11 @@
             </div>
             <div
                 v-if="transactions && transactions.length === 0"
-                class="mt-4 text-center p-4 text-yellow-500"
+                class="text-center border border-t-0 w-full border-gray-200 p-4 text-gray-700 dark:text-gray-400"
             >
                 No transaction recorded.
             </div>
+
             <div
                 class="fixed bottom-6 right-4 w-full bg-white p-4 flex justify-end"
             >
