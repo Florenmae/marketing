@@ -159,7 +159,7 @@ public function addToDevCart(Request $request)
                 $delivery->transactionId = $transaction->id;
                 $delivery->productId = $product->id;
                 $delivery->productlistId = $product->productlistId;
-                $delivery->remarks = $product->remarks;
+                $delivery->description = $product->description;
                 $delivery->qty = $subtractedQty; 
                 $delivery->status = 3;
                 $delivery->save();

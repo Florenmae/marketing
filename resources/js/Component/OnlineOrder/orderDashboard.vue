@@ -2,8 +2,10 @@
     <OrderLayout>
         <div class="flex justify-between w-full">
             <div class="flex-6 p-4 relative">
-                <h2 class="text-2xl font-semibold mb-5">Categories</h2>
-                <div class="absolute top-10 right-3 mt-2 mr-2">
+                <div class="flex items-center mb-4">
+                    <h2 class="text-2xl font-semibold">Categories</h2>
+                    <SearchBar class="flex-1 mr-4" @search="handleSearch" />
+
                     <button @click="prevPage" class="text-gray-500">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -14,11 +16,7 @@
                             stroke-linejoin="round"
                             class="h-6 w-6"
                         >
-                            <path
-                                stroke="none"
-                                d="M0 0h24v24H0z"
-                                fill="none"
-                            ></path>
+                            <path stroke="none" d="M0 0h24v24H0z"></path>
                             <polyline points="15 6 9 12 15 18"></polyline>
                         </svg>
                     </button>
@@ -32,17 +30,13 @@
                             stroke-linejoin="round"
                             class="h-6 w-6"
                         >
-                            <path
-                                stroke="none"
-                                d="M0 0h24v24H0z"
-                                fill="none"
-                            ></path>
+                            <path stroke="none" d="M0 0h24v24H0z"></path>
                             <polyline points="9 6 15 12 9 18"></polyline>
                         </svg>
                     </button>
                 </div>
 
-                <div class="flex flex-wrap">
+                <!-- <div class="flex flex-wrap">
                     <div
                         v-for="category in visibleCategories"
                         :key="category.id"
@@ -50,6 +44,20 @@
                     >
                         <div
                             class="bg-white shadow-md mb-4 category-item hover:bg-gray-100 cursor-pointer p-2 rounded-md"
+                            @click="filterByCategory(category.id)"
+                        >
+                            <p>{{ category.name }}</p>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="flex flex-wrap">
+                    <div
+                        v-for="category in visibleCategories"
+                        :key="category.id"
+                        class="w-1/5 p-2"
+                    >
+                        <div
+                            class="bg   -white shadow-md mb-4 category-item hover:bg-gray-100 cursor-pointer p-2 rounded-md"
                             @click="filterByCategory(category.id)"
                         >
                             <p>{{ category.name }}</p>
@@ -63,7 +71,7 @@
                     <div
                         v-for="product in filteredProducts"
                         :key="product.id"
-                        class="p-2 border rounded-md text-center"
+                        class="p-2 border border-gray-300 rounded-md text-center"
                     >
                         <div class="relative h-30">
                             <img
@@ -161,7 +169,7 @@
                     </div>
                     <div class="mt-4 flex justify-between items-center">
                         <span class="font-semibold"
-                            >Total: Php {{ calculateTotal() }}</span
+                            >Total: Php {{ calculateTotal() }}.00</span
                         >
                     </div>
                 </div>
@@ -200,6 +208,7 @@
             :receipt="receipt"
             @close="showReceiptModal = false"
         />
+        <Toast />
     </OrderLayout>
 </template>
 
@@ -207,10 +216,15 @@
 import OrderLayout from "../../Layout/OrderLayout.vue";
 import Receipt from "@/Component/PosComp/Receipt.vue";
 import moment from "moment";
+import Toast from "primevue/toast";
+import SearchBar from "@/Component/Tools/SearchBar.vue";
 
 export default {
     components: {
         Receipt,
+        Toast,
+        moment,
+        SearchBar,
     },
 
     data() {
@@ -227,6 +241,7 @@ export default {
             selectedCategory: null,
             showReceiptModal: false,
             receipt: null,
+            searchQuery: "",
         };
     },
     methods: {
@@ -276,6 +291,21 @@ export default {
                 .then((response) => {
                     console.log("Cart submitted to admin:", response.data);
                     this.carts = [];
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Success",
+                        detail: "Checkout Order successfully",
+                        life: 4000,
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error submitting to admin:", error);
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error",
+                        detail: "Failed to check out order",
+                        life: 4000,
+                    });
                 });
         },
 
@@ -318,7 +348,10 @@ export default {
             });
         },
         nextPage() {
-            this.currentPage += 1;
+            const start = (this.currentPage + 1) * this.itemsPerPage;
+            if (start < this.categories.length) {
+                this.currentPage += 1;
+            }
         },
         prevPage() {
             this.currentPage = Math.max(0, this.currentPage - 1);
@@ -342,6 +375,14 @@ export default {
             );
             return productlist ? productlist.name : "Unknown product";
         },
+        handleSearch(query) {
+            this.searchQuery = query.trim().toLowerCase();
+        },
+
+        matchesProductSearch(product) {
+            const productName = this.getProductNames(product.productlistId);
+            return productName.toLowerCase().includes(this.searchQuery);
+        },
     },
     computed: {
         visibleCategories() {
@@ -359,11 +400,13 @@ export default {
             return this.amountGiven - this.totalAmount;
         },
         filteredProducts() {
-            if (!this.selectedCategory) {
-                return this.products;
+            if (this.selectedCategoryId) {
+                return this.products.filter(
+                    (product) => product.categoryId === this.selectedCategoryId
+                );
             }
-            return this.products.filter(
-                (product) => product.categoryId === this.selectedCategory
+            return this.products.filter((product) =>
+                this.matchesProductSearch(product)
             );
         },
     },

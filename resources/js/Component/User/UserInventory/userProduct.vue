@@ -1,7 +1,7 @@
 <template>
     <userLayout>
         <div class="mt-5 flex justify-between w-full">
-            <div class="flex-3 p-4 relative">
+            <div class="flex-3 p-4">
                 <div class="flex items-center mt-4 mb-4">
                     <h2 class="text-2xl font-semibold">Categories</h2>
                     <SearchBar class="flex-1 mr-4" @search="handleSearch" />
@@ -57,7 +57,7 @@
                     <div
                         v-for="product in filteredProducts"
                         :key="product.id"
-                        class="p-2 border rounded-md text-center"
+                        class="p-2 border border-gray-300 rounded-md text-center"
                     >
                         <div class="relative h-32">
                             <img
@@ -93,15 +93,17 @@
                     <div
                         v-for="product in deliverycarts"
                         :key="product.id"
-                        class="flex items-center justify-evenly py-2 border-b"
+                        class="flex items-center justify-between py-2 border-b"
                     >
-                        <div class="flex justify justify-start px-4 space-x-4">
+                        <div
+                            class="px-4 items-center text-center min-w-[100px]"
+                        >
                             <span>
                                 {{ getProductName(product.productlistId) }}
                             </span>
                         </div>
 
-                        <div class="flex justify justify-start space-x-0">
+                        <div class="flex">
                             <button
                                 @click="decrementQuantity(product)"
                                 class="flex justify-start px-2 py-1 border rounded-none"
@@ -119,7 +121,7 @@
                                 +
                             </button>
                         </div>
-                        <span class="font-semibold"
+                        <span class="font-semibold min-w-[100px]"
                             >Php {{ product.price.toFixed(2) }}</span
                         >
                         <button @click="deleteItem(product.id)">
@@ -287,7 +289,10 @@ export default {
             });
         },
         nextPage() {
-            this.currentPage += 1;
+            const start = (this.currentPage + 1) * this.itemsPerPage;
+            if (start < this.categories.length) {
+                this.currentPage += 1;
+            }
         },
         prevPage() {
             this.currentPage = Math.max(0, this.currentPage - 1);

@@ -23,24 +23,27 @@
                             {{ modalContent.content }}
                         </p>
                         <slot />
-                        <button
-                            @click="isOpen = false"
-                            class="justify justify-end px-4 py-2 text-green-800 border border-green-600 rounded-md text-sm"
-                        >
-                            {{ cancelLabel }}
-                        </button>
-                        <button
-                            @click="saveData"
-                            class="justify justify-end px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
-                        >
-                            {{ saveLabel }}
-                        </button>
+                        <div class="flex justify-end mt-4">
+                            <button
+                                @click="isOpen = false"
+                                class="px-4 py-2 text-green-800 border border-green-600 rounded-md text-sm"
+                            >
+                                {{ cancelLabel }}
+                            </button>
+                            <button
+                                @click="saveData"
+                                class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
+                            >
+                                {{ saveLabel }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
 <script>
 export default {
     props: {

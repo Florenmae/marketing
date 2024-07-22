@@ -161,7 +161,7 @@
         </div>
     </aside>
     <div
-        class="fixed w-screen ml-64 h-14 bg-white border-b border-gray-300"
+        class="absolute fixed w-screen ml-64 h-14 bg-white border-b border-gray-300"
     ></div>
     <div class="ml-64 px-10">
         <div class="flex flex-col items-center pb-20 pt-10 min-h-screen">

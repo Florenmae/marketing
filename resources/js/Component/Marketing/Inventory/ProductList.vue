@@ -48,7 +48,7 @@
                                 <img
                                     :src="productlist.image"
                                     alt="Product Image"
-                                    class="w-20 h-auto rounded-lg"
+                                    class="w-16 h-16"
                                 />
                             </td>
                             <th
@@ -91,7 +91,7 @@
                 v-if="pagination.totalItems > 0"
             >
                 <div
-                    class="fixed bottom-6 right-4 w-full bg-white p-4 flex justify-end"
+                    class="fixed bottom-2 right-4 w-full bg-white p-4 flex justify-end"
                 >
                     <Pagination
                         :current_page="pagination.currentPage"

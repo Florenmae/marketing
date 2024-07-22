@@ -27,14 +27,26 @@
                         <p class="flex justify-between">
                             <span class="text-gray-400">Payment:</span>
                             <span>{{ receipt.paymentMethod }}</span>
+                            <!-- <span
+                                v-if="receipt.paymentMethod === 1"
+                                class="px-2 py-2 font-medium text-gray-500 my-2 text-sm"
+                            >
+                                Cash
+                            </span>
+                            <span
+                                v-if="receipt.paymentMethod === 2"
+                                class="px-2 py-2 font-medium text-gray-500 my-2 text-sm"
+                            >
+                                Credit
+                            </span> -->
                         </p>
                         <p class="flex justify-between">
                             <span class="text-gray-400">Amount:</span>
-                            <span>{{ receipt.amountGiven }}</span>
+                            <span>Php {{ receipt.amountGiven }}.00 </span>
                         </p>
                         <p class="flex justify-between">
                             <span class="text-gray-400">Change:</span>
-                            <span>{{ receipt.change }}</span>
+                            <span>Php {{ receipt.change }}.00</span>
                         </p>
                     </div>
 
@@ -54,8 +66,8 @@
                             >
                                 <td class="py-1">{{ item.productName }}</td>
                                 <td class="py-1">{{ item.qty }}</td>
-                                <td class="py-1">Php {{ item.price }}</td>
-                                <td class="py-1">Php {{ item.total }}</td>
+                                <td class="py-1">Php {{ item.price }}.00</td>
+                                <td class="py-1">Php {{ item.total }}.00</td>
                             </tr>
                         </tbody>
                     </table>
@@ -96,5 +108,17 @@ export default {
             window.print();
         },
     },
+    // computed: {
+    //     paymentMethodDisplay() {
+    //         switch (this.receipt.paymentMethod) {
+    //             case 1:
+    //                 return "Cash";
+    //             case 2:
+    //                 return "Credit";
+    //             default:
+    //                 return "Cash";
+    //         }
+    //     },
+    // },
 };
 </script>

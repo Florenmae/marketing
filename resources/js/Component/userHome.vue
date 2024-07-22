@@ -26,10 +26,10 @@
             >
                 <div class="p-4 flex flex-col items-center w-full">
                     <div class="flex justify-between items-center w-full">
-                        <div class="text-4xl leading-7 font-semibold">
-                            <span>{{ productCount }}</span>
+                        <div class="text-3xl leading-7 font-semibold">
+                            <span>{{ totalSoldAmount }}.00</span>
                             <div class="pb-1">
-                                <label class="text-sm">Products</label>
+                                <label class="text-sm">Total Sales</label>
                             </div>
                         </div>
                         <i
@@ -40,6 +40,24 @@
                 </div>
             </div>
             <div
+                class="bg-blue-900 text-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full"
+            >
+                <div class="p-4 flex flex-col items-center w-full">
+                    <div class="flex justify-between items-center w-full">
+                        <div class="text-4xl leading-7 font-semibold">
+                            <span>{{ productCount }}</span>
+                            <div class="pb-1">
+                                <label class="text-sm">Products</label>
+                            </div>
+                        </div>
+                        <i
+                            class="pi pi-objects-column"
+                            style="font-size: 2.5rem"
+                        ></i>
+                    </div>
+                </div>
+            </div>
+            <!-- <div
                 class="bg-blue-900 text-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full"
             >
                 <div class="p-4 flex flex-col items-center w-full">
@@ -56,7 +74,7 @@
                         ></i>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div
                 class="bg-green-500 text-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full"
             >
@@ -89,8 +107,10 @@
                             >Sold Items</label
                         >
                     </div>
-                    <div v-if="soldItems.length > 0" class="mt-1 w-full">
-                        <table class="min-w-full divide-y divide-gray-200">
+                    <div v-if="soldItems.length > 0" class="w-full">
+                        <table
+                            class="border border-t-0 border-gray-200 min-w-full divide-y divide-gray-200"
+                        >
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th
@@ -172,9 +192,9 @@
                             >Returned Products</label
                         >
                     </div>
-                    <div v-if="returnedProducts > 0" class="mt-1 w-full">
+                    <div v-if="returnedProducts.length > 0" class="w-full">
                         <table
-                            class="border border-gray-200 min-w-full divide-y divide-gray-200"
+                            class="border border-t-0 border-gray-200 min-w-full divide-y divide-gray-200"
                         >
                             <thead class="bg-gray-50">
                                 <tr>
@@ -200,21 +220,27 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr
-                                    v-for="(returned, id) in paginatedReturns"
+                                    v-for="(
+                                        returnedProduct, id
+                                    ) in paginatedReturns"
                                     :key="id"
                                 >
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{
                                             getProductName(
-                                                returned.productlistId
+                                                returnedProduct.productlistId
                                             )
                                         }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ returned.qty }}
+                                        {{ returnedProduct.qty }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ formatDate(returned.created_at) }}
+                                        {{
+                                            formatDate(
+                                                returnedProduct.created_at
+                                            )
+                                        }}
                                     </td>
                                 </tr>
                             </tbody>

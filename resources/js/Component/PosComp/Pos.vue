@@ -57,7 +57,7 @@
                     <div
                         v-for="product in filteredProducts"
                         :key="product.id"
-                        class="p-2 border rounded-md text-center"
+                        class="p-2 border border-gray-300 rounded-md text-center"
                     >
                         <div class="relative h-30">
                             <img
@@ -170,7 +170,7 @@
                     </div>
                     <div class="mt-4 flex justify-between items-center">
                         <span class="font-semibold"
-                            >Total: Php {{ calculateTotal() }}</span
+                            >Total: Php {{ calculateTotal() }}.00</span
                         >
                         <Receipt
                             v-if="showReceiptModal"

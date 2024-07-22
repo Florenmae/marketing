@@ -81,16 +81,20 @@
                 class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
             >
                 <div class="p-4 flex flex-col items-center w-full h-full">
-                    <div class="bg-gray-50 w-full">
+                    <div class="border border-gray-200 bg-gray-50 w-full">
                         <label
                             class="px-6 py-3 text-left text-s font-medium text-black-500 uppercase tracking-wider"
                         >
                             Sold Items
                         </label>
                     </div>
-                    <div v-if="soldItems.length > 0" class="mt-1 w-full">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                    <div v-if="soldItems.length > 0" class="w-full">
+                        <table
+                            class="min-w-full border border-t-0 border-gray-200 divide-y divide-gray-200"
+                        >
+                            <thead
+                                class="border border-t-0 border-gray-200 bg-gray-50"
+                            >
                                 <tr>
                                     <th
                                         scope="col"
@@ -179,15 +183,17 @@
                 class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
             >
                 <div class="p-4 flex flex-col items-center w-full h-full">
-                    <div class="bg-gray-50 w-full">
+                    <div class="border border-gray-200 bg-gray-50 w-full">
                         <label
                             class="px-6 py-3 text-left text-s font-medium text-black-500 uppercase tracking-wider"
                         >
                             Returned Products
                         </label>
                     </div>
-                    <div v-if="returnedProducts.length > 0" class="mt-1 w-full">
-                        <table class="min-w-full divide-y divide-gray-200">
+                    <div v-if="returnedProducts.length > 0" class="w-full">
+                        <table
+                            class="min-w-full border border-t-0 border-gray-200 divide-y divide-gray-200"
+                        >
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th

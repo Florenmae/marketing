@@ -7,7 +7,7 @@
         @save="submitProduct"
         :save-option="true"
     >
-        <form @submit.prevent="submitProduct" class="p-4 md:p-5">
+        <form @submit.prevent="submitProduct" class="md:p-2">
             <div class="grid gap-4 mb-4 grid-cols-4">
                 <div class="col-span-2">
                     <label

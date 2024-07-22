@@ -39,11 +39,11 @@
                             :key="product.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
-                            <td class="px-6 py-4">
+                            <td class="px-6">
                                 <img
                                     :src="product.image"
                                     alt="Product Image"
-                                    class="w-15 h-14 rounded-lg"
+                                    class="w-16 h-16"
                                 />
                             </td>
                             <th
@@ -81,13 +81,13 @@
                                 </p>
                                 <p
                                     v-if="product.status === 4"
-                                    class="px-2 py-2 font-medium text-green-500 my-2 text-sm"
+                                    class="px-2 py-1 font-medium text-green-500 my-2 text-sm"
                                 >
                                     Returned
                                 </p>
                             </td>
                             <td
-                                class="space-x-2 px-6 py-5 flex justify-center items-center"
+                                class="space-x-2 px-6 py-4 flex justify-center items-center"
                             >
                                 <button
                                     class="bg-red-500 px-2 py-2 rounded-md text-white my-2 text-sm hover:bg-red-600"
@@ -101,10 +101,11 @@
                 </table>
             </div>
             <div
-                class="fixed bottom-8 right-4 w-full bg-white p-4 flex justify-end"
+                class="fixed bottom-5 right-4 w-full bg-white p-4 flex justify-end"
             >
                 <Pagination
                     :current_page="pagination.currentPage"
+                    :last_page="pagination.lastPage"
                     @next="nextPage"
                     @back="prevPage"
                 />
