@@ -1,7 +1,7 @@
 <template>
     <Layout>
         <div class="mt-6 justify-center w-full">
-            <div class="flex justify-between items-center mt-6 mb-6">
+            <div class="flex justify-between items-center mt-6 mb-4">
                 <div class="flex items-center space-x-4">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            <div class="mt-4 overflow-x-auto border border-gray-300">
+            <div class="overflow-x-auto border border-gray-300">
                 <div
                     v-if="productlists.length === 0"
                     class="text-center border border-yellow-300 p-4 text-gray-700 dark:text-gray-400"
@@ -90,9 +90,7 @@
                 class="flex justify-end mt-4 mr-4"
                 v-if="pagination.totalItems > 0"
             >
-                <div
-                    class="fixed bottom-2 right-4 w-full bg-white p-4 flex justify-end"
-                >
+                <div class="fixed bottom-1 right-3 w-full p-4 flex justify-end">
                     <Pagination
                         :current_page="pagination.currentPage"
                         :last_page="pagination.lastPage"
@@ -121,6 +119,7 @@ export default {
         addProductList,
         Pagination,
         SearchBar,
+        _,
     },
     data() {
         return {

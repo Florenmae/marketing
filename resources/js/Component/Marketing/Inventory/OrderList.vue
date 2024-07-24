@@ -1,49 +1,78 @@
 <template>
     <Layout>
         <div class="justify-center w-full">
-            <div class="justify self-start mt-10 mb-4">
-                <span class="text-xl font-bold text-gray-700 dark:text-gray-300"
-                    >Order List</span
+            <div class="flex mt-8 mb-2 items-center">
+                <span
+                    class="text-xl font-bold text-gray-700 dark:text-gray-300"
                 >
+                    Order List
+                </span>
+                <select
+                    id="monthFilter"
+                    class="mt-4 ml-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/6 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    v-model="selectedMonth"
+                    @change="filterOrders"
+                    required
+                >
+                    <option value="" selected>Choose a month</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
             </div>
-            <div class="overflow-x-auto border border-gray-300">
+            <div
+                v-if="selectedMonth"
+                class="mb-2 text-gray-700 dark:text-gray-300"
+            >
+                Showing results for: {{ monthName }}
+            </div>
+            <div
+                v-if="filteredOrders.length === 0"
+                class="text-center border w-full border-gray-200 p-4 text-red-700 dark:text-red-400"
+            >
+                No transaction recorded for this month.
+            </div>
+            <div v-else class="overflow-x-auto border border-gray-300">
                 <table
                     class="w-full justify-center items-center text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                 >
                     <thead class="bg-gray-50">
                         <tr>
                             <th
-                                scope="col"
                                 class="justify text-center py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Order ID
                             </th>
                             <th
-                                scope="col"
                                 class="justify text-center py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Order Date
                             </th>
                             <th
-                                scope="col"
                                 class="justify text-center py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Quantity
                             </th>
                             <th
-                                scope="col"
                                 class="justify text-center py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Total
                             </th>
                             <th
-                                scope="col"
                                 class="justify text-center py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Balance
                             </th>
                             <th
-                                scope="col"
                                 class="justify text-center py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Action
@@ -107,8 +136,8 @@
                 </table>
             </div>
             <div
-                v-if="orders && orders.length === 0"
-                class="text-center  text-yellow-600 mt-4"
+                v-if="orders.length === 0"
+                class="text-center text-yellow-600 mt-4"
             >
                 No orders available.
             </div>
@@ -142,6 +171,7 @@ export default {
         return {
             showViewOrder: false,
             orders: [],
+            filteredOrders: [], // Add filteredOrders data property
             loading: false,
             error: null,
             orderDetails: this.order,
@@ -159,17 +189,33 @@ export default {
                 currentPage: 1,
                 lastPage: 1,
             },
-            itemsPerPage: 7,
+            itemsPerPage: 6,
+            selectedMonth: "", // Add selectedMonth data property
         };
     },
     methods: {
         fetchOrders() {
             axios.get("/fetch-orders").then(({ data }) => {
                 this.orders = data;
+                this.filteredOrders = data; // Initialize filteredOrders
                 this.pagination.lastPage = Math.ceil(
-                    this.orders.length / this.itemsPerPage
+                    this.filteredOrders.length / this.itemsPerPage
                 );
             });
+        },
+        filterOrders() {
+            if (this.selectedMonth) {
+                this.filteredOrders = this.orders.filter((order) => {
+                    const orderDate = new Date(order.created_at);
+                    const month = orderDate.getMonth() + 1;
+                    return month === parseInt(this.selectedMonth);
+                });
+            } else {
+                this.filteredOrders = this.orders;
+            }
+            this.pagination.lastPage = Math.ceil(
+                this.filteredOrders.length / this.itemsPerPage
+            );
         },
         prevPage() {
             if (this.pagination.currentPage > 1) {
@@ -188,7 +234,24 @@ export default {
             const startIndex =
                 (this.pagination.currentPage - 1) * this.itemsPerPage;
             const endIndex = startIndex + this.itemsPerPage;
-            return this.orders.slice(startIndex, endIndex);
+            return this.filteredOrders.slice(startIndex, endIndex);
+        },
+        monthName() {
+            const monthNames = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ];
+            return this.selectedMonth ? monthNames[this.selectedMonth - 1] : "";
         },
     },
     mounted() {

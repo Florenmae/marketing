@@ -25,10 +25,8 @@ class OrderController extends Controller
 
     public function getOrders()
 {
-    $userId = Auth::id(); 
-
-    return Order::where('userId', $userId) 
-                ->whereIn('status', [2, 3]) 
+    
+    return Order::whereIn('status', [2, 3]) 
                 ->get();
 }
 

@@ -88,7 +88,7 @@
                 No orders available.
             </div>
             <div
-                class="fixed bottom-6 right-4 w-full bg-white p-4 flex justify-end"
+                class="fixed bottom-6 right-4 w-full p-4 flex justify-end"
             >
                 <Pagination
                     :current_page="pagination.currentPage"
@@ -137,7 +137,7 @@ export default {
                 currentPage: 1,
                 lastPage: 1,
             },
-            itemsPerPage: 6,
+            itemsPerPage: 5,
         };
     },
     methods: {

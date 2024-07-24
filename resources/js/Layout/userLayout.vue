@@ -89,7 +89,7 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/usertransaction">
+                        <router-link to="/usersalesreport">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group"

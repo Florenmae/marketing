@@ -23,6 +23,7 @@ class TransactionController extends Controller
             'roleId' => $transaction->roleId,
             'type' => $transaction->type,
             'qty' => $transaction->qty,
+            'totalprice' => $transaction->totalprice,
             'created_at' => Carbon::parse($transaction->created_at)->format('F d, Y'),
             'updated_at' => Carbon::parse($transaction->updated_at)->format('F d, Y'),
         ];

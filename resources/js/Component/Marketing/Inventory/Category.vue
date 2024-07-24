@@ -1,7 +1,7 @@
 <template>
     <Layout>
         <div class="justify-center w-full">
-            <div class="flex justify-between items-end mt-6">
+            <div class="flex justify-between mt-6">
                 <div class="mt-6 mb-6">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            <div class="mt-4 overflow-x-auto border border-gray-300">
+            <div class="mt-2 overflow-x-auto border border-gray-300">
                 <div
                     v-if="categories.length === 0"
                     class="text-center border border-yellow-300 p-4 text-gray-700 dark:text-gray-400"

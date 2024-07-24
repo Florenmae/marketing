@@ -7,9 +7,11 @@ import Category from "@/Component/Marketing/Inventory/Category.vue";
 import Product from "@/Component/Marketing/Inventory/Product.vue";
 import ProductList from "@/Component/Marketing/Inventory/ProductList.vue";
 import OrderList from "@/Component/Marketing/Inventory/OrderList.vue";
+import SalesReport from "@/Component/Marketing/Inventory/SalesReport.vue";
 
 import Transaction from "@/Component/Marketing/Inventory/Transaction.vue";
 import UserTransaction from "@/Component/User/UserInventory/UserTransaction.vue";
+import UserSalesReport from "@/Component/User/UserInventory/UserSalesReport.vue";
 
 import CashReg from "@/Component/Marketing/Cash/CashReg.vue";
 
@@ -78,9 +80,19 @@ export const routes = [
         component: Transaction,
     },
     {
+        path: "/salesreport",
+        name: "salesreport",
+        component: SalesReport,
+    },
+    {
         path: "/usertransaction",
         name: "usertransaction",
         component: UserTransaction,
+    },
+    {
+        path: "/usersalesreport",
+        name: "usersalesreport",
+        component: UserSalesReport,
     },
 
     {

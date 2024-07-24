@@ -1,7 +1,7 @@
 <template>
     <userLayout>
         <div class="justify-center w-full">
-            <div class="flex justify-between items-center mt-10 mb-4">
+            <div class="flex justify-between items-center mt-8 mb-4">
                 <div class="flex items-center space-x-4">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
@@ -100,9 +100,7 @@
                     </tbody>
                 </table>
             </div>
-            <div
-                class="fixed bottom-5 right-4 w-full bg-white p-4 flex justify-end"
-            >
+            <div class="fixed bottom-5 right-4 w-full p-4 flex justify-end">
                 <Pagination
                     :current_page="pagination.currentPage"
                     :last_page="pagination.lastPage"

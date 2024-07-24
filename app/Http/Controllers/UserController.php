@@ -23,19 +23,21 @@ class UserController extends Controller
         return redirect('/user');
     }
 
-   public function getUsers(Request $request)
+    public function getUsers(Request $request)
     {
+        
         $query = User::query();
 
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where('name', 'like', '%' . $search . '%');
         }
-
+        
         $users = $query->get();
 
         return response()->json($users);
     }
+
 
 
 

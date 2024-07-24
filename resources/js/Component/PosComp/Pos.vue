@@ -1,7 +1,7 @@
 <template>
     <posLayout>
         <div class="flex justify-between w-full">
-            <div class="flex-6 p-4 relative">
+            <div class="flex-6 p-4 w-4/6 relative">
                 <div class="flex items-center mb-4">
                     <h2 class="text-2xl font-semibold mb-2">Categories</h2>
                     <SearchBar class="flex-1 mr-4" @search="handleSearch" />
@@ -49,6 +49,12 @@
                             <p>{{ category.name }}</p>
                         </div>
                     </div>
+                </div>
+                <div
+                    v-if="filteredProducts.length === 0"
+                    class="text-center p-4 text-red-500 dark:text-red-400"
+                >
+                    No products match your search.
                 </div>
 
                 <div

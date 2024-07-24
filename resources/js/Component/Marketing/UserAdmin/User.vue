@@ -1,19 +1,20 @@
 <template>
     <Layout>
         <div class="justify-center w-full">
-            <div class="flex justify-between items-end mt-6">
-                <div class="mt-6 mb-6">
+            <div class="flex justify-between mt-8">
+                <div class="mt-6 mb-2">
                     <span
                         class="text-xl font-bold text-gray-700 dark:text-gray-300"
-                        >User List</span
                     >
+                        User List
+                    </span>
                 </div>
                 <div class="flex items-center space-x-6">
                     <SearchBar @search="performSearch" />
                     <addUser />
                 </div>
             </div>
-            <div class="mt-4 overflow-x-auto border border-gray-300">
+            <div class="mt-3 overflow-x-auto border border-gray-300">
                 <table
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                 >
@@ -41,7 +42,7 @@
                             </th>
                             <td class="px-6 py-4">{{ user.roleId }}</td>
                             <td class="px-6 py-4">{{ user.email }}</td>
-                            <td class="flex justify-center space-x-4 >">
+                            <td class="flex justify-center space-x-4">
                                 <EditUser :user="user" />
                                 <button
                                     class="bg-red-500 px-4 py-2 rounded-md text-white my-2 text-sm hover:bg-green-600"
@@ -64,6 +65,7 @@ import SearchBar from "@/Component/Tools/SearchBar.vue";
 import Modal from "@/Component/Modal.vue";
 import EditUser from "@/Component/Marketing/UserAdmin/EditUser.vue";
 import addUser from "@/Component/Marketing/UserAdmin/addUser.vue";
+import _ from "lodash";
 
 export default {
     components: {
@@ -71,6 +73,7 @@ export default {
         EditUser,
         addUser,
         SearchBar,
+        _,
     },
     data() {
         return {
@@ -91,7 +94,6 @@ export default {
             searchQuery: "",
         };
     },
-
     methods: {
         submitUser() {
             const { editedUser } = this;
@@ -126,12 +128,10 @@ export default {
                     console.error("Error fetching users:", error);
                 });
         },
-
         performSearch(query) {
             this.searchQuery = query;
             this.getUsers();
         },
-
         updateExistingUser(data) {
             const { editedUser, editingUserId } = this;
             const userPayload = { ...editedUser };
@@ -147,14 +147,12 @@ export default {
                     console.error("Error updating user:", error);
                 });
         },
-
         editUser(user) {
             this.editedUser = { ...user };
             this.editingUserId = user.id;
             this.modalContent.title = "Edit User";
             this.modalStatus = true;
         },
-
         promptDeleteUser(user) {
             const confirmed = confirm(
                 "Are you sure you want to delete this user?"
@@ -163,7 +161,6 @@ export default {
                 this.deleteUser(user.id);
             }
         },
-
         deleteUser(id) {
             axios
                 .post("/delete-user", { id })

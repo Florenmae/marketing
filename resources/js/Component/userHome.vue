@@ -1,7 +1,7 @@
 <template>
     <userLayout>
         <div
-            class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-12 content-between w-full"
+            class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-10 content-between w-full"
         >
             <div
                 class="bg-red-400 text-white overflow-hidden shadow-md sm:rounded-lg flex flex-col items-center w-full"
@@ -95,10 +95,11 @@
             </div>
         </div>
         <div
-            class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 content-between w-full h-full"
+            class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 content-between w-full h-full"
         >
+            <!-- <SalesReport></SalesReport> -->
             <div
-                class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
+                class="rounded-lg border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
             >
                 <div class="p-4 flex flex-col items-center w-full h-full">
                     <div class="border border-gray-200 bg-gray-50 w-full">
@@ -146,7 +147,7 @@
                                         }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ soldItem.qty }}
+                                        {{ soldItem.actualQty }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ soldItem.totalPrice }}
@@ -183,7 +184,7 @@
                 </div>
             </div>
             <div
-                class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
+                class="rounded-lg border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
             >
                 <div class="p-4 flex flex-col items-center w-full h-full">
                     <div class="border border-gray-200 bg-gray-50 w-full">

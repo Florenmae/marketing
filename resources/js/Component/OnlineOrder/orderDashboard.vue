@@ -1,7 +1,7 @@
 <template>
     <OrderLayout>
         <div class="flex justify-between w-full">
-            <div class="flex-6 p-4 relative">
+            <div class="flex-6 p-4 w-4/6 relative">
                 <div class="flex items-center mb-4">
                     <h2 class="text-2xl font-semibold">Categories</h2>
                     <SearchBar class="flex-1 mr-4" @search="handleSearch" />
@@ -57,12 +57,18 @@
                         class="w-1/5 p-2"
                     >
                         <div
-                            class="bg   -white shadow-md mb-4 category-item hover:bg-gray-100 cursor-pointer p-2 rounded-md"
+                            class="bg -white shadow-md mb-4 category-item hover:bg-gray-100 cursor-pointer p-2 rounded-md"
                             @click="filterByCategory(category.id)"
                         >
                             <p>{{ category.name }}</p>
                         </div>
                     </div>
+                </div>
+                <div
+                    v-if="filteredProducts.length === 0"
+                    class="text-center p-4 text-red-500 dark:text-red-400"
+                >
+                    No products match your search.
                 </div>
 
                 <div
@@ -234,7 +240,194 @@ export default {
             carts: [],
             categories: [],
             currentPage: 0,
-            itemsPerPage: 4,
+            itemsPerPage: 5,
+            paymentMethod: "cash",
+            amountGiven: 0,
+            customerId: "",
+            selectedCategory: null,
+            showReceiptModal: false,
+            receipt: null,
+            searchQuery: "",
+        };
+    },
+    methods: {
+        addCart(product) {
+            console.log("Adding to Cart:", product);
+            const cartItem = {
+                id: product.id,
+                productlistId: product.productlistId,
+                image: product.image,
+                price: product.price,
+                qty: 1,
+                description: product.description,
+                total: product.price * 1,
+            };
+
+            axios.post("/add-cart", cartItem).then((data) => {
+                this.showCartItem();
+            });
+        },
+
+        calculateTotal() {
+            return this.carts.reduce((total, product) => {
+                return total + product.total;
+            }, 0);
+        },
+        incrementQuantity(product) {
+            product.qty = Math.max(1, product.qty + 1);
+            product.total = product.price * product.qty;
+        },
+
+        decrementQuantity(product) {
+            product.qty = Math.max(1, product.qty - 1);
+            product.total = product.price * product.qty;
+        },
+
+        showCartItem() {
+            axios.get("/showCartItem").then(({ data }) => {
+                this.carts = data;
+            });
+        },
+
+        checkOutOrder() {
+            axios
+                .post("/checkOutOrder", {
+                    products: this.carts,
+                })
+                .then((response) => {
+                    console.log("Cart submitted to admin:", response.data);
+                    this.carts = [];
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Success",
+                        detail: "Checkout Order successfully",
+                        life: 4000,
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error submitting to admin:", error);
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error",
+                        detail: "Failed to check out order",
+                        life: 4000,
+                    });
+                });
+        },
+
+        getProd() {
+            axios.get("/getProd").then(({ data }) => {
+                this.products = data;
+            });
+        },
+
+        getProdlist() {
+            axios.get("/getProdlist").then(({ data }) => {
+                this.productlists = data;
+            });
+        },
+
+        fetchCategories() {
+            axios.get("/fetch-categories").then(({ data }) => {
+                this.categories = data;
+            });
+        },
+        nextPage() {
+            const start = (this.currentPage + 1) * this.itemsPerPage;
+            if (start < this.categories.length) {
+                this.currentPage += 1;
+            }
+        },
+        prevPage() {
+            this.currentPage = Math.max(0, this.currentPage - 1);
+        },
+        deleteItem(id) {
+            axios.post("/delete-item", { id }).then(({ data }) => {
+                this.showCartItem();
+            });
+        },
+        filterByCategory(id) {
+            if (this.selectedCategory === id) {
+                this.selectedCategory = null;
+            } else {
+                this.selectedCategory = id;
+            }
+        },
+
+        getProductNames(productlistId) {
+            const productlist = this.productlists.find(
+                (b) => b.id === productlistId
+            );
+            return productlist ? productlist.name : "Unknown product";
+        },
+        handleSearch(query) {
+            this.searchQuery = query.trim().toLowerCase();
+        },
+
+        matchesProductSearch(product) {
+            const productName = this.getProductNames(product.productlistId);
+            return productName.toLowerCase().includes(this.searchQuery);
+        },
+    },
+    computed: {
+        visibleCategories() {
+            const start = this.currentPage * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            return this.categories.slice(start, end);
+        },
+        totalAmount() {
+            return this.carts.reduce(
+                (total, product) => total + product.total,
+                0
+            );
+        },
+        change() {
+            return this.amountGiven - this.totalAmount;
+        },
+        filteredProducts() {
+            if (this.selectedCategory) {
+                return this.products.filter(
+                    (product) => product.categoryId === this.selectedCategory
+                );
+            }
+            return this.products.filter((product) =>
+                this.matchesProductSearch(product)
+            );
+        },
+    },
+
+    mounted() {
+        this.getProd();
+        this.getProdlist();
+        this.showCartItem();
+        this.fetchCategories();
+    },
+};
+</script>
+
+<!-- <script>
+import OrderLayout from "../../Layout/OrderLayout.vue";
+import Receipt from "@/Component/PosComp/Receipt.vue";
+import moment from "moment";
+import Toast from "primevue/toast";
+import SearchBar from "@/Component/Tools/SearchBar.vue";
+
+export default {
+    components: {
+        Receipt,
+        Toast,
+        moment,
+        SearchBar,
+    },
+
+    data() {
+        return {
+            products: [],
+            productlists: [],
+            carts: [],
+            categories: [],
+            currentPage: 0,
+            itemsPerPage: 5,
             paymentMethod: "cash",
             amountGiven: 0,
             customerId: "",
@@ -418,4 +611,4 @@ export default {
         this.fetchCategories();
     },
 };
-</script>
+</script> -->

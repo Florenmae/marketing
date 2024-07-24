@@ -104,7 +104,7 @@ public function approveProduct(Request $request)
 
             $transaction = Transaction::where('productId', $product->id)->first();
             if ($transaction) {
-                $transaction->qty = -$actualQty;
+                $transaction->qty =- $actualQty;
                 $transaction->actualQty = $actualQty;
                 $transaction->stocks = $product->stocks - $actualQty;
                 $transaction->save();

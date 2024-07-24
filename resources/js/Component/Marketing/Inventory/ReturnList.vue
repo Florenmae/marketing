@@ -1,17 +1,50 @@
 <template>
     <Layout>
         <div class="justify-center w-full">
-            <div class="flex justify-between items-end mt-6">
-                <div class="mt-6 mb-6">
-                    <span
-                        class="text-xl font-bold text-gray-700 dark:text-gray-300"
-                        >Returned Product List</span
-                    >
-                </div>
-                <div><returnForm /></div>
+            <div class="flex mt-8 mb-2 items-center">
+                <span
+                    class="text-xl font-bold text-gray-700 dark:text-gray-300"
+                >
+                    Returned Items List
+                </span>
+                <select
+                    id="monthFilter"
+                    class="mb-2 mt-2 ml-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/6 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    v-model="selectedMonth"
+                    @change="filterReturnedProducts"
+                    required
+                >
+                    <option value="" selected>Choose a month</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
             </div>
 
-            <div class="overflow-x-auto border border-gray-300">
+            <div
+                v-if="selectedMonth"
+                class="mb-2 text-gray-700 dark:text-gray-300"
+            >
+                Showing results for: {{ monthName }}
+            </div>
+
+            <div
+                v-if="filteredReturnedProducts.length === 0"
+                class="text-center border w-full border-gray-200 p-4 text-yellow-500 dark:text-red-400"
+            >
+                No Returned Products Recorded for this month.
+            </div>
+
+            <div v-else class="overflow-x-auto border border-gray-300">
                 <table
                     class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400"
                 >
@@ -70,8 +103,9 @@
                     </tbody>
                 </table>
             </div>
+
             <div
-                v-if="returnedProducts && returnedProducts.length === 0"
+                v-if="returnedProducts.length === 0"
                 class="mt-4 text-center p-4 text-yellow-500"
             >
                 ---------- No Returned Products Recorded. ----------
@@ -110,22 +144,43 @@ export default {
                 description: "",
             },
             returnedProducts: [],
+            filteredReturnedProducts: [], // Add filteredReturnedProducts data property
             productlists: [],
             users: [],
             editingReturnedProductId: null,
             modalStatus: false,
             currentPage: 1,
             perPage: 10,
+            selectedMonth: "", // Add selectedMonth data property
         };
     },
     computed: {
         paginatedReturnedProducts() {
             const start = (this.currentPage - 1) * this.perPage;
             const end = start + this.perPage;
-            return this.returnedProducts.slice(start, end);
+            return this.filteredReturnedProducts.slice(start, end);
         },
         lastPage() {
-            return Math.ceil(this.returnedProducts.length / this.perPage);
+            return Math.ceil(
+                this.filteredReturnedProducts.length / this.perPage
+            );
+        },
+        monthName() {
+            const monthNames = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ];
+            return this.selectedMonth ? monthNames[this.selectedMonth - 1] : "";
         },
     },
     methods: {
@@ -136,7 +191,24 @@ export default {
         getReturnedProducts() {
             axios.get("/get-returns").then(({ data }) => {
                 this.returnedProducts = data;
+                this.filteredReturnedProducts = data; // Initialize filteredReturnedProducts
             });
+        },
+
+        filterReturnedProducts() {
+            if (this.selectedMonth) {
+                this.filteredReturnedProducts = this.returnedProducts.filter(
+                    (returnedProduct) => {
+                        const returnDate = new Date(
+                            returnedProduct.returned_at
+                        ); // Assumes 'returned_at' field exists
+                        const month = returnDate.getMonth() + 1;
+                        return month === parseInt(this.selectedMonth);
+                    }
+                );
+            } else {
+                this.filteredReturnedProducts = this.returnedProducts;
+            }
         },
 
         getProductName(productlistId) {

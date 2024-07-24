@@ -77,7 +77,7 @@ class HomeController extends Controller
 
         $soldItem = [
             'productlistId' => $transaction->productlistId,
-            'qty' => $transaction->qty,
+            'actualQty' => $transaction->actualQty,
             'totalPrice' => $transaction->totalprice,
         ];
 

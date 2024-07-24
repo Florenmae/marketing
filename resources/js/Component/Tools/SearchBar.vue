@@ -18,7 +18,7 @@
             <button
                 type="button"
                 @click="performSearch"
-                class="absolute top-0 end-0 p-2 text-sm font-medium h-full text-gray-500 rounded-e-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="absolute top-0 end-0 p-2 text-sm font-medium h-full text-gray-500 bg-gray-100 border border-gray-200 rounded-e-lg hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
                 <i class="pi pi-search" style="font-size: 1rem"></i>
             </button>

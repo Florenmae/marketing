@@ -75,10 +75,10 @@
         </div>
 
         <div
-            class="justify item-center grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 content-between w-full h-full"
+            class="justify item-center grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 content-between w-full h-full"
         >
             <div
-                class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
+                class="rounded-lg border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
             >
                 <div class="p-4 flex flex-col items-center w-full h-full">
                     <div class="border border-gray-200 bg-gray-50 w-full">
@@ -134,7 +134,7 @@
                                     <td
                                         class="px-6 py-4 text-center whitespace-nowrap"
                                     >
-                                        {{ soldItem.qty }}
+                                        {{ soldItem.actualQty }}
                                     </td>
                                     <td
                                         class="px-6 py-4 text-center whitespace-nowrap"
@@ -180,7 +180,7 @@
             </div>
 
             <div
-                class="border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
+                class="rounded-lg border border-gray-300 text-black overflow-hidden flex flex-col items-center w-full h-full"
             >
                 <div class="p-4 flex flex-col items-center w-full h-full">
                     <div class="border border-gray-200 bg-gray-50 w-full">
